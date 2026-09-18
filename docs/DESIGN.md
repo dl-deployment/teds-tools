@@ -16,12 +16,14 @@ introducing new values.
 | `muted`     | `#8891ab` | secondary text, labels, timestamps      |
 | `accent`    | `#6c8bff` | primary actions, active nav, Tools/JSON |
 | `accent2`   | `#3ecf8e` | Notes accent                            |
-| `accent3`   | `#b17cff` | Links accent                            |
+| `accent3`   | `#b17cff` | Links + Static Pages accent             |
 | `accent4`   | `#ff9f5a` | Timestamp tool accent                   |
 
 Each of the four sections (Tools, Notes, Links, plus a general "primary")
 has its own accent — reuse `accent`/`accent2`/`accent3`/`accent4` rather
-than inventing a fifth unless a genuinely new section is added.
+than inventing a fifth unless a genuinely new section is added. Static Pages
+is a read-only view of files on disk with no editing affordances, so it
+shares `accent3` with Links rather than claiming an accent of its own.
 
 ## Radius
 
@@ -58,6 +60,9 @@ scrolls.
     pane (no modal, no card grid).
   - Notes / Links: lists the section's entries; the selected entry renders in
     the content pane as a detail card.
+- **Static Pages** has no sub-sidebar either — there is nothing to edit, so
+  the content pane is a `repeat(auto-fill, minmax(220px, 1fr))` grid of
+  `bg-panel` cards that link straight out to the page (new tab).
 - **Content** (`ContentPane`): `flex-1 min-w-0 overflow-y-auto` with generous
   padding (`px-6 py-7 pb-16`). No max-width cap — the dashboard should fill the
   window at any desktop size.

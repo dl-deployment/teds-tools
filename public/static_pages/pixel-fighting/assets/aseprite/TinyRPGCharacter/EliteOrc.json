@@ -1,0 +1,418 @@
+{
+    "frames": {
+        "EliteOrc 0.aseprite": {
+            "frame": { "x": 1, "y": 1, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 1.aseprite": {
+            "frame": { "x": 1, "y": 1, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 2.aseprite": {
+            "frame": { "x": 66, "y": 1, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 3.aseprite": {
+            "frame": { "x": 66, "y": 1, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 4.aseprite": {
+            "frame": { "x": 131, "y": 1, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 5.aseprite": {
+            "frame": { "x": 131, "y": 1, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 6.aseprite": {
+            "frame": { "x": 196, "y": 1, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 7.aseprite": {
+            "frame": { "x": 261, "y": 1, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 8.aseprite": {
+            "frame": { "x": 326, "y": 1, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 9.aseprite": {
+            "frame": { "x": 391, "y": 1, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 10.aseprite": {
+            "frame": { "x": 1, "y": 53, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 11.aseprite": {
+            "frame": { "x": 66, "y": 53, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 12.aseprite": {
+            "frame": { "x": 131, "y": 53, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 13.aseprite": {
+            "frame": { "x": 196, "y": 53, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 14.aseprite": {
+            "frame": { "x": 1, "y": 1, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 15.aseprite": {
+            "frame": { "x": 261, "y": 53, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 16.aseprite": {
+            "frame": { "x": 326, "y": 53, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 17.aseprite": {
+            "frame": { "x": 391, "y": 53, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 18.aseprite": {
+            "frame": { "x": 1, "y": 105, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 19.aseprite": {
+            "frame": { "x": 66, "y": 105, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 20.aseprite": {
+            "frame": { "x": 131, "y": 105, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 21.aseprite": {
+            "frame": { "x": 1, "y": 1, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 22.aseprite": {
+            "frame": { "x": 196, "y": 105, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 23.aseprite": {
+            "frame": { "x": 261, "y": 105, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 24.aseprite": {
+            "frame": { "x": 326, "y": 105, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 25.aseprite": {
+            "frame": { "x": 391, "y": 105, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 26.aseprite": {
+            "frame": { "x": 196, "y": 105, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 27.aseprite": {
+            "frame": { "x": 1, "y": 157, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 28.aseprite": {
+            "frame": { "x": 66, "y": 157, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 29.aseprite": {
+            "frame": { "x": 391, "y": 105, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 30.aseprite": {
+            "frame": { "x": 196, "y": 105, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 31.aseprite": {
+            "frame": { "x": 131, "y": 157, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 32.aseprite": {
+            "frame": { "x": 1, "y": 1, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 33.aseprite": {
+            "frame": { "x": 196, "y": 157, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 34.aseprite": {
+            "frame": { "x": 261, "y": 157, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 35.aseprite": {
+            "frame": { "x": 326, "y": 157, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 36.aseprite": {
+            "frame": { "x": 391, "y": 157, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 37.aseprite": {
+            "frame": { "x": 1, "y": 209, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 38.aseprite": {
+            "frame": { "x": 66, "y": 209, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 39.aseprite": {
+            "frame": { "x": 131, "y": 209, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 40.aseprite": {
+            "frame": { "x": 131, "y": 209, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 41.aseprite": {
+            "frame": { "x": 196, "y": 209, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 42.aseprite": {
+            "frame": { "x": 261, "y": 209, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 43.aseprite": {
+            "frame": { "x": 326, "y": 209, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 44.aseprite": {
+            "frame": { "x": 196, "y": 209, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 45.aseprite": {
+            "frame": { "x": 391, "y": 209, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 46.aseprite": {
+            "frame": { "x": 1, "y": 261, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 47.aseprite": {
+            "frame": { "x": 66, "y": 261, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "EliteOrc 48.aseprite": {
+            "frame": { "x": 131, "y": 261, "w": 63, "h": 50 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 23, "y": 15, "w": 63, "h": 50 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 600
+        }
+    },
+    "meta": {
+        "app": "https://www.aseprite.org/",
+        "version": "1.3.17-x64",
+        "image": "EliteOrc.png",
+        "format": "RGBA8888",
+        "size": { "w": 455, "h": 312 },
+        "scale": "1",
+        "frameTags": [
+            { "name": "Idle", "from": 0, "to": 5, "direction": "forward", "repeat": "2", "color": "#000000ff" },
+            { "name": "Walk", "from": 6, "to": 13, "direction": "forward", "repeat": "2", "color": "#000000ff" },
+            { "name": "Attack01", "from": 14, "to": 20, "direction": "forward", "repeat": "2", "color": "#000000ff" },
+            { "name": "Attack02", "from": 21, "to": 31, "direction": "forward", "repeat": "2", "color": "#000000ff" },
+            { "name": "Attack03", "from": 32, "to": 40, "direction": "forward", "repeat": "2", "color": "#000000ff" },
+            { "name": "Hurt", "from": 41, "to": 44, "direction": "forward", "repeat": "2", "color": "#000000ff" },
+            { "name": "Death", "from": 45, "to": 48, "direction": "forward", "repeat": "2", "color": "#000000ff" }
+        ],
+        "layers": [
+            { "name": "main", "opacity": 255, "blendMode": "normal" },
+            { "name": "effect", "opacity": 255, "blendMode": "normal" }
+        ],
+        "slices": []
+    }
+}

@@ -1,0 +1,297 @@
+{
+    "frames": {
+        "Orc 0.aseprite": {
+            "frame": { "x": 1, "y": 1, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 1.aseprite": {
+            "frame": { "x": 1, "y": 1, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 2.aseprite": {
+            "frame": { "x": 41, "y": 1, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 3.aseprite": {
+            "frame": { "x": 41, "y": 1, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 4.aseprite": {
+            "frame": { "x": 81, "y": 1, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 5.aseprite": {
+            "frame": { "x": 81, "y": 1, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 6.aseprite": {
+            "frame": { "x": 121, "y": 1, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 7.aseprite": {
+            "frame": { "x": 161, "y": 1, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 8.aseprite": {
+            "frame": { "x": 201, "y": 1, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 9.aseprite": {
+            "frame": { "x": 1, "y": 36, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 10.aseprite": {
+            "frame": { "x": 41, "y": 36, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 11.aseprite": {
+            "frame": { "x": 81, "y": 36, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 12.aseprite": {
+            "frame": { "x": 121, "y": 36, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 13.aseprite": {
+            "frame": { "x": 161, "y": 36, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 14.aseprite": {
+            "frame": { "x": 1, "y": 1, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 15.aseprite": {
+            "frame": { "x": 201, "y": 36, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 16.aseprite": {
+            "frame": { "x": 1, "y": 71, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 17.aseprite": {
+            "frame": { "x": 41, "y": 71, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 18.aseprite": {
+            "frame": { "x": 81, "y": 71, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 19.aseprite": {
+            "frame": { "x": 121, "y": 71, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 20.aseprite": {
+            "frame": { "x": 1, "y": 1, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 21.aseprite": {
+            "frame": { "x": 161, "y": 71, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 22.aseprite": {
+            "frame": { "x": 201, "y": 71, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 23.aseprite": {
+            "frame": { "x": 1, "y": 106, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 24.aseprite": {
+            "frame": { "x": 41, "y": 106, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 25.aseprite": {
+            "frame": { "x": 81, "y": 106, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 26.aseprite": {
+            "frame": { "x": 121, "y": 106, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 27.aseprite": {
+            "frame": { "x": 161, "y": 106, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 28.aseprite": {
+            "frame": { "x": 201, "y": 106, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 29.aseprite": {
+            "frame": { "x": 121, "y": 106, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 30.aseprite": {
+            "frame": { "x": 1, "y": 141, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 31.aseprite": {
+            "frame": { "x": 41, "y": 141, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 32.aseprite": {
+            "frame": { "x": 81, "y": 141, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 100
+        },
+        "Orc 33.aseprite": {
+            "frame": { "x": 121, "y": 141, "w": 38, "h": 33 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 36, "y": 33, "w": 38, "h": 33 },
+            "sourceSize": { "w": 100, "h": 100 },
+            "duration": 600
+        }
+    },
+    "meta": {
+        "app": "https://www.aseprite.org/",
+        "version": "1.3.17-x64",
+        "image": "Orc.png",
+        "format": "RGBA8888",
+        "size": { "w": 256, "h": 256 },
+        "scale": "1",
+        "frameTags": [
+            { "name": "Idle", "from": 0, "to": 5, "direction": "forward", "repeat": "2", "color": "#000000ff" },
+            { "name": "Walk", "from": 6, "to": 13, "direction": "forward", "repeat": "2", "color": "#000000ff" },
+            { "name": "Attack", "from": 14, "to": 19, "direction": "forward", "repeat": "2", "color": "#000000ff" },
+            { "name": "Attack2", "from": 20, "to": 25, "direction": "forward", "repeat": "2", "color": "#000000ff" },
+            { "name": "Hurt", "from": 26, "to": 29, "direction": "forward", "repeat": "2", "color": "#000000ff" },
+            { "name": "Death", "from": 30, "to": 33, "direction": "forward", "repeat": "2", "color": "#000000ff" }
+        ],
+        "layers": [
+            { "name": "main", "opacity": 255, "blendMode": "normal" },
+            { "name": "effect", "opacity": 255, "blendMode": "normal" }
+        ],
+        "slices": []
+    }
+}

@@ -1,0 +1,141 @@
+*,
+*:before,
+*:after {
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-touch-callout: none;
+    user-select: none;
+    touch-action: none;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    scroll-behavior: none;
+}
+
+body {
+    margin: 0;
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+    -webkit-tap-highlight-color: transparent;
+}
+
+#game-parent {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    display: flex;
+    scroll-behavior: unset;
+    /* justify-content: center; */
+}
+
+#g-container {
+    height: inherit;
+    width: inherit;
+    position: absolute;
+    margin: 0px;
+    padding: 0px;
+    transform: rotate(0deg);
+    font-family: "robotoregular", sans-serif;
+}
+
+.g-canvas {
+    width: inherit;
+    height: inherit;
+    position: inherit;
+    -moz-box-shadow: 0 0 20px #000;
+    -webkit-box-shadow: 0 0 20px #000;
+    box-shadow: 0 0 20px #000;
+    outline: none;
+}
+
+.loading-image {
+    width: 200px;
+    height: 200px;
+    margin: -100px;
+    position: absolute;
+    z-index: 10;
+    top: 50%;
+    left: 50%;
+    pointer-events: none;
+    /* object-fit: scale-down; */
+}
+
+@-moz-keyframes rotation {
+    100% {
+        -moz-transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes rotation {
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes rotation {
+    100% {
+        transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+.background-blur-image {
+    position: absolute;
+    background-size: cover;
+    background-position: 50%;
+    height: 110%;
+    width: 100%;
+    bottom: -10%;
+    left: 0;
+    right: 0;
+    top: 0;
+    opacity: 1;
+}
+
+.landscape-text {
+    position: absolute;
+    width: 100%;
+    top: 5%;
+    line-height: 25px;
+    color: white;
+    font-family: 'Roboto Slab', serif;
+    font-size: 25px;
+    text-align: center;
+    /* left: 50%;
+                -ms-transform: translate(-50%, 0);
+                transform: translate(-50%, 0); */
+}
+
+/* pixi-input */
+input,
+input:before,
+input:after {
+    -webkit-user-select: initial;
+    -khtml-user-select: initial;
+    -moz-user-select: initial;
+    -ms-user-select: initial;
+    user-select: initial;
+    -webkit-tap-highlight-color: initial;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}

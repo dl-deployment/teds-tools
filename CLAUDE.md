@@ -35,6 +35,7 @@ app/
   tools/page.js     Tools view
   notes/page.js     Notes view
   links/page.js     Links view
+  statics/page.js   Static Pages view — server component, scans public/static_pages
 components/
   Sidebar.js        left nav, collapsible
   Modal.js           shared modal wrapper — reuse this for any new dialog
@@ -42,6 +43,9 @@ components/
 lib/
   useHubData.js      ALL data reads/writes go through this hook
   tools.js           pure functions for the Tools page (formatJson, base64Encode, ...)
+  staticPages.js     server-only scan of public/static_pages (uses node:fs)
+public/
+  static_pages/      standalone HTML pages: a folder with index.html, or a loose .html
 docs/
   DESIGN.md          design tokens (colors, spacing, type) — read before touching styles
   DATA-MODEL.md       shape of notes/links + how to add a new entity type
@@ -68,6 +72,11 @@ docs/
    browser APIs).
 6. Before calling a UI change done, run `npm run build` — the app must
    compile cleanly.
+7. **Adding a static page needs no code change** — drop a folder containing
+   an `index.html` (or a loose `.html` file) into `public/static_pages/` and
+   `/statics` lists it. The list is built when the page renders, so a running
+   dev server picks new files up on refresh; a deployed build needs a
+   redeploy.
 
 ## Common follow-up tasks
 

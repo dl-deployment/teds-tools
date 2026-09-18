@@ -1,0 +1,796 @@
+{
+    "frames": {
+        "Adventure2D 0.aseprite": {
+            "frame": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 1.aseprite": {
+            "frame": { "x": 96, "y": 0, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 2.aseprite": {
+            "frame": { "x": 192, "y": 0, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 3.aseprite": {
+            "frame": { "x": 288, "y": 0, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 4.aseprite": {
+            "frame": { "x": 384, "y": 0, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 5.aseprite": {
+            "frame": { "x": 480, "y": 0, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 6.aseprite": {
+            "frame": { "x": 576, "y": 0, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 7.aseprite": {
+            "frame": { "x": 672, "y": 0, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 8.aseprite": {
+            "frame": { "x": 768, "y": 0, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 9.aseprite": {
+            "frame": { "x": 864, "y": 0, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 10.aseprite": {
+            "frame": { "x": 0, "y": 80, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 11.aseprite": {
+            "frame": { "x": 96, "y": 80, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 12.aseprite": {
+            "frame": { "x": 192, "y": 80, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 13.aseprite": {
+            "frame": { "x": 192, "y": 80, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 14.aseprite": {
+            "frame": { "x": 288, "y": 80, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 15.aseprite": {
+            "frame": { "x": 384, "y": 80, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 16.aseprite": {
+            "frame": { "x": 480, "y": 80, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 17.aseprite": {
+            "frame": { "x": 576, "y": 80, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 18.aseprite": {
+            "frame": { "x": 672, "y": 80, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 19.aseprite": {
+            "frame": { "x": 768, "y": 80, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 20.aseprite": {
+            "frame": { "x": 864, "y": 80, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 21.aseprite": {
+            "frame": { "x": 864, "y": 80, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 22.aseprite": {
+            "frame": { "x": 0, "y": 160, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 23.aseprite": {
+            "frame": { "x": 96, "y": 160, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 24.aseprite": {
+            "frame": { "x": 192, "y": 160, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 25.aseprite": {
+            "frame": { "x": 288, "y": 160, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 26.aseprite": {
+            "frame": { "x": 384, "y": 160, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 27.aseprite": {
+            "frame": { "x": 480, "y": 160, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 28.aseprite": {
+            "frame": { "x": 576, "y": 160, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 29.aseprite": {
+            "frame": { "x": 672, "y": 160, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 30.aseprite": {
+            "frame": { "x": 768, "y": 160, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 31.aseprite": {
+            "frame": { "x": 864, "y": 160, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 32.aseprite": {
+            "frame": { "x": 0, "y": 240, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 33.aseprite": {
+            "frame": { "x": 96, "y": 240, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 34.aseprite": {
+            "frame": { "x": 192, "y": 240, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 35.aseprite": {
+            "frame": { "x": 288, "y": 240, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 36.aseprite": {
+            "frame": { "x": 384, "y": 240, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 37.aseprite": {
+            "frame": { "x": 480, "y": 240, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 38.aseprite": {
+            "frame": { "x": 576, "y": 240, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 39.aseprite": {
+            "frame": { "x": 672, "y": 240, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 40.aseprite": {
+            "frame": { "x": 768, "y": 240, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 41.aseprite": {
+            "frame": { "x": 864, "y": 240, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 42.aseprite": {
+            "frame": { "x": 0, "y": 320, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 43.aseprite": {
+            "frame": { "x": 96, "y": 320, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 44.aseprite": {
+            "frame": { "x": 192, "y": 320, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 45.aseprite": {
+            "frame": { "x": 288, "y": 320, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 46.aseprite": {
+            "frame": { "x": 384, "y": 320, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 47.aseprite": {
+            "frame": { "x": 480, "y": 320, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 48.aseprite": {
+            "frame": { "x": 576, "y": 320, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 49.aseprite": {
+            "frame": { "x": 672, "y": 320, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 50.aseprite": {
+            "frame": { "x": 768, "y": 320, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 51.aseprite": {
+            "frame": { "x": 864, "y": 320, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 52.aseprite": {
+            "frame": { "x": 0, "y": 400, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 53.aseprite": {
+            "frame": { "x": 96, "y": 400, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 54.aseprite": {
+            "frame": { "x": 192, "y": 400, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 55.aseprite": {
+            "frame": { "x": 192, "y": 400, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 56.aseprite": {
+            "frame": { "x": 288, "y": 400, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 57.aseprite": {
+            "frame": { "x": 384, "y": 400, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 58.aseprite": {
+            "frame": { "x": 480, "y": 400, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 59.aseprite": {
+            "frame": { "x": 576, "y": 400, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 60.aseprite": {
+            "frame": { "x": 672, "y": 400, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 61.aseprite": {
+            "frame": { "x": 768, "y": 400, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 62.aseprite": {
+            "frame": { "x": 864, "y": 400, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 63.aseprite": {
+            "frame": { "x": 864, "y": 400, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 64.aseprite": {
+            "frame": { "x": 0, "y": 480, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 65.aseprite": {
+            "frame": { "x": 96, "y": 480, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 66.aseprite": {
+            "frame": { "x": 192, "y": 480, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 67.aseprite": {
+            "frame": { "x": 288, "y": 480, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 68.aseprite": {
+            "frame": { "x": 384, "y": 480, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 69.aseprite": {
+            "frame": { "x": 480, "y": 480, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 70.aseprite": {
+            "frame": { "x": 576, "y": 480, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 71.aseprite": {
+            "frame": { "x": 672, "y": 480, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 72.aseprite": {
+            "frame": { "x": 768, "y": 480, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 73.aseprite": {
+            "frame": { "x": 864, "y": 480, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 74.aseprite": {
+            "frame": { "x": 0, "y": 560, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 75.aseprite": {
+            "frame": { "x": 96, "y": 560, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 76.aseprite": {
+            "frame": { "x": 192, "y": 560, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 77.aseprite": {
+            "frame": { "x": 288, "y": 560, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 78.aseprite": {
+            "frame": { "x": 384, "y": 560, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 79.aseprite": {
+            "frame": { "x": 480, "y": 560, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 80.aseprite": {
+            "frame": { "x": 576, "y": 560, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 81.aseprite": {
+            "frame": { "x": 672, "y": 560, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 82.aseprite": {
+            "frame": { "x": 768, "y": 560, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 83.aseprite": {
+            "frame": { "x": 864, "y": 560, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 84.aseprite": {
+            "frame": { "x": 0, "y": 640, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 85.aseprite": {
+            "frame": { "x": 96, "y": 640, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 86.aseprite": {
+            "frame": { "x": 192, "y": 640, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 87.aseprite": {
+            "frame": { "x": 288, "y": 640, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 88.aseprite": {
+            "frame": { "x": 384, "y": 640, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 89.aseprite": {
+            "frame": { "x": 480, "y": 640, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 90.aseprite": {
+            "frame": { "x": 576, "y": 640, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 91.aseprite": {
+            "frame": { "x": 672, "y": 640, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 92.aseprite": {
+            "frame": { "x": 768, "y": 640, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 93.aseprite": {
+            "frame": { "x": 864, "y": 640, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 94.aseprite": {
+            "frame": { "x": 0, "y": 720, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        },
+        "Adventure2D 95.aseprite": {
+            "frame": { "x": 96, "y": 720, "w": 96, "h": 80 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 80 },
+            "sourceSize": { "w": 96, "h": 80 },
+            "duration": 100
+        }
+    },
+    "meta": {
+        "app": "https://www.aseprite.org/",
+        "version": "1.3.17-x64",
+        "image": "Adventure2D.png",
+        "format": "RGBA8888",
+        "size": { "w": 960, "h": 800 },
+        "scale": "1",
+        "frameTags": [
+            { "name": "Idle_Down", "from": 0, "to": 7, "direction": "forward", "color": "#000000ff" },
+            { "name": "Idle_Left", "from": 8, "to": 15, "direction": "forward", "color": "#000000ff" },
+            { "name": "Idle_Right", "from": 16, "to": 23, "direction": "forward", "color": "#000000ff" },
+            { "name": "Idle_Up", "from": 24, "to": 31, "direction": "forward", "color": "#000000ff" },
+            { "name": "Attack_Down", "from": 32, "to": 39, "direction": "forward", "color": "#000000ff" },
+            { "name": "Attack_Left", "from": 40, "to": 47, "direction": "forward", "color": "#000000ff" },
+            { "name": "Attack_Right", "from": 48, "to": 55, "direction": "forward", "color": "#000000ff" },
+            { "name": "Attack_Up", "from": 56, "to": 63, "direction": "forward", "color": "#000000ff" },
+            { "name": "Run_Down", "from": 64, "to": 71, "direction": "forward", "color": "#000000ff" },
+            { "name": "Run_Left", "from": 72, "to": 79, "direction": "forward", "color": "#000000ff" },
+            { "name": "Run_Right", "from": 80, "to": 87, "direction": "forward", "color": "#000000ff" },
+            { "name": "Run_Up", "from": 88, "to": 95, "direction": "forward", "color": "#000000ff" }
+        ],
+        "layers": [{ "name": "Sprite Sheet", "opacity": 255, "blendMode": "normal" }],
+        "slices": []
+    }
+}

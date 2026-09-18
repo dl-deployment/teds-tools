@@ -1,0 +1,588 @@
+{
+  "bundles": [
+    {
+      "name": "default",
+      "assets": [
+        {
+          "alias": [
+            "fonts/Doto_Rounded-Regular.ttf"
+          ],
+          "src": [
+            "fonts/Doto_Rounded-Regular-pwyYGw.woff2"
+          ]
+        },
+        {
+          "alias": [
+            "fonts/Gluten-Regular.ttf"
+          ],
+          "src": [
+            "fonts/Gluten-Regular-MPnD.woff2"
+          ]
+        },
+        {
+          "alias": [
+            "fonts/PressStart2P-Regular.ttf"
+          ],
+          "src": [
+            "fonts/PressStart2P-Regular-KC3dTA.woff2"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "aseprite",
+      "assets": [
+        {
+          "alias": [
+            "aseprite/Adventure2D/Adventure2D.json"
+          ],
+          "src": [
+            "aseprite/Adventure2D/Adventure2D.json"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/Adventure2D/Adventure2D.png"
+          ],
+          "src": [
+            "aseprite/Adventure2D/Adventure2D.png"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/background.jpg"
+          ],
+          "src": [
+            "aseprite/background.jpg"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/Construct/DeadCoffin.json"
+          ],
+          "src": [
+            "aseprite/Construct/DeadCoffin.json"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/Construct/DeadCoffin.png"
+          ],
+          "src": [
+            "aseprite/Construct/DeadCoffin.png"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/Construct/DeadHouse.json"
+          ],
+          "src": [
+            "aseprite/Construct/DeadHouse.json"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/Construct/DeadHouse.png"
+          ],
+          "src": [
+            "aseprite/Construct/DeadHouse.png"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/Construct/DeadPillar.json"
+          ],
+          "src": [
+            "aseprite/Construct/DeadPillar.json"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/Construct/DeadPillar.png"
+          ],
+          "src": [
+            "aseprite/Construct/DeadPillar.png"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/Construct/Tower.json"
+          ],
+          "src": [
+            "aseprite/Construct/Tower.json"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/Construct/Tower.png"
+          ],
+          "src": [
+            "aseprite/Construct/Tower.png"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/effect/lightning_strike_001_large_violet.json"
+          ],
+          "src": [
+            "aseprite/effect/lightning_strike_001_large_violet.json"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/effect/lightning_strike_001_large_violet.png"
+          ],
+          "src": [
+            "aseprite/effect/lightning_strike_001_large_violet.png"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/effect/scifi_warp_001_large_green.json"
+          ],
+          "src": [
+            "aseprite/effect/scifi_warp_001_large_green.json"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/effect/scifi_warp_001_large_green.png"
+          ],
+          "src": [
+            "aseprite/effect/scifi_warp_001_large_green.png"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/effect/scifi_warp_002_large_red.json"
+          ],
+          "src": [
+            "aseprite/effect/scifi_warp_002_large_red.json"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/effect/scifi_warp_002_large_red.png"
+          ],
+          "src": [
+            "aseprite/effect/scifi_warp_002_large_red.png"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/effect/scifi_warp_003_large_blue.json"
+          ],
+          "src": [
+            "aseprite/effect/scifi_warp_003_large_blue.json"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/effect/scifi_warp_003_large_blue.png"
+          ],
+          "src": [
+            "aseprite/effect/scifi_warp_003_large_blue.png"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/effect/stylized_explosion_001_large_yellow.json"
+          ],
+          "src": [
+            "aseprite/effect/stylized_explosion_001_large_yellow.json"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/effect/stylized_explosion_001_large_yellow.png"
+          ],
+          "src": [
+            "aseprite/effect/stylized_explosion_001_large_yellow.png"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/effect/WaterEffect.json"
+          ],
+          "src": [
+            "aseprite/effect/WaterEffect.json"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/effect/WaterEffect.png"
+          ],
+          "src": [
+            "aseprite/effect/WaterEffect.png"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/enemy/fire_totem.json"
+          ],
+          "src": [
+            "aseprite/enemy/fire_totem.json"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/enemy/fire_totem.png"
+          ],
+          "src": [
+            "aseprite/enemy/fire_totem.png"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/enemy_simple/knight2d.json"
+          ],
+          "src": [
+            "aseprite/enemy_simple/knight2d.json"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/enemy_simple/knight2d.png"
+          ],
+          "src": [
+            "aseprite/enemy_simple/knight2d.png"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/enemy_simple/Orc.json"
+          ],
+          "src": [
+            "aseprite/enemy_simple/Orc.json"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/enemy_simple/Orc.png"
+          ],
+          "src": [
+            "aseprite/enemy_simple/Orc.png"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/enemy_simple/Soldier.json"
+          ],
+          "src": [
+            "aseprite/enemy_simple/Soldier.json"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/enemy_simple/Soldier.png"
+          ],
+          "src": [
+            "aseprite/enemy_simple/Soldier.png"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/soldier-arrow.png"
+          ],
+          "src": [
+            "aseprite/soldier-arrow.png"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/TinyRPGCharacter/Archer.json"
+          ],
+          "src": [
+            "aseprite/TinyRPGCharacter/Archer.json"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/TinyRPGCharacter/Archer.png"
+          ],
+          "src": [
+            "aseprite/TinyRPGCharacter/Archer.png"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/TinyRPGCharacter/ArmoredAxeman.json"
+          ],
+          "src": [
+            "aseprite/TinyRPGCharacter/ArmoredAxeman.json"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/TinyRPGCharacter/ArmoredAxeman.png"
+          ],
+          "src": [
+            "aseprite/TinyRPGCharacter/ArmoredAxeman.png"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/TinyRPGCharacter/ArmoredOrc.json"
+          ],
+          "src": [
+            "aseprite/TinyRPGCharacter/ArmoredOrc.json"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/TinyRPGCharacter/ArmoredOrc.png"
+          ],
+          "src": [
+            "aseprite/TinyRPGCharacter/ArmoredOrc.png"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/TinyRPGCharacter/ArmoredSkeleton.json"
+          ],
+          "src": [
+            "aseprite/TinyRPGCharacter/ArmoredSkeleton.json"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/TinyRPGCharacter/ArmoredSkeleton.png"
+          ],
+          "src": [
+            "aseprite/TinyRPGCharacter/ArmoredSkeleton.png"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/TinyRPGCharacter/EliteOrc.json"
+          ],
+          "src": [
+            "aseprite/TinyRPGCharacter/EliteOrc.json"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/TinyRPGCharacter/EliteOrc.png"
+          ],
+          "src": [
+            "aseprite/TinyRPGCharacter/EliteOrc.png"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/TinyRPGCharacter/GreatswordSkeleton.json"
+          ],
+          "src": [
+            "aseprite/TinyRPGCharacter/GreatswordSkeleton.json"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/TinyRPGCharacter/GreatswordSkeleton.png"
+          ],
+          "src": [
+            "aseprite/TinyRPGCharacter/GreatswordSkeleton.png"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/TinyRPGCharacter/Knight.json"
+          ],
+          "src": [
+            "aseprite/TinyRPGCharacter/Knight.json"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/TinyRPGCharacter/Knight.png"
+          ],
+          "src": [
+            "aseprite/TinyRPGCharacter/Knight.png"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/TinyRPGCharacter/KnightTemplar.json"
+          ],
+          "src": [
+            "aseprite/TinyRPGCharacter/KnightTemplar.json"
+          ]
+        },
+        {
+          "alias": [
+            "aseprite/TinyRPGCharacter/KnightTemplar.png"
+          ],
+          "src": [
+            "aseprite/TinyRPGCharacter/KnightTemplar.png"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "loading",
+      "assets": [
+        {
+          "alias": [
+            "loading"
+          ],
+          "src": [
+            "loading-9_C2ZQ@0.5x.png.json",
+            "loading-_ydteQ.png.json"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "sounds",
+      "assets": [
+        {
+          "alias": [
+            "sounds/music/background.mp3"
+          ],
+          "src": [
+            "sounds/music/background-sinXoQ.mp3"
+          ]
+        },
+        {
+          "alias": [
+            "sounds/sfx/btn_click.ogg"
+          ],
+          "src": [
+            "sounds/sfx/btn_click-Pj3-vg.ogg"
+          ]
+        },
+        {
+          "alias": [
+            "sounds/sfx/ranger-attack.ogg"
+          ],
+          "src": [
+            "sounds/sfx/ranger-attack-P1IavQ.ogg"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "spell_icon",
+      "assets": [
+        {
+          "alias": [
+            "spell_icon"
+          ],
+          "src": [
+            "spell_icon-wpvJkQ@0.5x.png.json",
+            "spell_icon-W8VMoA.png.json"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "tile_map",
+      "assets": [
+        {
+          "alias": [
+            "tile_map/MainMap.tmj"
+          ],
+          "src": [
+            "tile_map/MainMap.tmj"
+          ]
+        },
+        {
+          "alias": [
+            "tile_map/Tileset-Terrain.png"
+          ],
+          "src": [
+            "tile_map/Tileset-Terrain.png"
+          ]
+        },
+        {
+          "alias": [
+            "tile_map/Tileset-Terrain.tsx"
+          ],
+          "src": [
+            "tile_map/Tileset-Terrain.tsx"
+          ]
+        },
+        {
+          "alias": [
+            "tile_map/Tileset-wall-3.tsx"
+          ],
+          "src": [
+            "tile_map/Tileset-wall-3.tsx"
+          ]
+        },
+        {
+          "alias": [
+            "tile_map/wall-3.png"
+          ],
+          "src": [
+            "tile_map/wall-3.png"
+          ]
+        },
+        {
+          "alias": [
+            "tile_map/Water_detilazation2.tsx"
+          ],
+          "src": [
+            "tile_map/Water_detilazation2.tsx"
+          ]
+        },
+        {
+          "alias": [
+            "tile_map/water_detilazation_v2.png"
+          ],
+          "src": [
+            "tile_map/water_detilazation_v2.png"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ui",
+      "assets": [
+        {
+          "alias": [
+            "ui/buttons"
+          ],
+          "src": [
+            "ui/buttons-wI3s@0.5x.png.json",
+            "ui/buttons-jPPwBg.png.json"
+          ]
+        },
+        {
+          "alias": [
+            "ui/font/Gluten-Regular.ttf"
+          ],
+          "src": [
+            "ui/font/Gluten-Regular-MPnD.woff2"
+          ]
+        },
+        {
+          "alias": [
+            "ui/font/Kenney Future.ttf"
+          ],
+          "src": [
+            "ui/font/Kenney Future-tKEBRw.woff2"
+          ]
+        },
+        {
+          "alias": [
+            "ui/icon"
+          ],
+          "src": [
+            "ui/icon-yJfzmA@0.5x.png.json",
+            "ui/icon-70kt3A.png.json"
+          ]
+        },
+        {
+          "alias": [
+            "ui/image"
+          ],
+          "src": [
+            "ui/image-ojNL5g.png.json",
+            "ui/image-GhNWjA@0.5x.png.json"
+          ]
+        }
+      ]
+    }
+  ]
+}

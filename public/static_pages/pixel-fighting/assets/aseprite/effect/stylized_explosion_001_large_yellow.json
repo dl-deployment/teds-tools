@@ -1,0 +1,87 @@
+{
+    "frames": {
+        "stylized_explosion_001_large_yellow 0.aseprite": {
+            "frame": { "x": 0, "y": 0, "w": 96, "h": 96 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 96 },
+            "sourceSize": { "w": 96, "h": 96 },
+            "duration": 100
+        },
+        "stylized_explosion_001_large_yellow 1.aseprite": {
+            "frame": { "x": 96, "y": 0, "w": 96, "h": 96 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 96 },
+            "sourceSize": { "w": 96, "h": 96 },
+            "duration": 100
+        },
+        "stylized_explosion_001_large_yellow 2.aseprite": {
+            "frame": { "x": 192, "y": 0, "w": 96, "h": 96 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 96 },
+            "sourceSize": { "w": 96, "h": 96 },
+            "duration": 100
+        },
+        "stylized_explosion_001_large_yellow 3.aseprite": {
+            "frame": { "x": 0, "y": 96, "w": 96, "h": 96 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 96 },
+            "sourceSize": { "w": 96, "h": 96 },
+            "duration": 100
+        },
+        "stylized_explosion_001_large_yellow 4.aseprite": {
+            "frame": { "x": 96, "y": 96, "w": 96, "h": 96 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 96 },
+            "sourceSize": { "w": 96, "h": 96 },
+            "duration": 100
+        },
+        "stylized_explosion_001_large_yellow 5.aseprite": {
+            "frame": { "x": 192, "y": 96, "w": 96, "h": 96 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 96 },
+            "sourceSize": { "w": 96, "h": 96 },
+            "duration": 100
+        },
+        "stylized_explosion_001_large_yellow 6.aseprite": {
+            "frame": { "x": 0, "y": 192, "w": 96, "h": 96 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 96 },
+            "sourceSize": { "w": 96, "h": 96 },
+            "duration": 100
+        },
+        "stylized_explosion_001_large_yellow 7.aseprite": {
+            "frame": { "x": 96, "y": 192, "w": 96, "h": 96 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 96 },
+            "sourceSize": { "w": 96, "h": 96 },
+            "duration": 100
+        },
+        "stylized_explosion_001_large_yellow 8.aseprite": {
+            "frame": { "x": 192, "y": 192, "w": 96, "h": 96 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 96, "h": 96 },
+            "sourceSize": { "w": 96, "h": 96 },
+            "duration": 100
+        }
+    },
+    "meta": {
+        "app": "https://www.aseprite.org/",
+        "version": "1.3.17-x64",
+        "image": "stylized_explosion_001_large_yellow.png",
+        "format": "RGBA8888",
+        "size": { "w": 288, "h": 288 },
+        "scale": "1",
+        "frameTags": [{ "name": "animation", "from": 0, "to": 8, "direction": "forward", "color": "#000000ff" }],
+        "layers": [{ "name": "Sprite Sheet", "opacity": 255, "blendMode": "normal" }],
+        "slices": []
+    }
+}

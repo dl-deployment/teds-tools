@@ -1,0 +1,159 @@
+{
+    "frames": {
+        "DeadHouse 0.aseprite": {
+            "frame": { "x": 1, "y": 1, "w": 83, "h": 100 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 6, "y": 12, "w": 83, "h": 100 },
+            "sourceSize": { "w": 96, "h": 112 },
+            "duration": 100
+        },
+        "DeadHouse 1.aseprite": {
+            "frame": { "x": 86, "y": 1, "w": 83, "h": 100 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 6, "y": 12, "w": 83, "h": 100 },
+            "sourceSize": { "w": 96, "h": 112 },
+            "duration": 100
+        },
+        "DeadHouse 2.aseprite": {
+            "frame": { "x": 171, "y": 1, "w": 83, "h": 100 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 6, "y": 12, "w": 83, "h": 100 },
+            "sourceSize": { "w": 96, "h": 112 },
+            "duration": 100
+        },
+        "DeadHouse 3.aseprite": {
+            "frame": { "x": 256, "y": 1, "w": 83, "h": 100 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 6, "y": 12, "w": 83, "h": 100 },
+            "sourceSize": { "w": 96, "h": 112 },
+            "duration": 100
+        },
+        "DeadHouse 4.aseprite": {
+            "frame": { "x": 341, "y": 1, "w": 83, "h": 100 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 6, "y": 12, "w": 83, "h": 100 },
+            "sourceSize": { "w": 96, "h": 112 },
+            "duration": 100
+        },
+        "DeadHouse 5.aseprite": {
+            "frame": { "x": 1, "y": 103, "w": 83, "h": 100 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 6, "y": 12, "w": 83, "h": 100 },
+            "sourceSize": { "w": 96, "h": 112 },
+            "duration": 100
+        },
+        "DeadHouse 6.aseprite": {
+            "frame": { "x": 86, "y": 103, "w": 83, "h": 100 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 6, "y": 12, "w": 83, "h": 100 },
+            "sourceSize": { "w": 96, "h": 112 },
+            "duration": 100
+        },
+        "DeadHouse 7.aseprite": {
+            "frame": { "x": 171, "y": 103, "w": 83, "h": 100 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 6, "y": 12, "w": 83, "h": 100 },
+            "sourceSize": { "w": 96, "h": 112 },
+            "duration": 100
+        },
+        "DeadHouse 8.aseprite": {
+            "frame": { "x": 256, "y": 103, "w": 83, "h": 100 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 6, "y": 12, "w": 83, "h": 100 },
+            "sourceSize": { "w": 96, "h": 112 },
+            "duration": 100
+        },
+        "DeadHouse 9.aseprite": {
+            "frame": { "x": 341, "y": 103, "w": 83, "h": 100 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 6, "y": 12, "w": 83, "h": 100 },
+            "sourceSize": { "w": 96, "h": 112 },
+            "duration": 100
+        },
+        "DeadHouse 10.aseprite": {
+            "frame": { "x": 1, "y": 205, "w": 83, "h": 100 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 6, "y": 12, "w": 83, "h": 100 },
+            "sourceSize": { "w": 96, "h": 112 },
+            "duration": 100
+        },
+        "DeadHouse 11.aseprite": {
+            "frame": { "x": 86, "y": 205, "w": 83, "h": 100 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 6, "y": 12, "w": 83, "h": 100 },
+            "sourceSize": { "w": 96, "h": 112 },
+            "duration": 100
+        },
+        "DeadHouse 12.aseprite": {
+            "frame": { "x": 171, "y": 205, "w": 83, "h": 100 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 6, "y": 12, "w": 83, "h": 100 },
+            "sourceSize": { "w": 96, "h": 112 },
+            "duration": 100
+        },
+        "DeadHouse 13.aseprite": {
+            "frame": { "x": 256, "y": 205, "w": 83, "h": 100 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 6, "y": 12, "w": 83, "h": 100 },
+            "sourceSize": { "w": 96, "h": 112 },
+            "duration": 100
+        },
+        "DeadHouse 14.aseprite": {
+            "frame": { "x": 341, "y": 205, "w": 83, "h": 100 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 6, "y": 12, "w": 83, "h": 100 },
+            "sourceSize": { "w": 96, "h": 112 },
+            "duration": 100
+        },
+        "DeadHouse 15.aseprite": {
+            "frame": { "x": 1, "y": 307, "w": 83, "h": 100 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 6, "y": 12, "w": 83, "h": 100 },
+            "sourceSize": { "w": 96, "h": 112 },
+            "duration": 100
+        },
+        "DeadHouse 16.aseprite": {
+            "frame": { "x": 86, "y": 307, "w": 83, "h": 100 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 6, "y": 12, "w": 83, "h": 100 },
+            "sourceSize": { "w": 96, "h": 112 },
+            "duration": 100
+        },
+        "DeadHouse 17.aseprite": {
+            "frame": { "x": 171, "y": 307, "w": 83, "h": 100 },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": { "x": 6, "y": 12, "w": 83, "h": 100 },
+            "sourceSize": { "w": 96, "h": 112 },
+            "duration": 100
+        }
+    },
+    "meta": {
+        "app": "https://www.aseprite.org/",
+        "version": "1.3.17-x64",
+        "image": "DeadHouse.png",
+        "format": "RGBA8888",
+        "size": { "w": 425, "h": 408 },
+        "scale": "1",
+        "frameTags": [{ "name": "Idle", "from": 0, "to": 17, "direction": "forward", "color": "#000000ff" }],
+        "layers": [{ "name": "Sprite Sheet", "opacity": 255, "blendMode": "normal" }],
+        "slices": []
+    }
+}

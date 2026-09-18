@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Context Steering Interactive Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; overflow: hidden; margin: 0; }
+        canvas { cursor: crosshair; touch-action: none; width: 100%; height: 100%; display: block; }
+        .step-active { border-left: 4px solid #3b82f6; background: rgba(59, 130, 246, 0.1); transform: translateX(4px); }
+        .glass-panel { backdrop-filter: blur(12px); background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255,255,255,0.1); }
+        
+        #sidebar { 
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+            width: 320px; 
+            min-width: 320px;
+        }
+        .sidebar-hidden { 
+            margin-left: -320px;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .btn-hover:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
+        .kbd-hint { font-family: monospace; background: #1e293b; padding: 1px 4px; border-radius: 4px; border: 1px solid #334155; }
+    </style>
+</head>
+<body class="min-h-screen flex">
+
+<aside id="sidebar" class="h-full bg-slate-900/95 p-6 overflow-y-auto border-r border-slate-800 flex flex-col gap-6 z-30 relative shrink-0">
+    <div>
+        <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
+            Context Steering
+        </h1>
+        <p class="text-slate-500 text-[10px] mt-1 uppercase tracking-widest font-semibold">Interactive Behavioral AI Guide</p>
+    </div>
+
+    <div id="steps-container" class="space-y-3">
+        <div id="step-0" class="p-4 rounded-xl transition-all duration-300 step-active">
+            <h3 class="font-bold text-blue-400 text-sm uppercase tracking-tight">1. Interest Map</h3>
+            <p class="text-[11px] text-slate-400 mt-1 leading-relaxed">Defines directional desires. The AI calculates "how much" it wants to move in each direction based on targets.</p>
+        </div>
+        <div id="step-1" class="p-4 rounded-xl transition-all duration-300 opacity-30">
+            <h3 class="font-bold text-red-400 text-sm uppercase tracking-tight">2. Danger Map</h3>
+            <p class="text-[11px] text-slate-400 mt-1 leading-relaxed">Scans for obstructions. Angles blocked by obstacles are filled with danger scores.</p>
+        </div>
+        <div id="step-2" class="p-4 rounded-xl transition-all duration-300 opacity-30">
+            <h3 class="font-bold text-emerald-400 text-sm uppercase tracking-tight">3. Masking</h3>
+            <p class="text-[11px] text-slate-400 mt-1 leading-relaxed">The magic step. We subtract the Danger from the Interest. Only safe, desired directions remain.</p>
+        </div>
+        <div id="step-3" class="p-4 rounded-xl transition-all duration-300 opacity-30">
+            <h3 class="font-bold text-purple-400 text-sm uppercase tracking-tight">4. Decision</h3>
+            <p class="text-[11px] text-slate-400 mt-1 leading-relaxed">The AI picks the direction with the highest remaining value as its final velocity.</p>
+        </div>
+    </div>
+
+    <div class="mt-auto space-y-4 pt-4 border-t border-slate-800">
+        <div class="flex gap-2">
+            <button id="prevBtn" class="flex-1 py-2.5 bg-slate-800 hover:bg-slate-700 rounded-lg transition-all text-xs font-semibold uppercase tracking-wider">Back</button>
+            <button id="nextBtn" class="flex-1 py-2.5 bg-blue-600 hover:bg-blue-500 rounded-lg transition-all text-xs font-bold uppercase tracking-wider">Next</button>
+        </div>
+        <div class="space-y-2 text-[10px] text-slate-400 bg-slate-950/50 p-3 rounded-lg border border-slate-800">
+            <p><span class="kbd-hint text-blue-400">Left Click</span> Move Target</p>
+            <p><span class="kbd-hint text-red-400">Right Click</span> Move Obstacle</p>
+        </div>
+    </div>
+</aside>
+
+<main id="mainContainer" class="flex-1 relative bg-[#070b14] flex items-center justify-center overflow-hidden">
+    <button id="toggleSidebar" class="absolute top-6 left-6 z-40 w-10 h-10 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg flex items-center justify-center shadow-lg transition-all btn-hover">
+        <svg id="toggleIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path id="iconPath" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+        </svg>
+    </button>
+
+    <div class="absolute top-6 right-6 z-10 space-y-2 hidden md:block">
+        <div class="flex items-center gap-2 glass-panel px-3 py-1.5 rounded-lg border-blue-500/30">
+            <div class="w-2 h-2 bg-blue-500 rounded-full shadow-[0_0_8px_#3b82f6]"></div>
+            <span class="text-[10px] font-bold text-slate-300 uppercase">Target</span>
+        </div>
+        <div class="flex items-center gap-2 glass-panel px-3 py-1.5 rounded-lg border-red-500/30">
+            <div class="w-2 h-2 bg-red-500 rounded-full shadow-[0_0_8px_#ef4444]"></div>
+            <span class="text-[10px] font-bold text-slate-300 uppercase">Obstacle</span>
+        </div>
+    </div>
+    
+    <canvas id="mainCanvas"></canvas>
+</main>
+
+<script>
+const canvas = document.getElementById('mainCanvas');
+const ctx = canvas.getContext('2d');
+const SLOTS = 32; 
+let currentStep = 0;
+let sidebarOpen = true;
+
+const agent = { radius: 25 };
+// Objects are defined as offsets from the CENTER of the canvas
+const targetOffset = { dx: 180, dy: -120 }; 
+const obstacleOffset = { dx: 100, dy: -60 };
+
+let interestMap = new Array(SLOTS).fill(0);
+let dangerMap = new Array(SLOTS).fill(0);
+let finalMap = new Array(SLOTS).fill(0);
+
+function resize() {
+    const parent = canvas.parentElement;
+    if (!parent) return;
+    
+    // We update canvas size inside requestAnimationFrame to prevent observer loop errors
+    window.requestAnimationFrame(() => {
+        canvas.width = parent.clientWidth;
+        canvas.height = parent.clientHeight;
+    });
+}
+
+const resizeObserver = new ResizeObserver(() => {
+    resize();
+});
+resizeObserver.observe(document.getElementById('mainContainer'));
+
+document.getElementById('toggleSidebar').onclick = () => {
+    sidebarOpen = !sidebarOpen;
+    const sidebar = document.getElementById('sidebar');
+    const iconPath = document.getElementById('iconPath');
+    
+    if(sidebarOpen) {
+        sidebar.classList.remove('sidebar-hidden');
+        iconPath.setAttribute("d", "M11 19l-7-7 7-7m8 14l-7-7 7-7");
+    } else {
+        sidebar.classList.add('sidebar-hidden');
+        iconPath.setAttribute("d", "M13 5l7 7-7 7M5 5l7 7-7 7");
+    }
+    // Resize immediately and during transition
+    setTimeout(resize, 400); 
+};
+
+let dragTarget = false;
+let dragObstacle = false;
+
+function getMousePos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const clientX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+    const clientY = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : 0);
+    return {
+        x: clientX - rect.left,
+        y: clientY - rect.top
+    };
+}
+
+function startDrag(e) {
+    const pos = getMousePos(e);
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+
+    const tx = cx + targetOffset.dx;
+    const ty = cy + targetOffset.dy;
+    const ox = cx + obstacleOffset.dx;
+    const oy = cy + obstacleOffset.dy;
+
+    // Detect collision with handles (increased hit area for mobile)
+    if (Math.hypot(pos.x - tx, pos.y - ty) < 40) {
+        dragTarget = true;
+    } else if (Math.hypot(pos.x - ox, pos.y - oy) < 60 || e.button === 2) {
+        // Right click or close proximity to obstacle
+        dragObstacle = true;
+        e.preventDefault();
+    }
+}
+
+function moveDrag(e) {
+    if (!dragTarget && !dragObstacle) return;
+    const pos = getMousePos(e);
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+    
+    if (dragTarget) { 
+        targetOffset.dx = pos.x - cx; 
+        targetOffset.dy = pos.y - cy; 
+    }
+    if (dragObstacle) { 
+        obstacleOffset.dx = pos.x - cx; 
+        obstacleOffset.dy = pos.y - cy; 
+    }
+    e.preventDefault();
+}
+
+function stopDrag() { 
+    dragTarget = false; 
+    dragObstacle = false; 
+}
+
+// Mouse Listeners
+canvas.addEventListener('mousedown', startDrag);
+window.addEventListener('mousemove', moveDrag);
+window.addEventListener('mouseup', stopDrag);
+
+// Touch Listeners for Mobile
+canvas.addEventListener('touchstart', startDrag, { passive: false });
+window.addEventListener('touchmove', moveDrag, { passive: false });
+window.addEventListener('touchend', stopDrag);
+
+canvas.addEventListener('contextmenu', e => e.preventDefault());
+
+function updateLogic() {
+    // 1. INTEREST CALCULATION
+    const angleToTarget = Math.atan2(targetOffset.dy, targetOffset.dx);
+    for (let i = 0; i < SLOTS; i++) {
+        const slotAngle = (i / SLOTS) * Math.PI * 2;
+        let diff = slotAngle - angleToTarget;
+        diff = Math.atan2(Math.sin(diff), Math.cos(diff)); 
+        interestMap[i] = Math.max(0, Math.cos(diff)); 
+    }
+
+    // 2. DANGER CALCULATION
+    dangerMap.fill(0);
+    const dist = Math.hypot(obstacleOffset.dx, obstacleOffset.dy);
+    const angleToObs = Math.atan2(obstacleOffset.dy, obstacleOffset.dx);
+    
+    // Closer obstacle = larger angular shadow
+    const obstacleRadius = 50;
+    const buffer = 30; 
+    const angularHalfWidth = Math.atan2(obstacleRadius + buffer, dist); 
+
+    for (let i = 0; i < SLOTS; i++) {
+        const slotAngle = (i / SLOTS) * Math.PI * 2;
+        let diff = slotAngle - angleToObs;
+        diff = Math.atan2(Math.sin(diff), Math.cos(diff));
+        
+        if (Math.abs(diff) < angularHalfWidth) {
+            // Danger decreases as we move away from the direct center of obstacle
+            dangerMap[i] = 1.0 - (Math.abs(diff) / angularHalfWidth);
+        }
+    }
+
+    // 3. MASKING
+    for (let i = 0; i < SLOTS; i++) {
+        const threshold = 0.6;
+        const mask = dangerMap[i] > threshold ? 0 : (1.0 - (dangerMap[i] / threshold));
+        finalMap[i] = interestMap[i] * mask;
+    }
+}
+
+function render() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+
+    // Grid Background
+    ctx.strokeStyle = '#111827';
+    ctx.lineWidth = 1;
+    for(let i = 0; i < canvas.width; i += 80) { ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,canvas.height); ctx.stroke(); }
+    for(let i = 0; i < canvas.height; i += 80) { ctx.beginPath(); ctx.moveTo(0,i); ctx.lineTo(canvas.width,i); ctx.stroke(); }
+
+    // Render Obstacle
+    const ox = cx + obstacleOffset.dx;
+    const oy = cy + obstacleOffset.dy;
+    ctx.shadowBlur = 40; ctx.shadowColor = 'rgba(239, 68, 68, 0.4)';
+    ctx.beginPath(); ctx.arc(ox, oy, 50, 0, Math.PI*2);
+    ctx.fillStyle = '#1e1b4b'; ctx.fill();
+    ctx.strokeStyle = dragObstacle ? '#f87171' : '#ef4444'; ctx.lineWidth = 3; ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // Render Target
+    const tx = cx + targetOffset.dx;
+    const ty = cy + targetOffset.dy;
+    ctx.shadowBlur = 40; ctx.shadowColor = 'rgba(59, 130, 246, 0.4)';
+    ctx.beginPath(); ctx.arc(tx, ty, 12, 0, Math.PI*2);
+    ctx.fillStyle = '#3b82f6'; ctx.fill();
+    ctx.strokeStyle = 'white'; ctx.lineWidth = 2; ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // Context Map Visualization
+    for (let i = 0; i < SLOTS; i++) {
+        const angle = (i / SLOTS) * Math.PI * 2;
+        let val = 0;
+        let color = '';
+
+        if (currentStep === 0) { 
+            val = interestMap[i]; 
+            color = `rgba(59, 130, 246, ${0.1 + val * 0.9})`; 
+        } else if (currentStep === 1) { 
+            val = dangerMap[i]; 
+            color = `rgba(239, 68, 68, ${0.1 + val * 0.9})`; 
+        } else { 
+            val = finalMap[i]; 
+            color = `rgba(16, 185, 129, ${0.1 + val * 0.9})`; 
+        }
+
+        if (val > 0.001) {
+            const inner = agent.radius + 8;
+            const outer = inner + (val * 110);
+            ctx.beginPath();
+            ctx.moveTo(cx + Math.cos(angle) * inner, cy + Math.sin(angle) * inner);
+            ctx.lineTo(cx + Math.cos(angle) * outer, cy + Math.sin(angle) * outer);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 8;
+            ctx.lineCap = 'round';
+            ctx.stroke();
+        }
+    }
+
+    // Agent Brain
+    ctx.beginPath();
+    ctx.roundRect(cx - 25, cy - 25, 50, 50, 12);
+    ctx.fillStyle = '#1e293b';
+    ctx.strokeStyle = '#64748b';
+    ctx.lineWidth = 4;
+    ctx.fill(); ctx.stroke();
+    
+    // Final Decision Vector
+    if (currentStep === 3) {
+        let maxIdx = -1;
+        let maxVal = -0.1;
+        for(let i=0; i<SLOTS; i++) { if(finalMap[i] > maxVal) { maxVal = finalMap[i]; maxIdx = i; } }
+
+        if (maxVal > 0.02) {
+            const bestAngle = (maxIdx / SLOTS) * Math.PI * 2;
+            const len = 140;
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(cx + Math.cos(bestAngle) * len, cy + Math.sin(bestAngle) * len);
+            ctx.strokeStyle = '#a855f7';
+            ctx.lineWidth = 10;
+            ctx.setLineDash([15, 10]);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // Arrow Head
+            ctx.save();
+            ctx.translate(cx + Math.cos(bestAngle) * len, cy + Math.sin(bestAngle) * len);
+            ctx.rotate(bestAngle);
+            ctx.beginPath(); ctx.moveTo(20,0); ctx.lineTo(-10,-12); ctx.lineTo(-10,12); ctx.closePath();
+            ctx.fillStyle = '#a855f7'; ctx.fill();
+            ctx.restore();
+        }
+    }
+
+    requestAnimationFrame(() => {
+        updateLogic();
+        render();
+    });
+}
+
+function updateUI() {
+    for(let i=0; i<4; i++) {
+        const el = document.getElementById(`step-${i}`);
+        el.classList.remove('step-active', 'opacity-100');
+        el.classList.add('opacity-30');
+    }
+    const current = document.getElementById(`step-${currentStep}`);
+    current.classList.add('step-active', 'opacity-100');
+    current.classList.remove('opacity-30');
+}
+
+document.getElementById('nextBtn').onclick = () => { if(currentStep < 3) { currentStep++; updateUI(); } };
+document.getElementById('prevBtn').onclick = () => { if(currentStep > 0) { currentStep--; updateUI(); } };
+
+window.onload = () => {
+    resize();
+    render();
+};
+</script>
+</body>
+</html>
