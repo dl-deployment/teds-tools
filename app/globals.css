@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  background: #0b0e1a;
+  color: #e8eaf3;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #252b45;
+  border-radius: 8px;
+}
+
+.tool-output {
+  width: 100%;
+  background: #0b0e1a;
+  border: 1px solid #252b45;
+  color: #3ecf8e;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-top: 10px;
+  min-height: 60px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  font-family: "SF Mono", Menlo, Consolas, monospace;
+}
