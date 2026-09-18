@@ -63,8 +63,12 @@ scrolls.
   Its header is the section title plus an optional compact `SubAction` button;
   below it a stack of `SubItem` rows (icon, label, optional sub-line, active
   state).
-  - Tools: lists the tools (UUID, timestamp, diff); the selected tool renders
-    inline in the content pane (no modal, no card grid).
+  - Tools: lists the tools (UUID, timestamp, diff, Event Timeline); the
+    selected tool renders inline in the content pane (no modal, no card grid).
+    The timeline is the one tool that isn't an input/output widget — it draws a
+    date-and-countdown rail, so its rows wrap the card onto its own line
+    (`min-w-[min(180px,100%)]`) when the pane is too narrow for the date
+    column and the card side by side.
   - Notes / Links: lists the section's entries; the selected entry renders in
     the content pane as a detail card.
 - **Static Pages** has no sub-sidebar either — there is nothing to edit, so

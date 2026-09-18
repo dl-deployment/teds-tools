@@ -34,7 +34,7 @@ later, and consider adding a test file alongside it.
 app/
   layout.js        root layout — renders <Sidebar/> + page content
   page.js           `/` has no view of its own — redirects to /tools
-  tools/page.js     Tools view
+  tools/page.js     Tools view — UUID, timestamp, diff, Event Timeline
   texttools/page.js Text Tools view — group list in the sub-sidebar, one text buffer
   color/page.js      Color Tools view — panel list in the sub-sidebar, all color state starts here
   assets/page.js     Assets Tools view — slicer / packer / viewer in the sub-sidebar
@@ -53,6 +53,8 @@ lib/
   color.js           pure color math (conversions, palettes, WCAG contrast, shades/tints)
   spritesheet.js     pure Cocos atlas helpers (plist read/write, shelf packing)
   zip.js             store-only ZIP writer + downloadBlob — no zip dependency
+  lunar.js           Vietnamese lunar calendar maths + date formatting
+  events.js          static event list for the timeline + processEvents()
   md5.js             vendored pure-JS MD5 (Web Crypto has none)
   staticPages.js     server-only scan of public/static_pages (uses node:fs)
 public/
@@ -68,7 +70,8 @@ docs/
 1. **Data access goes through `lib/useHubData.js` only.** Don't read/write
    `localStorage` directly from a page or component. This is what lets the
    storage backend be swapped later (see `docs/DATA-MODEL.md`) without
-   touching every page.
+   touching every page. Static reference data that the user never edits is
+   the exception and lives in `lib/` instead (see `lib/events.js`).
 2. **Keep tool logic in `lib/` as pure functions** (input in, output out, no
    DOM/state) — `lib/tools.js` for the Tools and Text Tools pages,
    `lib/color.js` for Color Tools, `lib/spritesheet.js` + `lib/zip.js` for

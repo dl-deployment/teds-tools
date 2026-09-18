@@ -62,6 +62,11 @@ existed still loads.
 Pages only ever call this hook — never `localStorage` directly. This is the
 seam to change when moving to a real backend.
 
+Not everything belongs in here: the Event Timeline's holiday list
+(`lib/events.js`) is static reference data the user never edits, so it is a
+plain imported array rather than a hook-backed collection. Anything the user
+creates, edits or deletes goes through the hook.
+
 ## Adding a new entity type (e.g. "Snippets")
 
 1. Extend `DB` in `lib/useHubData.js`: add `snippets: []` to `emptyDB()`.

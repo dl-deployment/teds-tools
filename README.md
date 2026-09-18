@@ -30,7 +30,7 @@ vercel
 app/
   layout.js        root layout, renders the sidebar + page content
   page.js           `/` redirects to /tools (no Home view)
-  tools/page.js     Tools view (UUID, timestamp, diff)
+  tools/page.js     Tools view (UUID, timestamp, diff, event timeline)
   texttools/page.js Text Tools view (JSON, case, trim, Base64, URL, HTML, JWT, ...)
   color/page.js     Color Tools view (picker, palette, contrast, shades, gradient)
   assets/page.js    Assets Tools view (spritesheet slicer, texture packer, viewer)
@@ -49,6 +49,8 @@ lib/
   color.js           pure color math
   spritesheet.js     Cocos atlas plist parsing/generation and shelf packing
   zip.js             store-only ZIP writer (no dependency) + download helper
+  lunar.js           Vietnamese lunar calendar conversion
+  events.js          static holiday list + next-occurrence/countdown logic
   staticPages.js     scans public/static_pages (server-only)
 public/
   static_pages/      standalone HTML pages, one folder or .html file each

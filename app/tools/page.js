@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { SubSidebar, SubItem, ContentPane } from "@/components/SubSidebar";
 import { toolList, generateUuid, convertTimestamp, textDiff } from "@/lib/tools";
+import { processEvents } from "@/lib/events";
+import { formatDate, formatShortDate, getToday, monthName, solarToLunar } from "@/lib/lunar";
 
 export default function ToolsPage() {
   const [activeKey, setActiveKey] = useState(toolList[0].key);
@@ -35,6 +37,7 @@ export default function ToolsPage() {
           {active.key === "uuid" && <UuidTool />}
           {active.key === "timestamp" && <TimestampTool />}
           {active.key === "diff" && <DiffTool />}
+          {active.key === "timeline" && <EventTimelineTool />}
         </div>
       </ContentPane>
     </>
@@ -51,12 +54,12 @@ function UuidTool() {
   useEffect(() => setOut(generateUuid()), []);
   return (
     <div>
-      <div className="flex justify-end mt-0">
+      <div className="tool-output">{out}</div>
+      <div className="flex justify-end mt-2">
         <button className={runBtnClass} onClick={() => setOut(generateUuid())}>
           Generate
         </button>
       </div>
-      <div className="tool-output">{out}</div>
     </div>
   );
 }
@@ -101,5 +104,94 @@ function DiffTool() {
       </div>
       <div className="tool-output">{out}</div>
     </div>
+  );
+}
+
+function EventTimelineTool() {
+  // Processed after mount: the countdown depends on today's date, which would
+  // differ between the prerendered HTML and the browser.
+  const [events, setEvents] = useState([]);
+  useEffect(() => setEvents(processEvents()), []);
+
+  const today = getToday();
+  const lunar = solarToLunar(today);
+
+  return (
+    <div className="flex flex-col gap-3.5">
+      <div className="flex flex-wrap gap-x-6 gap-y-1 bg-panel2 border border-border rounded-lg px-3.5 py-2.5">
+        <span className="text-[12.5px] text-muted">
+          Solar <span className="font-medium text-text">{formatDate(today)}</span>
+        </span>
+        <span className="text-[12.5px] text-muted">
+          Lunar{" "}
+          <span className="font-medium text-text">
+            {lunar.day}/{lunar.month}/{lunar.year}
+          </span>
+        </span>
+      </div>
+
+      <ul>
+        {events.map((ev, i) => (
+          <EventCard key={`${ev.name}-${ev.solarDate}`} ev={ev} last={i === events.length - 1} />
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function EventCard({ ev, last }) {
+  const { name, lunarDate, type, icon, note, eventDate, daysLeft } = ev;
+  const isToday = daysLeft === 0;
+  const isSoon = daysLeft > 0 && daysLeft <= 7;
+
+  const dotClass = isToday ? "bg-accent2" : isSoon ? "bg-accent4" : "bg-border";
+  // The resolved next occurrence, not the date recorded in the list — for a
+  // lunar holiday those differ once the year rolls over.
+  const dateText = formatShortDate(eventDate);
+
+  return (
+    <li className="flex flex-wrap gap-x-2.5">
+      <div className="w-10 flex-shrink-0 pt-2 text-right">
+        <div className="text-[15px] font-semibold leading-none">
+          {String(eventDate.getDate()).padStart(2, "0")}
+        </div>
+        <div className="text-[10px] uppercase text-muted mt-1">
+          {monthName(eventDate.getMonth())}
+        </div>
+      </div>
+
+      <div className="flex flex-col items-center pt-3">
+        <span className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${dotClass}`} />
+        {!last && <span className="w-px flex-1 bg-border" />}
+      </div>
+
+      <div
+        className={`flex-1 min-w-[min(180px,100%)] mb-2.5 flex flex-wrap items-center gap-x-3 gap-y-1.5 bg-panel2 border rounded-lg px-3 py-2.5 ${
+          isToday ? "border-accent2/40" : "border-border"
+        }`}
+      >
+        <span className="flex-shrink-0 text-[20px] leading-none" title={note || ""}>
+          {icon}
+        </span>
+        <div className="min-w-0 flex-1">
+          <div className="text-sm font-semibold truncate">{name}</div>
+          <div className="flex flex-wrap items-center gap-x-1.5 text-[11px] text-muted mt-0.5">
+            <span
+              className={`px-1.5 py-px rounded-full ${
+                type === "solar" ? "bg-accent4/15 text-accent4" : "bg-accent3/15 text-accent3"
+              }`}
+            >
+              {type === "solar" ? "☀ Solar" : "☽ Lunar"}
+            </span>
+            <span>{type === "solar" ? dateText : `${lunarDate} · ${dateText}`}</span>
+            {note && <span>· {note}</span>}
+          </div>
+        </div>
+        <div className="flex-shrink-0 text-right">
+          <div className="text-[16px] font-semibold leading-none">{isToday ? "🎉" : daysLeft}</div>
+          <span className="text-[10px] text-muted">{isToday ? "Today!" : "days"}</span>
+        </div>
+      </div>
+    </li>
   );
 }
