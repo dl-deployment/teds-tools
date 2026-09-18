@@ -8,7 +8,7 @@ export function SubSidebar({ title, action, children }) {
   return (
     <aside className="w-60 flex-shrink-0 flex flex-col bg-panel2 border-r border-border px-3 py-5">
       <div className="flex items-center justify-between gap-2 px-2 pb-3">
-        <div className="text-[15px] font-semibold">{title}</div>
+        <div className="min-w-0 truncate text-[15px] font-semibold">{title}</div>
         {action}
       </div>
       <div className="flex flex-col gap-0.5 min-h-0 overflow-y-auto">{children}</div>

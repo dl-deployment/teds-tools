@@ -38,6 +38,7 @@ app/
   texttools/page.js Text Tools view — group list in the sub-sidebar, one text buffer
   color/page.js      Color Tools view — panel list in the sub-sidebar, all color state starts here
   assets/page.js     Assets Tools view — slicer / packer / viewer in the sub-sidebar
+  poe/page.js       POE Tools view — Regex / Trade / Note sections (all empty for now)
   notes/page.js     Notes view
   links/page.js     Links view
   statics/page.js   Static Pages view — server component, scans public/static_pages

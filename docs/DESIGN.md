@@ -26,7 +26,8 @@ is a read-only view of files on disk with no editing affordances, so it
 shares `accent3` with Links rather than claiming an accent of its own; Text
 Tools is one more tool surface and shares `accent` with Tools; Color Tools
 uses `accent4` for its chrome so the accent never competes with the colors
-the user is actually picking; Assets Tools shares `accent2` with Notes.
+the user is actually picking; Assets Tools shares `accent2` with Notes;
+POE Tools is one more tool surface and shares `accent` with Tools.
 
 Where an accent also carries meaning in the UI, use it for the "do the
 thing" button (Assets Tools' Slice/Pack/Play are `bg-accent2 text-bg`) and
@@ -54,8 +55,14 @@ The app is a fixed-height shell (`h-screen overflow-hidden`) with independently
 scrolling panes: the two sidebars stay pinned and only the content column
 scrolls.
 
+The primary sidebar is deliberately narrow (`w-36` / 144px) — nav labels are
+short, so they fit, and they truncate rather than wrap if they don't. The
+sub-sidebar is wider (`w-60` / 240px) because its `SubItem` rows carry a
+second description line that needs roughly 220px to render in full; drop
+below that and the descriptions ellipsize.
+
 - **Primary sidebar** (`components/Sidebar.js`): fixed-width flex column
-  (`w-64`, collapses to `w-16`), `bg-panel`, border-right, nav items stacked,
+  (`w-36`, collapses to `w-16`), `bg-panel`, border-right, nav items stacked,
   collapse toggle pinned to the bottom via a `flex-1` spacer.
 - **Sub-sidebar** (`components/SubSidebar.js`): the optional second sidebar,
   one per section, sitting between the primary nav and the content. `w-60` and
@@ -85,6 +92,8 @@ scrolls.
   - Assets Tools: one `SubItem` per tool (Slicer, Packer, Viewer); the pane
     shows the selected tool's own sections (drop zone, settings, preview,
     result). Switching tools drops the loaded files with it.
+  - POE Tools: one `SubItem` per section (Regex, Trade, Note). All three are
+    placeholders — the pane just names the section, nothing is built yet.
 - **Content** (`ContentPane`): `flex-1 min-w-0 overflow-y-auto` with generous
   padding (`px-6 py-7 pb-16`). No max-width cap — the dashboard should fill the
   window at any desktop size.

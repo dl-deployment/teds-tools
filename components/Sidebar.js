@@ -12,6 +12,7 @@ const navItems = [
   { href: "/notes", label: "Notes", icon: "▤" },
   { href: "/links", label: "Links", icon: "⛓" },
   { href: "/statics", label: "Static Pages", icon: "▦" },
+  { href: "/poe", label: "POE Tools", icon: "⬡" },
 ];
 
 export default function Sidebar() {
@@ -21,13 +22,13 @@ export default function Sidebar() {
   return (
     <aside
       className={`flex flex-shrink-0 flex-col bg-panel border-r border-border transition-all duration-150 ${
-        collapsed ? "w-16 px-2.5" : "w-64 px-3.5"
+        collapsed ? "w-16 px-2.5" : "w-36 px-3"
       } py-5`}
     >
-      <div className={`flex items-center gap-2.5 pb-5 px-2 ${collapsed ? "justify-center" : ""}`}>
-        <div className="w-8 h-8 rounded-[10px] bg-gradient-to-br from-accent to-accent3 flex-shrink-0" />
+      <div className={`flex items-center gap-2 pb-5 px-2 ${collapsed ? "justify-center" : ""}`}>
+        <div className="w-7 h-7 rounded-[9px] bg-gradient-to-br from-accent to-accent3 flex-shrink-0" />
         {!collapsed && (
-          <div className="min-w-0 truncate font-semibold text-[15px] leading-tight">Ted&apos;s Hub</div>
+          <div className="min-w-0 truncate font-semibold text-sm leading-tight">Ted&apos;s Hub</div>
         )}
       </div>
 
@@ -38,7 +39,7 @@ export default function Sidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-2.5 px-2.5 py-2 rounded-[9px] text-sm border ${
+              className={`flex items-center gap-2 px-2 py-2 rounded-[9px] text-[13px] border ${
                 collapsed ? "justify-center" : ""
               } ${
                 active
@@ -47,7 +48,7 @@ export default function Sidebar() {
               }`}
             >
               <span className="w-[18px] text-center flex-shrink-0">{item.icon}</span>
-              {!collapsed && <span>{item.label}</span>}
+              {!collapsed && <span className="min-w-0 truncate">{item.label}</span>}
             </Link>
           );
         })}
