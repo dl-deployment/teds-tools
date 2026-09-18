@@ -14,16 +14,23 @@ introducing new values.
 | `border`    | `#252b45` | all hairline borders                    |
 | `text`      | `#e8eaf3` | primary text                            |
 | `muted`     | `#8891ab` | secondary text, labels, timestamps      |
-| `accent`    | `#6c8bff` | primary actions, active nav, Tools/JSON |
-| `accent2`   | `#3ecf8e` | Notes accent                            |
+| `accent`    | `#6c8bff` | primary actions, active nav, Tools + Text Tools |
+| `accent2`   | `#3ecf8e` | Notes + Assets Tools accent             |
 | `accent3`   | `#b17cff` | Links + Static Pages accent             |
-| `accent4`   | `#ff9f5a` | Timestamp tool accent                   |
+| `accent4`   | `#ff9f5a` | Color Tools accent (and the Timestamp tool) |
 
 Each of the four sections (Tools, Notes, Links, plus a general "primary")
 has its own accent — reuse `accent`/`accent2`/`accent3`/`accent4` rather
 than inventing a fifth unless a genuinely new section is added. Static Pages
 is a read-only view of files on disk with no editing affordances, so it
-shares `accent3` with Links rather than claiming an accent of its own.
+shares `accent3` with Links rather than claiming an accent of its own; Text
+Tools is one more tool surface and shares `accent` with Tools; Color Tools
+uses `accent4` for its chrome so the accent never competes with the colors
+the user is actually picking; Assets Tools shares `accent2` with Notes.
+
+Where an accent also carries meaning in the UI, use it for the "do the
+thing" button (Assets Tools' Slice/Pack/Play are `bg-accent2 text-bg`) and
+keep destructive or secondary actions on the neutral ghost button.
 
 ## Radius
 
@@ -56,20 +63,32 @@ scrolls.
   Its header is the section title plus an optional compact `SubAction` button;
   below it a stack of `SubItem` rows (icon, label, optional sub-line, active
   state).
-  - Tools: lists the 5 tools; the selected tool renders inline in the content
-    pane (no modal, no card grid).
+  - Tools: lists the tools (UUID, timestamp, diff); the selected tool renders
+    inline in the content pane (no modal, no card grid).
   - Notes / Links: lists the section's entries; the selected entry renders in
     the content pane as a detail card.
 - **Static Pages** has no sub-sidebar either — there is nothing to edit, so
   the content pane is a `repeat(auto-fill, minmax(220px, 1fr))` grid of
   `bg-panel` cards that link straight out to the page (new tab).
+- **Text Tools** and **Color Tools** both use the sub-sidebar too, even
+  though neither has saved entries: the list is the tool chooser.
+  - Text Tools: one `SubItem` per tool group (JSON, Case, Trim, ...); the
+    selected group's actions render as buttons in the content pane above a
+    single shared textarea, since every transform applies to the same buffer.
+  - Color Tools: one `SubItem` per panel (Picker, Palette, Contrast, Shades,
+    Gradient); the pane shows the current color name, recent-color strip and
+    the selected panel.
+  - Assets Tools: one `SubItem` per tool (Slicer, Packer, Viewer); the pane
+    shows the selected tool's own sections (drop zone, settings, preview,
+    result). Switching tools drops the loaded files with it.
 - **Content** (`ContentPane`): `flex-1 min-w-0 overflow-y-auto` with generous
   padding (`px-6 py-7 pb-16`). No max-width cap — the dashboard should fill the
   window at any desktop size.
-- **Home** has no sub-sidebar; it renders inside a bare `ContentPane`.
+- There is no Home/dashboard view: `/` redirects to `/tools`, and every
+  section in the nav has a sub-sidebar.
 - Cards: `bg-panel border border-border rounded-card`, consistent internal
   padding (`px-4.5 pt-4.5 pb-2` for list panels, `px-4.5 pt-4.5 pb-4.5` for
-  detail panels, `p-4.5` for stat cards).
+  detail panels).
 
 ## Spacing
 
@@ -82,7 +101,6 @@ Tailwind's default scale is used, plus one custom step in
 Note that Tailwind's *default* scale stops at `3.5` and then jumps to `5`;
 `4.5` only exists because it is declared in the config. Don't use `4.5` in
 inline styles or new files without checking it resolves.
-- Stat cards on Home: 3-column grid on desktop, stacks to 1 column on mobile.
 
 ## Motion
 

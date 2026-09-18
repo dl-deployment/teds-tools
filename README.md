@@ -1,6 +1,6 @@
 # Ted's Hub
 
-Personal dashboard for tools, notes and links — built with Next.js (App Router) and Tailwind CSS.
+Personal dashboard for tools, notes and links — built with Next.js (App Router) and Tailwind CSS. Sections: Tools, Text Tools, Color Tools, Assets Tools, Notes, Links and Static Pages.
 
 ## Run locally
 
@@ -29,17 +29,29 @@ vercel
 ```
 app/
   layout.js        root layout, renders the sidebar + page content
-  page.js           Home (dashboard) view
-  tools/page.js     Tools view (JSON formatter, Base64, UUID, timestamp, diff)
+  page.js           `/` redirects to /tools (no Home view)
+  tools/page.js     Tools view (UUID, timestamp, diff)
+  texttools/page.js Text Tools view (JSON, case, trim, Base64, URL, HTML, JWT, ...)
+  color/page.js     Color Tools view (picker, palette, contrast, shades, gradient)
+  assets/page.js    Assets Tools view (spritesheet slicer, texture packer, viewer)
   notes/page.js     Notes view
   links/page.js     Links view
+  statics/page.js   Static Pages view (lists public/static_pages)
 components/
   Sidebar.js        left nav with collapsible toggle
   Modal.js           shared modal wrapper
   ItemRow.js         note/link row + empty state
+  color/             Color Tools panels
+  assets/            Assets Tools + shared drop zone / frame overlay / toast
 lib/
-  useHubData.js      data layer (notes & links) — currently localStorage
-  tools.js           pure functions powering the Tools page
+  useHubData.js      data layer (notes, links, color history) — currently localStorage
+  tools.js           pure functions powering the Tools + Text Tools pages
+  color.js           pure color math
+  spritesheet.js     Cocos atlas plist parsing/generation and shelf packing
+  zip.js             store-only ZIP writer (no dependency) + download helper
+  staticPages.js     scans public/static_pages (server-only)
+public/
+  static_pages/      standalone HTML pages, one folder or .html file each
 docs/
   DESIGN.md          design tokens (colors, spacing, type)
   DATA-MODEL.md       data shapes + how to extend/migrate them
@@ -55,7 +67,8 @@ entity type, wiring up a database, adding auth).
 
 ## Data storage today
 
-Notes and links are stored in the browser's `localStorage` via `lib/useHubData.js`.
+Notes, links and recent colors are stored in the browser's `localStorage` via
+`lib/useHubData.js`.
 This means:
 - Zero setup, works immediately after deploy.
 - Data is per-browser/device — it won't sync across devices or persist if

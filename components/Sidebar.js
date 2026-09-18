@@ -5,8 +5,10 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const navItems = [
-  { href: "/", label: "Home", icon: "⌂" },
   { href: "/tools", label: "Tools", icon: "⚙" },
+  { href: "/texttools", label: "Text Tools", icon: "✎" },
+  { href: "/color", label: "Color Tools", icon: "◐" },
+  { href: "/assets", label: "Assets Tools", icon: "◈" },
   { href: "/notes", label: "Notes", icon: "▤" },
   { href: "/links", label: "Links", icon: "⛓" },
   { href: "/statics", label: "Static Pages", icon: "▦" },
@@ -25,10 +27,7 @@ export default function Sidebar() {
       <div className={`flex items-center gap-2.5 pb-5 px-2 ${collapsed ? "justify-center" : ""}`}>
         <div className="w-8 h-8 rounded-[10px] bg-gradient-to-br from-accent to-accent3 flex-shrink-0" />
         {!collapsed && (
-          <div className="min-w-0">
-            <div className="font-semibold text-[15px] leading-tight">Ted&apos;s Hub</div>
-            <div className="text-[11px] text-muted leading-tight">Tools · Notes · Links</div>
-          </div>
+          <div className="min-w-0 truncate font-semibold text-[15px] leading-tight">Ted&apos;s Hub</div>
         )}
       </div>
 

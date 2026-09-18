@@ -4,9 +4,11 @@ Guidance for Claude (or any AI assistant) working in this repository.
 
 ## What this project is
 
-Ted's Hub — a personal dashboard for a developer: quick-access dev tools,
-notes, and bookmark links. Next.js 14 (App Router), React, Tailwind CSS.
-No backend yet — data lives in the browser's `localStorage`.
+Ted's Hub — a personal dashboard for a developer: quick-access dev tools
+(Tools, Text Tools, Color Tools), notes, and bookmark links, plus Static
+Pages for standalone HTML dropped into `public/`. Next.js 14 (App Router),
+React, Tailwind CSS. No backend yet — data lives in the browser's
+`localStorage`.
 
 Dark theme, single accent-per-section palette (blue/green/purple/orange),
 rounded cards, left sidebar nav with a collapse toggle. See
@@ -31,8 +33,11 @@ later, and consider adding a test file alongside it.
 ```
 app/
   layout.js        root layout — renders <Sidebar/> + page content
-  page.js           Home (dashboard) view
+  page.js           `/` has no view of its own — redirects to /tools
   tools/page.js     Tools view
+  texttools/page.js Text Tools view — group list in the sub-sidebar, one text buffer
+  color/page.js      Color Tools view — panel list in the sub-sidebar, all color state starts here
+  assets/page.js     Assets Tools view — slicer / packer / viewer in the sub-sidebar
   notes/page.js     Notes view
   links/page.js     Links view
   statics/page.js   Static Pages view — server component, scans public/static_pages
@@ -40,9 +45,15 @@ components/
   Sidebar.js        left nav, collapsible
   Modal.js           shared modal wrapper — reuse this for any new dialog
   ItemRow.js         NoteRow / LinkRow / EmptyState
+  color/             Color Tools panels (swatch, input, palette, contrast, shades, gradient)
+  assets/            Assets Tools (slicer, packer, viewer) + Shared.jsx (DropZone, FrameOverlay, Section, toast)
 lib/
   useHubData.js      ALL data reads/writes go through this hook
-  tools.js           pure functions for the Tools page (formatJson, base64Encode, ...)
+  tools.js           pure functions for the Tools + Text Tools pages
+  color.js           pure color math (conversions, palettes, WCAG contrast, shades/tints)
+  spritesheet.js     pure Cocos atlas helpers (plist read/write, shelf packing)
+  zip.js             store-only ZIP writer + downloadBlob — no zip dependency
+  md5.js             vendored pure-JS MD5 (Web Crypto has none)
   staticPages.js     server-only scan of public/static_pages (uses node:fs)
 public/
   static_pages/      standalone HTML pages: a folder with index.html, or a loose .html
@@ -58,9 +69,17 @@ docs/
    `localStorage` directly from a page or component. This is what lets the
    storage backend be swapped later (see `docs/DATA-MODEL.md`) without
    touching every page.
-2. **Keep tool logic in `lib/tools.js` as pure functions** (input in, string
-   out, no DOM/state). The Tools page just wires them to a text box and a
-   button. This keeps them easy to reuse or test.
+2. **Keep tool logic in `lib/` as pure functions** (input in, output out, no
+   DOM/state) — `lib/tools.js` for the Tools and Text Tools pages,
+   `lib/color.js` for Color Tools, `lib/spritesheet.js` + `lib/zip.js` for
+   Assets Tools. Pages and components only wire them to inputs and buttons.
+   The exceptions are marked in place: `lib/staticPages.js` uses `node:fs`,
+   and `parsePlist` uses `DOMParser`, so both run server/browser-side only.
+   Watch the two error conventions: helpers like `convertTimestamp` return an
+   error *string* that the page renders as output, while every Text Tools
+   transform (`formatJsonPretty`, `toCamelCase`, `jwtDecode`, ...) *throws*
+   so the page can raise one error toast. Text Tools owns the JSON and
+   Base64 transforms now — the Tools page no longer has its own copies.
 3. **Reuse `Modal.js` and `ItemRow.js`** for anything modal- or list-row-
    shaped rather than writing new markup — keeps the UI consistent.
 4. **Follow existing Tailwind token usage** (`bg-panel`, `bg-panel2`,

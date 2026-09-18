@@ -18,9 +18,15 @@ type Link = {
   date: string;
 };
 
+type ColorHistoryEntry = {
+  hex: string;       // "#6C8BFF" — the dedupe key
+  rgb: { r: number; g: number; b: number };
+};
+
 type DB = {
   notes: Note[];
   links: Link[];
+  colorHistory: ColorHistoryEntry[];  // most recent first, capped at 16
 };
 ```
 
@@ -28,9 +34,11 @@ Everything is stored as one JSON blob under `localStorage["teds-hub-data"]`.
 A one-time seed (`teds-hub-seeded` flag) inserts a welcome note and two
 example links on first run, only if both lists are empty.
 
-Data saved under the pre-rename `teds-hub-data` / `teds-hub-seeded` keys is
-moved across once, on the first load after the rename — see
-`migrateLegacyKeys()` in `lib/useHubData.js`.
+Keep the write path and the read path in the same place — an earlier
+`migrateLegacyKeys()` helper here read and then removed a legacy key whose
+name was identical to `DB_KEY`, which deleted the whole database and the seed
+flag on every load and re-seeded over the top of it. Anything that touches
+these keys must be checked against the constants above.
 
 ## The hook contract
 
@@ -39,13 +47,17 @@ moved across once, on the first load after the rename — see
 ```js
 {
   ready,        // bool — false until localStorage has been read (avoids SSR mismatch)
-  notes, links,  // arrays, as above
+  notes, links, colorHistory,  // arrays, as above
   addNote({ title, body, tag }),
   removeNote(id),
   addLink({ name, url }),
   removeLink(id),
+  addColorToHistory({ r, g, b }),   // dedupes by hex, newest first, keeps 16
 }
 ```
+
+`colorHistory` is read with `db.colorHistory || []` so data saved before it
+existed still loads.
 
 Pages only ever call this hook — never `localStorage` directly. This is the
 seam to change when moving to a real backend.
@@ -60,7 +72,8 @@ seam to change when moving to a real backend.
 4. Add `app/snippets/page.js` (copy `app/notes/page.js` as a starting point),
    a `SnippetRow` in `components/ItemRow.js`, and a nav entry in
    `components/Sidebar.js`.
-5. Add a stat card for it on `app/page.js` if it should appear on Home.
+5. Nothing else — there is no Home/dashboard view to surface it on, so the
+   nav entry is the only place a new entity type appears.
 
 ## Moving from localStorage to a real database
 

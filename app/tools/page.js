@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SubSidebar, SubItem, ContentPane } from "@/components/SubSidebar";
-import { toolList, formatJson, base64Encode, base64Decode, generateUuid, convertTimestamp, textDiff } from "@/lib/tools";
+import { toolList, generateUuid, convertTimestamp, textDiff } from "@/lib/tools";
 
 export default function ToolsPage() {
   const [activeKey, setActiveKey] = useState(toolList[0].key);
@@ -32,8 +32,6 @@ export default function ToolsPage() {
       <ContentPane>
         <div className="bg-panel border border-border rounded-card px-4.5 pt-4.5 pb-4.5">
           <div className="text-[15px] font-semibold mb-3">{active.name}</div>
-          {active.key === "json" && <JsonTool />}
-          {active.key === "base64" && <Base64Tool />}
           {active.key === "uuid" && <UuidTool />}
           {active.key === "timestamp" && <TimestampTool />}
           {active.key === "diff" && <DiffTool />}
@@ -46,52 +44,11 @@ export default function ToolsPage() {
 const inputClass = "w-full bg-bg border border-border text-text px-2.5 py-2 rounded-lg text-[13.5px] min-h-[80px] resize-y";
 const labelClass = "block text-[12.5px] text-muted mt-2.5 mb-1.5";
 const runBtnClass = "bg-accent text-white px-3.5 py-2 rounded-lg text-[13.5px] font-medium";
-const ghostBtnClass = "bg-transparent border border-border text-text px-3.5 py-2 rounded-lg text-[13.5px]";
-
-function JsonTool() {
-  const [input, setInput] = useState("");
-  const [out, setOut] = useState("");
-  return (
-    <div>
-      <label className={labelClass}>Paste JSON</label>
-      <textarea value={input} onChange={(e) => setInput(e.target.value)} placeholder='{"hello":"world"}' className={inputClass} />
-      <div className="flex justify-end mt-2">
-        <button className={runBtnClass} onClick={() => setOut(formatJson(input))}>
-          Format
-        </button>
-      </div>
-      <div className="tool-output">{out}</div>
-    </div>
-  );
-}
-
-function Base64Tool() {
-  const [input, setInput] = useState("");
-  const [out, setOut] = useState("");
-  return (
-    <div>
-      <label className={labelClass}>Text</label>
-      <textarea
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Type text to encode, or Base64 to decode"
-        className={inputClass}
-      />
-      <div className="flex justify-end gap-2 mt-2">
-        <button className={ghostBtnClass} onClick={() => setOut(base64Decode(input))}>
-          Decode
-        </button>
-        <button className={runBtnClass} onClick={() => setOut(base64Encode(input))}>
-          Encode
-        </button>
-      </div>
-      <div className="tool-output">{out}</div>
-    </div>
-  );
-}
-
 function UuidTool() {
-  const [out, setOut] = useState(() => generateUuid());
+  // Filled in after mount: generating during prerender would produce a
+  // different value on the server and client, breaking hydration.
+  const [out, setOut] = useState("");
+  useEffect(() => setOut(generateUuid()), []);
   return (
     <div>
       <div className="flex justify-end mt-0">

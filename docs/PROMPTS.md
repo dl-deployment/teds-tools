@@ -36,8 +36,7 @@ Notes/Links:
 - Fields: <list the fields, e.g. "title, code, language, date">
 - It needs: a data hook extension in lib/useHubData.js (add<Name>/remove<Name>),
   a row component in components/ItemRow.js, a page at app/<name>/page.js,
-  a nav entry in components/Sidebar.js, and a stat card on the Home page
-  if it should show there.
+  and a nav entry in components/Sidebar.js.
 
 Keep styling consistent with docs/DESIGN.md — reuse existing Tailwind
 token classes rather than introducing new colors/radii. Run `npm run build`
