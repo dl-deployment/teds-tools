@@ -38,20 +38,23 @@ app/
   texttools/page.js Text Tools view — group list in the sub-sidebar, one text buffer
   color/page.js      Color Tools view — panel list in the sub-sidebar, all color state starts here
   assets/page.js     Assets Tools view — slicer / packer / viewer in the sub-sidebar
-  poe/page.js       POE Tools view — Regex / Trade / Note sections (all empty for now)
+  poe/page.js       POE Tools view — Trade / League / Regex / Note / System sections
+  poe/actions.js     server action: reads the poe2 league list + stat texts (see lib/poe.js)
   notes/page.js     Notes view
   links/page.js     Links view
   statics/page.js   Static Pages view — server component, scans public/static_pages
 components/
   Sidebar.js        left nav, collapsible
   Modal.js           shared modal wrapper — reuse this for any new dialog
-  ItemRow.js         NoteRow / LinkRow / EmptyState
+  ItemRow.js         NoteRow / LinkRow / TradeConfigRow / EmptyState
   color/             Color Tools panels (swatch, input, palette, contrast, shades, gradient)
   assets/            Assets Tools (slicer, packer, viewer) + Shared.jsx (DropZone, FrameOverlay, Section, toast)
+  poe/               POE Tools panels (trade config list + snippet, league picker)
 lib/
   useHubData.js      ALL data reads/writes go through this hook
   tools.js           pure functions for the Tools + Text Tools pages
   color.js           pure color math (conversions, palettes, WCAG contrast, shades/tints)
+  poe.js             pure trade payload / URL / snippet helpers
   spritesheet.js     pure Cocos atlas helpers (plist read/write, shelf packing)
   zip.js             store-only ZIP writer + downloadBlob — no zip dependency
   lunar.js           Vietnamese lunar calendar maths + date formatting

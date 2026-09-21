@@ -92,8 +92,16 @@ below that and the descriptions ellipsize.
   - Assets Tools: one `SubItem` per tool (Slicer, Packer, Viewer); the pane
     shows the selected tool's own sections (drop zone, settings, preview,
     result). Switching tools drops the loaded files with it.
-  - POE Tools: one `SubItem` per section (Regex, Trade, Note). All three are
-    placeholders — the pane just names the section, nothing is built yet.
+  - POE Tools: one `SubItem` per section (Trade, League, Regex, Note, System).
+    Regex and Note are still placeholders. Trade lists the saved trade configs
+    and the generated console snippet; League picks the league the searches run
+    against; System exports/imports the POE data. All render inline in the
+    content pane, same as the other tools.
+    A trade config nests two levels of surface: the config itself is a
+    `bg-panel2` `rounded-xl` segment inside the page's `bg-panel` card, and each
+    of its stat-filter groups is a `bg-bg` `rounded-lg` segment inside that,
+    with a `border-b` separating the group's title row from its stat rows. Use
+    the same nesting for any new repeated block rather than stacking flat rows.
 - **Content** (`ContentPane`): `flex-1 min-w-0 overflow-y-auto` with generous
   padding (`px-6 py-7 pb-16`). No max-width cap — the dashboard should fill the
   window at any desktop size.
