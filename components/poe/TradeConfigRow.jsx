@@ -152,7 +152,7 @@ export default function TradeConfigRow({
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="bg-panel2 border border-border rounded-xl px-3 py-2.5">
+    <div className="bg-panel2 border border-border rounded-xl px-3 py-2">
       <div className="flex items-center gap-3 flex-wrap">
         <div className="w-2 h-2 rounded-full bg-accent flex-shrink-0" />
         <button
@@ -165,9 +165,11 @@ export default function TradeConfigRow({
           <span className="text-muted text-[10px] leading-none w-2.5 flex-shrink-0">
             {open ? "▼" : "▶"}
           </span>
-          <span className="min-w-0">
-            <span className="block text-sm font-semibold truncate">{config.name}</span>
-            <span className="block text-[12.5px] text-muted mt-0.5">{summary}</span>
+          <span className="min-w-0 flex-1 flex items-baseline gap-2">
+            <span className="text-[12.5px] font-semibold truncate">{config.name}</span>
+            {summary ? (
+              <span className="text-[11px] text-muted truncate">{summary}</span>
+            ) : null}
           </span>
         </button>
         <button

@@ -177,38 +177,35 @@ export default function TradePanel({ ready, configs, league, statTexts, onAdd, o
         </div>
       )}
 
-      {snippetConfig ? (
-        <div className="mt-4">
-          <div className="flex justify-between items-center gap-3 mb-2">
-            <div className="text-[13px] font-semibold">
-              Snippet for {snippetConfig.name}
-            </div>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => copyText(snippet)}
-                className="bg-transparent border border-border text-muted hover:text-text px-2.5 py-1.5 rounded-lg text-[12.5px]"
-              >
-                Copy
-              </button>
-              <a
-                href={tradeSearchUrl(league)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-transparent border border-border text-accent px-2.5 py-1.5 rounded-lg text-[12.5px] no-underline"
-              >
-                Open {league} trade ↗
-              </a>
-            </div>
-          </div>
-          <pre className="bg-bg border border-border rounded-lg p-3 text-[12px] font-mono text-muted whitespace-pre-wrap break-all max-h-[320px] overflow-y-auto">
-            {snippet}
-          </pre>
-          <div className="text-[11.5px] text-muted mt-2">
-            Paste it into the DevTools console (F12) on that page and press Enter — the search runs
-            same-origin and opens the results in a new tab.
-          </div>
+      <Modal
+        open={snippetConfig !== null}
+        title={snippetConfig ? `Snippet for ${snippetConfig.name}` : ""}
+        onClose={() => setSnippetId(null)}
+      >
+        <div className="flex items-center gap-2 mb-2.5">
+          <button
+            onClick={() => copyText(snippet)}
+            className="bg-transparent border border-border text-muted hover:text-text px-2.5 py-1.5 rounded-lg text-[12.5px]"
+          >
+            Copy
+          </button>
+          <a
+            href={tradeSearchUrl(league)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-transparent border border-border text-accent px-2.5 py-1.5 rounded-lg text-[12.5px] no-underline"
+          >
+            Open {league} trade ↗
+          </a>
         </div>
-      ) : null}
+        <pre className="bg-bg border border-border rounded-lg p-3 text-[12px] font-mono text-muted whitespace-pre-wrap break-all max-h-[320px] overflow-y-auto">
+          {snippet}
+        </pre>
+        <div className="text-[11.5px] text-muted mt-2.5">
+          Paste it into the DevTools console (F12) on that page and press Enter — the search runs
+          same-origin and opens the results in a new tab.
+        </div>
+      </Modal>
 
       <Modal open={open} title={editingId ? "Edit trade config" : "New trade config"} onClose={close}>
         <label className="block text-[12.5px] text-muted mt-2.5 mb-1.5">Name</label>
