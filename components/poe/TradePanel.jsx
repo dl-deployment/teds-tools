@@ -1,17 +1,21 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Modal from "@/components/Modal";
 import { EmptyState } from "@/components/ItemRow";
+import SnippetModal, { copyText } from "./Snippet";
 import TradeConfigRow from "./TradeConfigRow";
+import { downloadBlob } from "@/lib/zip";
 import {
+  PAYLOADS_FILE,
+  buildPayloadMap,
   buildTradeSearchSnippet,
   extractStatGroups,
   parseTradePayloadJson,
   removeStatFilter,
+  splitBundledConfigs,
   statFilterFallbackText,
   summarizeTradeConfig,
-  tradeSearchUrl,
   updateStatFilter,
   updateStatGroup,
 } from "@/lib/poe";
@@ -19,35 +23,22 @@ import {
 const PAYLOAD_PLACEHOLDER =
   '{"query":{"status":{"option":"online"},"stats":[{"type":"and","filters":[{"id":"explicit.stat_3299347043"}]}]},"sort":{"price":"asc"}}';
 
-/** Clipboard API needs a secure context; bare http falls back to execCommand. */
-async function copyText(text) {
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    try {
-      await navigator.clipboard.writeText(text);
-      return true;
-    } catch (e) {
-      /* fall through */
-    }
-  }
-  const ta = document.createElement("textarea");
-  ta.value = text;
-  ta.setAttribute("readonly", "");
-  ta.style.position = "fixed";
-  ta.style.top = "-1000px";
-  document.body.appendChild(ta);
-  ta.select();
-  ta.setSelectionRange(0, text.length);
-  let ok = false;
-  try {
-    ok = document.execCommand("copy");
-  } catch (e) {
-    ok = false;
-  }
-  document.body.removeChild(ta);
-  return ok;
-}
+const ghostBtn =
+  "flex-shrink-0 bg-transparent border border-border text-muted hover:text-text px-2.5 py-1.5 rounded-lg text-[12.5px] disabled:opacity-40";
 
-export default function TradePanel({ ready, configs, league, statTexts, onAdd, onUpdate, onRemove }) {
+const sectionLabel =
+  "text-[11px] uppercase tracking-wide text-muted font-semibold mb-1.5 mt-2.5 first:mt-0";
+
+export default function TradePanel({
+  ready,
+  configs,
+  bundledPayloads,
+  league,
+  statTexts,
+  onAdd,
+  onUpdate,
+  onRemove,
+}) {
   const [snippetId, setSnippetId] = useState(null);
   const [copiedId, setCopiedId] = useState(null);
   const [open, setOpen] = useState(false);
@@ -58,6 +49,14 @@ export default function TradePanel({ ready, configs, league, statTexts, onAdd, o
   const timer = useRef(null);
 
   useEffect(() => () => clearTimeout(timer.current), []);
+
+  // Your configs come first, then the copies that still match the bundled file
+  // — same split, and same order, as the Maker tab. Editing a bundled config
+  // makes it differ from the file, so it moves up on its own.
+  const { own, bundled } = useMemo(
+    () => splitBundledConfigs(configs, bundledPayloads),
+    [configs, bundledPayloads]
+  );
 
   // Derived rather than stored, so editing a filter or switching league updates
   // the visible snippet instead of leaving a stale one on screen.
@@ -138,6 +137,39 @@ export default function TradePanel({ ready, configs, league, statTexts, onAdd, o
     }));
   }
 
+  /**
+   * The list as it reads on screen — your configs, then the bundled ones — in
+   * the payload file's own shape, so the download can replace
+   * `public/poe/poe2-payloads.json` and become the bundle for every browser.
+   */
+  function exportFile() {
+    const data = buildPayloadMap([...own, ...bundled]);
+    downloadBlob(
+      new Blob([JSON.stringify(data, null, 2)], { type: "application/json" }),
+      PAYLOADS_FILE
+    );
+  }
+
+  // Only your own configs get the × — the bundled ones are the app's data, and
+  // deleting the copy the file put there would just bring it back on the next
+  // seed. Editing one takes it over (it stops matching the file), after which
+  // it is yours to delete. Same rule as the Maker's bundled groups.
+  const row = (c, removable) => (
+    <TradeConfigRow
+      key={c.id}
+      config={c}
+      summary={summarizeTradeConfig(c)}
+      groups={statGroups(c)}
+      onSearch={search}
+      onEdit={openEdit}
+      onDelete={removable ? onRemove : null}
+      onGroupChange={(group, patch) => changeGroup(c, group, patch)}
+      onFilterChange={(filter, patch) => changeFilter(c, filter, patch)}
+      onFilterRemove={(filter) => removeFilter(c, filter)}
+      copied={copiedId === c.id}
+    />
+  );
+
   return (
     <>
       <div className="flex justify-between items-center gap-3 mb-2.5">
@@ -145,12 +177,14 @@ export default function TradePanel({ ready, configs, league, statTexts, onAdd, o
           Searching <span className="text-text font-medium">{league}</span> — {configs.length} saved
           config{configs.length === 1 ? "" : "s"}
         </div>
-        <button
-          onClick={openNew}
-          className="flex-shrink-0 bg-transparent border border-border text-muted hover:text-text px-2.5 py-1.5 rounded-lg text-[12.5px]"
-        >
-          + New config
-        </button>
+        <div className="flex items-center gap-2">
+          <button onClick={openNew} className={ghostBtn}>
+            + New config
+          </button>
+          <button onClick={exportFile} disabled={configs.length === 0} className={ghostBtn}>
+            Export .json
+          </button>
+        </div>
       </div>
 
       {!ready ? (
@@ -158,54 +192,30 @@ export default function TradePanel({ ready, configs, league, statTexts, onAdd, o
       ) : configs.length === 0 ? (
         <EmptyState text="No saved configs yet — add one with a trade payload." />
       ) : (
-        <div className="flex flex-col gap-3">
-          {configs.map((c) => (
-            <TradeConfigRow
-              key={c.id}
-              config={c}
-              summary={summarizeTradeConfig(c)}
-              groups={statGroups(c)}
-              onSearch={search}
-              onEdit={openEdit}
-              onDelete={onRemove}
-              onGroupChange={(group, patch) => changeGroup(c, group, patch)}
-              onFilterChange={(filter, patch) => changeFilter(c, filter, patch)}
-              onFilterRemove={(filter) => removeFilter(c, filter)}
-              copied={copiedId === c.id}
-            />
-          ))}
+        <div className="flex flex-col">
+          {own.length > 0 ? (
+            <>
+              <div className={sectionLabel}>Your configs</div>
+              <div className="flex flex-col gap-3">{own.map((c) => row(c, true))}</div>
+            </>
+          ) : null}
+
+          {bundled.length > 0 ? (
+            <>
+              {own.length > 0 ? <div className={sectionLabel}>Bundled</div> : null}
+              <div className="flex flex-col gap-3">{bundled.map((c) => row(c, false))}</div>
+            </>
+          ) : null}
         </div>
       )}
 
-      <Modal
+      <SnippetModal
         open={snippetConfig !== null}
         title={snippetConfig ? `Snippet for ${snippetConfig.name}` : ""}
+        snippet={snippet}
+        league={league}
         onClose={() => setSnippetId(null)}
-      >
-        <div className="flex items-center gap-2 mb-2.5">
-          <button
-            onClick={() => copyText(snippet)}
-            className="bg-transparent border border-border text-muted hover:text-text px-2.5 py-1.5 rounded-lg text-[12.5px]"
-          >
-            Copy
-          </button>
-          <a
-            href={tradeSearchUrl(league)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-transparent border border-border text-accent px-2.5 py-1.5 rounded-lg text-[12.5px] no-underline"
-          >
-            Open {league} trade ↗
-          </a>
-        </div>
-        <pre className="bg-bg border border-border rounded-lg p-3 text-[12px] font-mono text-muted whitespace-pre-wrap break-all max-h-[320px] overflow-y-auto">
-          {snippet}
-        </pre>
-        <div className="text-[11.5px] text-muted mt-2.5">
-          Paste it into the DevTools console (F12) on that page and press Enter — the search runs
-          same-origin and opens the results in a new tab.
-        </div>
-      </Modal>
+      />
 
       <Modal open={open} title={editingId ? "Edit trade config" : "New trade config"} onClose={close}>
         <label className="block text-[12.5px] text-muted mt-2.5 mb-1.5">Name</label>

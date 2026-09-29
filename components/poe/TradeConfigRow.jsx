@@ -189,12 +189,15 @@ export default function TradeConfigRow({
         >
           {copied ? "Copied" : "Search"}
         </button>
-        <div
-          className="text-muted hover:text-red-400 hover:bg-red-400/10 cursor-pointer text-base leading-none px-1.5 py-0.5 rounded-md flex-shrink-0"
-          onClick={() => onDelete(config.id)}
-        >
-          ×
-        </div>
+        {onDelete ? (
+          <div
+            title="Delete this config"
+            className="text-muted hover:text-red-400 hover:bg-red-400/10 cursor-pointer text-base leading-none px-1.5 py-0.5 rounded-md flex-shrink-0"
+            onClick={() => onDelete(config.id)}
+          >
+            ×
+          </div>
+        ) : null}
       </div>
 
       {!open ? null : groups.length === 0 ? (

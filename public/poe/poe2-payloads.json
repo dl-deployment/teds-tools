@@ -1,0 +1,569 @@
+{
+  "AFK": {
+    "query": {
+      "stats": [
+        {
+          "disabled": true,
+          "filters": [
+            {
+              "disabled": false,
+              "id": "explicit.stat_1444556985",
+              "value": {
+                "min": 20
+              }
+            },
+            {
+              "disabled": false,
+              "id": "explicit.stat_2923486259",
+              "value": {
+                "min": 20
+              }
+            },
+            {
+              "disabled": false,
+              "id": "implicit.stat_3981240776",
+              "value": {
+                "min": 25
+              }
+            }
+          ],
+          "type": "and"
+        },
+        {
+          "disabled": true,
+          "filters": [
+            {
+              "id": "explicit.stat_3418580811|24"
+            }
+          ],
+          "type": "and"
+        },
+        {
+          "disabled": true,
+          "filters": [
+            {
+              "id": "explicit.stat_3359496001"
+            }
+          ],
+          "type": "and"
+        },
+        {
+          "disabled": true,
+          "filters": [
+            {
+              "disabled": false,
+              "id": "explicit.stat_2363593824",
+              "value": {
+                "min": 12
+              }
+            },
+            {
+              "disabled": false,
+              "id": "explicit.stat_1444556985",
+              "value": {
+                "min": 3
+              }
+            }
+          ],
+          "type": "and"
+        },
+        {
+          "filters": [
+            {
+              "disabled": false,
+              "id": "explicit.stat_2448633171"
+            },
+            {
+              "id": "explicit.stat_458438597"
+            },
+            {
+              "id": "explicit.stat_983749596"
+            }
+          ],
+          "type": "and"
+        }
+      ],
+      "status": {
+        "option": "securable"
+      }
+    },
+    "sort": {
+      "price": "asc"
+    }
+  },
+  "Diamond": {
+    "query": {
+      "name": "Megalomaniac",
+      "stats": [
+        {
+          "filters": [
+            {
+              "id": "enchant.stat_2954116742|43088"
+            },
+            {
+              "id": "enchant.stat_2954116742|42981"
+            },
+            {
+              "id": "enchant.stat_2954116742|17696"
+            },
+            {
+              "id": "enchant.stat_2954116742|13542"
+            },
+            {
+              "id": "enchant.stat_2954116742|10873"
+            },
+            {
+              "id": "enchant.stat_2954116742|11184"
+            },
+            {
+              "id": "enchant.stat_2954116742|20686"
+            },
+            {
+              "id": "enchant.stat_2954116742|56666"
+            },
+            {
+              "id": "enchant.stat_2954116742|54640"
+            },
+            {
+              "id": "enchant.stat_2954116742|42714"
+            },
+            {
+              "disabled": true,
+              "id": "enchant.stat_2954116742|38053"
+            },
+            {
+              "disabled": true,
+              "id": "enchant.stat_2954116742|29762"
+            },
+            {
+              "id": "enchant.stat_2954116742|35876"
+            },
+            {
+              "id": "enchant.stat_2954116742|16618"
+            },
+            {
+              "id": "enchant.stat_2954116742|32976"
+            },
+            {
+              "id": "enchant.stat_2954116742|64240"
+            },
+            {
+              "id": "enchant.stat_2954116742|39881"
+            },
+            {
+              "id": "enchant.stat_2954116742|44952"
+            },
+            {
+              "id": "enchant.stat_2954116742|8831"
+            },
+            {
+              "id": "enchant.stat_2954116742|32507"
+            },
+            {
+              "id": "enchant.stat_2954116742|58183"
+            },
+            {
+              "id": "enchant.stat_2954116742|60138"
+            },
+            {
+              "id": "enchant.stat_2954116742|48103"
+            },
+            {
+              "id": "enchant.stat_2954116742|16150"
+            },
+            {
+              "id": "enchant.stat_2954116742|10315"
+            },
+            {
+              "id": "enchant.stat_2954116742|18157"
+            },
+            {
+              "id": "enchant.stat_2954116742|1169"
+            }
+          ],
+          "type": "count",
+          "value": {
+            "min": 2
+          }
+        },
+        {
+          "disabled": true,
+          "filters": [
+            {
+              "disabled": true,
+              "id": "enchant.stat_2954116742|16618"
+            },
+            {
+              "disabled": true,
+              "id": "enchant.stat_2954116742|11184"
+            },
+            {
+              "id": "enchant.stat_2954116742|16618"
+            },
+            {
+              "id": "enchant.stat_2954116742|9187"
+            }
+          ],
+          "type": "and"
+        }
+      ],
+      "status": {
+        "option": "securable"
+      }
+    },
+    "sort": {
+      "price": "asc"
+    }
+  },
+  "InfernalCry": {
+    "query": {
+      "filters": {
+        "misc_filters": {
+          "disabled": false,
+          "filters": {
+            "corrupted": {
+              "option": "false"
+            }
+          }
+        }
+      },
+      "stats": [
+        {
+          "disabled": true,
+          "filters": [
+            {
+              "id": "explicit.stat_599749213",
+              "value": {
+                "min": 3
+              }
+            },
+            {
+              "id": "explicit.stat_4095671657"
+            }
+          ],
+          "type": "and"
+        },
+        {
+          "disabled": true,
+          "filters": [
+            {
+              "disabled": false,
+              "id": "explicit.stat_599749213"
+            },
+            {
+              "id": "implicit.stat_3828375170"
+            }
+          ],
+          "type": "and"
+        },
+        {
+          "disabled": true,
+          "filters": [
+            {
+              "id": "explicit.stat_4283407333"
+            },
+            {
+              "id": "explicit.stat_3695891184"
+            },
+            {
+              "id": "explicit.stat_1368271171"
+            },
+            {
+              "id": "enchant.stat_3981240776"
+            }
+          ],
+          "type": "and"
+        },
+        {
+          "disabled": true,
+          "filters": [
+            {
+              "disabled": false,
+              "id": "explicit.stat_448592698|137",
+              "value": {
+                "min": 2
+              }
+            }
+          ],
+          "type": "and"
+        },
+        {
+          "disabled": true,
+          "filters": [
+            {
+              "id": "explicit.stat_1087787187"
+            },
+            {
+              "disabled": false,
+              "id": "explicit.stat_2081918629",
+              "value": {
+                "min": 91
+              }
+            }
+          ],
+          "type": "and"
+        },
+        {
+          "disabled": true,
+          "filters": [
+            {
+              "id": "implicit.stat_2251279027"
+            },
+            {
+              "disabled": false,
+              "id": "explicit.stat_3981240776",
+              "value": {
+                "min": 53
+              }
+            }
+          ],
+          "type": "and"
+        },
+        {
+          "filters": [
+            {
+              "disabled": false,
+              "id": "explicit.stat_599749213",
+              "value": {
+                "min": 4
+              }
+            }
+          ],
+          "type": "and"
+        }
+      ],
+      "status": {
+        "option": "securable"
+      }
+    },
+    "sort": {
+      "price": "asc"
+    }
+  },
+  "Sacrificial Regalia": {
+    "query": {
+      "filters": {
+        "misc_filters": {
+          "filters": {
+            "corrupted": {
+              "option": "false"
+            }
+          }
+        }
+      },
+      "stats": [
+        {
+          "disabled": false,
+          "filters": [
+            {
+              "disabled": false,
+              "id": "explicit.stat_3523867985",
+              "value": {
+                "min": 101
+              }
+            }
+          ],
+          "type": "and"
+        },
+        {
+          "filters": [
+            {
+              "disabled": false,
+              "id": "explicit.stat_3362812763",
+              "value": {
+                "min": 43
+              }
+            },
+            {
+              "disabled": false,
+              "id": "explicit.stat_3299347043",
+              "value": {
+                "min": 200
+              }
+            }
+          ],
+          "type": "and"
+        }
+      ],
+      "status": {
+        "option": "securable"
+      },
+      "type": "Sacrificial Regalia"
+    },
+    "sort": {
+      "price": "asc"
+    }
+  },
+  "Socket": {
+    "query": {
+      "stats": [
+        {
+          "filters": [
+            {
+              "disabled": true,
+              "id": "rune.stat_2148999925"
+            },
+            {
+              "disabled": true,
+              "id": "rune.stat_653358410"
+            },
+            {
+              "disabled": true,
+              "id": "rune.stat_3148103963"
+            }
+          ],
+          "type": "and"
+        },
+        {
+          "disabled": true,
+          "filters": [
+            {
+              "id": "rune.stat_3903510399"
+            },
+            {
+              "id": "rune.stat_1374654984"
+            },
+            {
+              "id": "rune.stat_3473409233"
+            }
+          ],
+          "type": "count",
+          "value": {
+            "min": 1
+          }
+        },
+        {
+          "disabled": true,
+          "filters": [
+            {
+              "id": "rune.stat_2231410646"
+            },
+            {
+              "id": "rune.stat_1919509054"
+            },
+            {
+              "id": "rune.stat_2191621386"
+            }
+          ],
+          "type": "count",
+          "value": {
+            "min": 1
+          }
+        },
+        {
+          "disabled": true,
+          "filters": [
+            {
+              "disabled": false,
+              "id": "rune.stat_3981240776",
+              "value": {}
+            },
+            {
+              "disabled": false,
+              "id": "rune.stat_3175163625"
+            }
+          ],
+          "type": "count",
+          "value": {
+            "min": 1
+          }
+        },
+        {
+          "filters": [
+            {
+              "id": "rune.stat_1073847159"
+            },
+            {
+              "id": "rune.stat_226999623"
+            },
+            {
+              "id": "rune.stat_3639405795"
+            }
+          ],
+          "type": "count",
+          "value": {
+            "min": 1
+          }
+        }
+      ],
+      "status": {
+        "option": "securable"
+      }
+    },
+    "sort": {
+      "price": "asc"
+    }
+  },
+  "Tablets": {
+    "query": {
+      "stats": [
+        {
+          "disabled": true,
+          "filters": [
+            {
+              "id": "implicit.stat_3879011313",
+              "value": {
+                "min": 10
+              }
+            },
+            {
+              "id": "explicit.stat_551040294"
+            },
+            {
+              "id": "explicit.stat_900933517"
+            }
+          ],
+          "type": "and"
+        },
+        {
+          "disabled": true,
+          "filters": [
+            {
+              "disabled": false,
+              "id": "implicit.stat_2219129443",
+              "value": {
+                "min": 10
+              }
+            },
+            {
+              "disabled": false,
+              "id": "explicit.stat_3762913035",
+              "value": {
+                "min": 2
+              }
+            },
+            {
+              "id": "explicit.stat_2065500219"
+            }
+          ],
+          "type": "and"
+        },
+        {
+          "filters": [
+            {
+              "disabled": false,
+              "id": "explicit.stat_3762913035",
+              "value": {
+                "min": 5
+              }
+            },
+            {
+              "disabled": false,
+              "id": "explicit.stat_1210760818",
+              "value": {
+                "min": 0
+              }
+            }
+          ],
+          "type": "and"
+        }
+      ],
+      "status": {
+        "option": "securable"
+      }
+    },
+    "sort": {
+      "price": "asc"
+    }
+  }
+}

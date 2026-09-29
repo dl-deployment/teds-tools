@@ -6,12 +6,14 @@ import { EmptyState } from "@/components/ItemRow";
 import { useHubData } from "@/lib/useHubData";
 import { FALLBACK_LEAGUES, extractStatFilters } from "@/lib/poe";
 import TradePanel from "@/components/poe/TradePanel";
+import MakerPanel from "@/components/poe/MakerPanel";
 import LeaguePanel from "@/components/poe/LeaguePanel";
 import SystemPanel from "@/components/poe/SystemPanel";
 import { fetchPoe2Leagues, fetchStatTexts } from "./actions";
 
 const SECTIONS = [
   { id: "trade", label: "Trade", desc: "Saved trade searches", icon: "⇄" },
+  { id: "maker", label: "Maker", desc: "Merge stat groups into a search", icon: "⊕" },
   { id: "league", label: "League", desc: "Trade league", icon: "◍" },
   { id: "regex", label: "Regex", desc: "Search pattern builder", icon: "⌕" },
   { id: "note", label: "Note", desc: "League notes", icon: "✎" },
@@ -24,10 +26,14 @@ export default function PoePage() {
   const {
     ready,
     tradeConfigs,
+    makerGroups,
+    bundledPayloads,
     poeLeague,
     addTradeConfig,
     updateTradeConfig,
     removeTradeConfig,
+    addMakerGroup,
+    removeMakerGroup,
     setPoeLeague,
     replacePoeData,
   } = useHubData();
@@ -116,7 +122,7 @@ export default function PoePage() {
             <div className="text-[12.5px] text-muted mt-0.5">
               {active.id === "league"
                 ? `Selected: ${poeLeague}`
-                : active.id === "trade"
+                : active.id === "trade" || active.id === "maker"
                 ? `${active.desc} — run against ${poeLeague}`
                 : active.desc}
             </div>
@@ -126,11 +132,23 @@ export default function PoePage() {
             <TradePanel
               ready={ready}
               configs={tradeConfigs}
+              bundledPayloads={bundledPayloads}
               league={poeLeague}
               statTexts={statTexts}
               onAdd={addTradeConfig}
               onUpdate={updateTradeConfig}
               onRemove={removeTradeConfig}
+            />
+          )}
+
+          {activeId === "maker" && (
+            <MakerPanel
+              ready={ready}
+              savedGroups={makerGroups}
+              league={poeLeague}
+              onAddGroup={addMakerGroup}
+              onRemoveGroup={removeMakerGroup}
+              onAddConfig={addTradeConfig}
             />
           )}
 
@@ -149,14 +167,18 @@ export default function PoePage() {
             <SystemPanel
               ready={ready}
               tradeConfigs={tradeConfigs}
+              makerGroups={makerGroups}
               poeLeague={poeLeague}
               onReplace={replacePoeData}
             />
           )}
 
-          {activeId !== "trade" && activeId !== "league" && activeId !== "system" && (
-            <EmptyState text={`${active.label} — nothing here yet.`} />
-          )}
+          {activeId !== "trade" &&
+            activeId !== "maker" &&
+            activeId !== "league" &&
+            activeId !== "system" && (
+              <EmptyState text={`${active.label} — nothing here yet.`} />
+            )}
         </div>
       </ContentPane>
     </>

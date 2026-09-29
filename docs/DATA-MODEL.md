@@ -81,10 +81,10 @@ logged-in session. Weights can still be set by editing the payload JSON.
 
 ## POE Tools backup format
 
-The System sub-tab exports and imports the POE Tools data (the trade configs and
-`poeLeague` — notes, links and colour history are deliberately out of scope).
-`buildPoeExport` writes it, `parsePoeImport` validates it, and the data layer
-applies it through `replacePoeData`.
+The System sub-tab exports and imports the POE Tools data (the trade configs, the
+Trade Maker's saved groups and `poeLeague` — notes, links and colour history are
+deliberately out of scope). `buildPoeExport` writes it, `parsePoeImport`
+validates it, and the data layer applies it through `replacePoeData`.
 
 ```ts
 type PoeExport = {
@@ -94,8 +94,18 @@ type PoeExport = {
   exportedAt: string;   // ISO
   poeLeague: string;
   tradeConfigs: TradeConfig[];   // full payloads, ids and dates included
+  makerGroups: MakerGroup[];     // since version 2
 };
+
+type MakerGroup = { id: string; name: string; date: string; payload: object };
 ```
+
+Version 2 added `makerGroups`. A version 1 file still imports; `parsePoeImport`
+reports its groups as **null rather than `[]`** so `replacePoeData` can tell
+"this backup predates Maker groups" from "this backup has none", and leaves the
+stored ones alone in the first case. `MakerGroup` payloads are the same trade
+POST bodies as trade configs — see the Maker section below for what the group
+holds.
 
 `parsePoeImport` **throws** (one message for the caller to show) on anything
 that isn't a POE export, and validates each config has a name and a payload
@@ -110,11 +120,71 @@ Everything is stored as one JSON blob under `localStorage["teds-hub-data"]`.
 A one-time seed (`teds-hub-seeded` flag) inserts a welcome note and two
 example links on first run, only if both lists are empty.
 
-**Trade configs are not seeded** — the POE Tools list starts empty and configs
-are added at runtime through the Trade tab or restored from a backup through
-the System tab. Anything seeded into that collection would have been stranded
-for anyone who already had notes or links, since the welcome seed's guard
-(`notes.length === 0 && links.length === 0`) is already false for them.
+**Trade configs are seeded** from the bundled `public/poe/poe2-payloads.json`.
+That seed runs under its own flag (`teds-hub-poe-seeded`), not the welcome
+seed's guard, so it also reaches anyone who already had notes or links — the
+welcome seed's guard (`notes.length === 0 && links.length === 0`) is already
+false for them. Once seeded, the stored copy is authoritative: the flag means
+the seed never runs again, so a deleted config stays deleted rather than
+returning, and a name already saved is skipped, so a seed never overwrites a
+config the user has edited. The flag is set only after a successful fetch, so a
+failure (offline, or a bad file) retries on the next load instead of being
+stranded. `parseBundledPayloads` in `lib/poe.js` validates the file.
+
+The file is **fetched on every load of the POE page**, not just the first: the
+hook returns it as `bundledPayloads` (a name → payload map) so the Trade tab can
+tell a config that still matches the file from one the user has changed. That
+split is derived, not stored — `splitBundledConfigs` in `lib/poe.js` compares
+each saved config against the file by name **and payload**, so editing a seeded
+config (a bound, a group, the JSON, its name) moves it under "Your configs" with
+no migration and no flag, including for configs seeded long before the split
+existed. The two sections are labelled only when both have rows, and your own
+configs come first.
+
+**A bundled config has no ×**, the same as a bundled Maker group: it is the
+app's data, and deleting the stored copy would only bring it back the next time
+that name is missing from storage. Editing one takes it over — it stops matching
+the file, moves to "Your configs", and is deletable from there.
+
+The other bundled file, `public/poe/poe2-group-stats.json`, has the same
+name → payload shape but is **not** seeded: it is the Trade Maker tab's library
+of partial searches, fetched (and validated with `parseBundledPayloads`) each
+time that tab opens. It is read-only source material rather than stored user
+data, so it never goes through `useHubData` — a failed fetch just shows an
+error, and the next visit tries again.
+
+`mergeTradePayloads(entries)` in `lib/poe.js` folds a selection of those
+entries into one payload: the **first selected entry in list order** is the
+base, every other entry's `query.stats` groups are appended in order, and each
+other `query` filter section (`type_filters`, …) is merged with the base keeping
+any key it already set. `status`, `sort` and `name` stay the base's — they
+describe the search, not a selected group. Groups keep their own `disabled`
+flag, so a merge never silently switches part of a search on or off. The result
+is either searched (the same console snippet the Trade tab builds) or saved with
+`addTradeConfig`, after which it is an ordinary config in the Trade tab.
+
+**The list is `makerGroups` first, then the bundled file.** Your own groups come
+first — and since merge order is list order, that makes an imported group the
+base of a merge it takes part in, which is usually what you want of a filter you
+wrote yourself. A saved group also shadows a bundled entry of the same name, and
+the import refuses a name that is already taken so the list stays keyable and
+the export can't silently overwrite an entry.
+
+Maker groups are added from the Maker tab, never typed into `useHubData` by
+hand: `+ New group` takes a name and a pasted trade payload, lists that
+payload's `query.stats` groups, and stores the payload narrowed to the chosen
+one (`pickStatGroup`) — the rest of the pasted search, its filters, name, status
+and sort, comes along. `Export .json` writes the whole list back out through
+`buildPayloadMap` as one name → payload map and downloads it as
+`poe2-group-stats.json`, the same shape and filename as the bundled file, so the
+download can replace `public/poe/poe2-group-stats.json` as it stands.
+
+**The Trade tab exports the same way**, through the same `buildPayloadMap`: its
+`Export .json` writes every saved config — your configs first, then the bundled
+ones, the order they are listed in — and downloads it as `poe2-payloads.json`,
+the file it seeds from. Replacing `public/poe/poe2-payloads.json` with that
+download makes the list the default for a browser that has never seeded; a
+browser that has already seeded keeps its stored copy either way.
 
 Whatever a seed adds must be spread into the loaded `db` (`{ ...db, notes: … }`)
 rather than replacing it: `seedIfEmpty` writes straight to storage, so an
@@ -139,15 +209,21 @@ these keys must be checked against the constants above.
   addLink({ name, url }),
   removeLink(id),
   addColorToHistory({ r, g, b }),   // dedupes by hex, newest first, keeps 16
-  tradeConfigs, poeLeague,          // as above
+  tradeConfigs, makerGroups, poeLeague, bundledPayloads,   // as above
   addTradeConfig({ name, payload }),
+  updateTradeConfig(id, patch),
   removeTradeConfig(id),
+  addMakerGroup({ name, payload }),
+  removeMakerGroup(id),
   setPoeLeague(league),
+  replacePoeData({ tradeConfigs, poeLeague, makerGroups }),  // makerGroups optional
 }
 ```
 
-`tradeConfigs` and `poeLeague` are read with `|| []` / `|| DEFAULT_LEAGUE` so
-data saved before they existed still loads.
+`tradeConfigs`, `makerGroups` and `poeLeague` are read with `|| []` /
+`|| DEFAULT_LEAGUE` so data saved before they existed still loads.
+`replacePoeData` only rewrites `makerGroups` when the import carries them —
+passed as null by an older export, they are left as they are.
 
 **Call the hook once per page.** Each instance holds its own `db`, and every
 write persists a whole-object read-modify-write of `teds-hub-data` — two

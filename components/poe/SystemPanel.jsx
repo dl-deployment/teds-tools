@@ -38,7 +38,7 @@ async function copyText(text) {
   return ok;
 }
 
-export default function SystemPanel({ ready, tradeConfigs, poeLeague, onReplace }) {
+export default function SystemPanel({ ready, tradeConfigs, makerGroups, poeLeague, onReplace }) {
   const [text, setText] = useState("");
   const [error, setError] = useState("");
   const [note, setNote] = useState("");
@@ -47,8 +47,8 @@ export default function SystemPanel({ ready, tradeConfigs, poeLeague, onReplace 
 
   // Derived, so the export always mirrors what's stored right now.
   const exported = useMemo(
-    () => buildPoeExport({ tradeConfigs, poeLeague }),
-    [tradeConfigs, poeLeague]
+    () => buildPoeExport({ tradeConfigs, makerGroups, poeLeague }),
+    [tradeConfigs, makerGroups, poeLeague]
   );
   const exportedText = useMemo(() => JSON.stringify(exported, null, 2), [exported]);
 
@@ -93,13 +93,20 @@ export default function SystemPanel({ ready, tradeConfigs, poeLeague, onReplace 
     const count = onReplace(preview);
     setError("");
     setText("");
-    setNote(`Imported ${count} config${count === 1 ? "" : "s"} · ${preview.poeLeague}`);
+    // An export from before the Maker existed has no groups to report — and
+    // leaves the stored ones alone.
+    const groups =
+      preview.makerGroups === null
+        ? "saved groups kept"
+        : `${preview.makerGroups.length} Maker group${preview.makerGroups.length === 1 ? "" : "s"}`;
+    setNote(`Imported ${count} config${count === 1 ? "" : "s"} · ${groups} · ${preview.poeLeague}`);
   }
 
   return (
     <>
       <div className="text-[12.5px] text-muted mb-3">
-        Back up or restore the POE Tools data — {summarizePoeData({ tradeConfigs, poeLeague })}.
+        Back up or restore the POE Tools data —{" "}
+        {summarizePoeData({ tradeConfigs, makerGroups, poeLeague })}.
       </div>
 
       <div className="bg-bg border border-border rounded-lg px-2.5 pt-2 pb-2.5">

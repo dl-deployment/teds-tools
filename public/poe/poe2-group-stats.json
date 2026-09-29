@@ -1,0 +1,288 @@
+{
+  "[Prefix] Gloves and Boots T1": {
+    "query": {
+      "status": {
+        "option": "securable"
+      },
+      "stats": [
+        {
+          "type": "and",
+          "filters": [
+            {
+              "id": "explicit.stat_3484657501",
+              "value": {
+                "min": 160
+              },
+              "disabled": false
+            },
+            {
+              "id": "explicit.stat_1062208444",
+              "value": {
+                "min": 92
+              },
+              "disabled": false
+            },
+            {
+              "id": "explicit.stat_3299347043",
+              "value": {
+                "min": 120
+              },
+              "disabled": false
+            }
+          ]
+        }
+      ]
+    },
+    "sort": {
+      "price": "asc"
+    }
+  },
+  "[Prefix] Gloves and Boots T2": {
+    "query": {
+      "status": {
+        "option": "securable"
+      },
+      "stats": [
+        {
+          "type": "and",
+          "filters": [
+            {
+              "id": "explicit.stat_3484657501",
+              "value": {
+                "min": 160
+              },
+              "disabled": false
+            },
+            {
+              "id": "explicit.stat_1062208444",
+              "value": {
+                "min": 92
+              },
+              "disabled": false
+            },
+            {
+              "id": "explicit.stat_3299347043",
+              "value": {
+                "min": 120
+              },
+              "disabled": false
+            }
+          ]
+        }
+      ]
+    },
+    "sort": {
+      "price": "asc"
+    }
+  },
+  "[Prefix] Add Damage to Attacks": {
+    "query": {
+      "status": {
+        "option": "securable"
+      },
+      "stats": [
+        {
+          "filters": [
+            {
+              "id": "explicit.stat_3032590688"
+            },
+            {
+              "id": "explicit.stat_1754445556"
+            },
+            {
+              "id": "explicit.stat_4067062424"
+            },
+            {
+              "id": "explicit.stat_1573130764"
+            }
+          ],
+          "type": "and"
+        }
+      ]
+    },
+    "sort": {
+      "price": "asc"
+    }
+  },
+  "[Prefix] Add damage": {
+    "query": {
+      "status": {
+        "option": "securable"
+      },
+      "stats": [
+        {
+          "filters": [
+            {
+              "id": "explicit.stat_1940865751"
+            },
+            {
+              "id": "explicit.stat_3336890334"
+            },
+            {
+              "id": "explicit.stat_709508406"
+            },
+            {
+              "id": "explicit.stat_1037193709"
+            }
+          ],
+          "type": "and"
+        }
+      ]
+    },
+    "sort": {
+      "price": "asc"
+    }
+  },
+  "[Suffix] Resistances T2": {
+    "query": {
+      "status": {
+        "option": "any"
+      },
+      "stats": [
+        {
+          "type": "count",
+          "filters": [
+            {
+              "id": "explicit.stat_4220027924",
+              "value": {
+                "min": 36
+              },
+              "disabled": false
+            },
+            {
+              "id": "explicit.stat_1671376347",
+              "value": {
+                "min": 36
+              },
+              "disabled": false
+            },
+            {
+              "id": "explicit.stat_3372524247",
+              "value": {
+                "min": 36
+              },
+              "disabled": false
+            },
+            {
+              "id": "explicit.stat_2923486259",
+              "value": {
+                "min": 30
+              },
+              "disabled": false
+            },
+            {
+              "id": "explicit.stat_2901986750",
+              "value": {
+                "min": 12
+              },
+              "disabled": false
+            },
+            {
+              "id": "explicit.stat_3465022881",
+              "value": {
+                "min": 13
+              },
+              "disabled": false
+            },
+            {
+              "id": "explicit.stat_3393628375",
+              "value": {
+                "min": 13
+              },
+              "disabled": false
+            },
+            {
+              "id": "explicit.stat_378817135",
+              "value": {
+                "min": 13
+              },
+              "disabled": false
+            }
+          ],
+          "value": {
+            "min": 1
+          }
+        }
+      ]
+    },
+    "sort": {
+      "price": "asc"
+    }
+  },
+  "[Suffix] Resistances T1": {
+    "query": {
+      "status": {
+        "option": "any"
+      },
+      "stats": [
+        {
+          "type": "count",
+          "filters": [
+            {
+              "id": "explicit.stat_4220027924",
+              "value": {
+                "min": 41
+              },
+              "disabled": false
+            },
+            {
+              "id": "explicit.stat_1671376347",
+              "value": {
+                "min": 41
+              },
+              "disabled": false
+            },
+            {
+              "id": "explicit.stat_3372524247",
+              "value": {
+                "min": 41
+              },
+              "disabled": false
+            },
+            {
+              "id": "explicit.stat_2923486259",
+              "value": {
+                "min": 24
+              },
+              "disabled": false
+            },
+            {
+              "id": "explicit.stat_2901986750",
+              "value": {
+                "min": 15
+              },
+              "disabled": false
+            },
+            {
+              "id": "explicit.stat_3465022881",
+              "value": {
+                "min": 13
+              },
+              "disabled": false
+            },
+            {
+              "id": "explicit.stat_3393628375",
+              "value": {
+                "min": 13
+              },
+              "disabled": false
+            },
+            {
+              "id": "explicit.stat_378817135",
+              "value": {
+                "min": 13
+              },
+              "disabled": false
+            }
+          ],
+          "value": {
+            "min": 1
+          }
+        }
+      ]
+    },
+    "sort": {
+      "price": "asc"
+    }
+  }
+}
