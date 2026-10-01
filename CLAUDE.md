@@ -38,7 +38,7 @@ app/
   texttools/page.js Text Tools view — group list in the sub-sidebar, one text buffer
   color/page.js      Color Tools view — panel list in the sub-sidebar, all color state starts here
   assets/page.js     Assets Tools view — slicer / packer / viewer in the sub-sidebar
-  poe/page.js       POE Tools view — Trade / Maker / League / Regex / Note / System sections
+  poe/page.js       POE Tools view — Trade / Maker / Exchange / League / Regex / Note / System sections
   poe/actions.js     server action: reads the poe2 league list + stat texts (see lib/poe.js)
   notes/page.js     Notes view
   links/page.js     Links view
@@ -49,12 +49,13 @@ components/
   ItemRow.js         NoteRow / LinkRow / TradeConfigRow / EmptyState
   color/             Color Tools panels (swatch, input, palette, contrast, shades, gradient)
   assets/            Assets Tools (slicer, packer, viewer) + Shared.jsx (DropZone, FrameOverlay, Section, toast)
-  poe/               POE Tools panels (trade config list + snippet + Maker merge, league picker)
+  poe/               POE Tools panels (trade config list + snippet + Maker merge, league picker,
+                     Exchange tabs) + NumberField.jsx (commit-on-blur numeric input)
 lib/
   useHubData.js      ALL data reads/writes go through this hook
   tools.js           pure functions for the Tools + Text Tools pages
   color.js           pure color math (conversions, palettes, WCAG contrast, shades/tints)
-  poe.js             pure trade payload, snippet, Maker merge and import/export helpers
+  poe.js             pure trade payload, snippet, Maker merge, Exchange rates and import/export helpers
   spritesheet.js     pure Cocos atlas helpers (plist read/write, shelf packing)
   zip.js             store-only ZIP writer + downloadBlob — no zip dependency
   lunar.js           Vietnamese lunar calendar maths + date formatting
@@ -64,7 +65,8 @@ lib/
 public/
   static_pages/      standalone HTML pages: a folder with index.html, or a loose .html
   poe/               poe2-payloads.json (Trade seed) + poe2-group-stats.json (Maker source)
-                     — each tab's Export .json writes its own file back out
+                     + poe2-exchange-cost.json (Exchange Cost seed) — each tab's
+                     Export .json writes its own file back out
 docs/
   DESIGN.md          design tokens (colors, spacing, type) — read before touching styles
   DATA-MODEL.md       shape of notes/links + how to add a new entity type

@@ -7,6 +7,7 @@ import { useHubData } from "@/lib/useHubData";
 import { FALLBACK_LEAGUES, extractStatFilters } from "@/lib/poe";
 import TradePanel from "@/components/poe/TradePanel";
 import MakerPanel from "@/components/poe/MakerPanel";
+import ExchangePanel from "@/components/poe/ExchangePanel";
 import LeaguePanel from "@/components/poe/LeaguePanel";
 import SystemPanel from "@/components/poe/SystemPanel";
 import { fetchPoe2Leagues, fetchStatTexts } from "./actions";
@@ -14,6 +15,7 @@ import { fetchPoe2Leagues, fetchStatTexts } from "./actions";
 const SECTIONS = [
   { id: "trade", label: "Trade", desc: "Saved trade searches", icon: "⇄" },
   { id: "maker", label: "Maker", desc: "Merge stat groups into a search", icon: "⊕" },
+  { id: "exchange", label: "Exchange", desc: "Cost list, duo and triple cycles", icon: "⇅" },
   { id: "league", label: "League", desc: "Trade league", icon: "◍" },
   { id: "regex", label: "Regex", desc: "Search pattern builder", icon: "⌕" },
   { id: "note", label: "Note", desc: "League notes", icon: "✎" },
@@ -27,6 +29,9 @@ export default function PoePage() {
     ready,
     tradeConfigs,
     makerGroups,
+    exchangeCosts,
+    duoGroups,
+    tripleGroups,
     bundledPayloads,
     poeLeague,
     addTradeConfig,
@@ -34,6 +39,15 @@ export default function PoePage() {
     removeTradeConfig,
     addMakerGroup,
     removeMakerGroup,
+    addExchangeCost,
+    updateExchangeCost,
+    removeExchangeCost,
+    addDuoGroup,
+    updateDuoGroup,
+    removeDuoGroup,
+    addTripleGroup,
+    updateTripleGroup,
+    removeTripleGroup,
     setPoeLeague,
     replacePoeData,
   } = useHubData();
@@ -152,6 +166,24 @@ export default function PoePage() {
             />
           )}
 
+          {activeId === "exchange" && (
+            <ExchangePanel
+              ready={ready}
+              costs={exchangeCosts}
+              duoGroups={duoGroups}
+              tripleGroups={tripleGroups}
+              onAddCost={addExchangeCost}
+              onUpdateCost={updateExchangeCost}
+              onRemoveCost={removeExchangeCost}
+              onAddDuo={addDuoGroup}
+              onUpdateDuo={updateDuoGroup}
+              onRemoveDuo={removeDuoGroup}
+              onAddTriple={addTripleGroup}
+              onUpdateTriple={updateTripleGroup}
+              onRemoveTriple={removeTripleGroup}
+            />
+          )}
+
           {activeId === "league" && (
             <LeaguePanel
               leagues={leagues}
@@ -168,6 +200,9 @@ export default function PoePage() {
               ready={ready}
               tradeConfigs={tradeConfigs}
               makerGroups={makerGroups}
+              exchangeCosts={exchangeCosts}
+              duoGroups={duoGroups}
+              tripleGroups={tripleGroups}
               poeLeague={poeLeague}
               onReplace={replacePoeData}
             />
@@ -175,6 +210,7 @@ export default function PoePage() {
 
           {activeId !== "trade" &&
             activeId !== "maker" &&
+            activeId !== "exchange" &&
             activeId !== "league" &&
             activeId !== "system" && (
               <EmptyState text={`${active.label} — nothing here yet.`} />

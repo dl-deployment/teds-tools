@@ -30,14 +30,44 @@ type TradeConfig = {
   payload: object;   // the raw Path of Exile trade POST body, stored verbatim
 };
 
+type ExchangeCost = {
+  id: string;
+  name: string;        // e.g. "Divine Orb"
+  cost: number | null; // price in one shared unit; null = not priced yet
+};
+
+// A cycle group through the costs: the items it visits, the rate between each
+// pair (one fewer rate than items), and the amount to invest.
+type DuoGroup = {
+  id: string;
+  aName: string;       // item names, held rather than ids (see the Exchange section)
+  bName: string;
+  rateAtoB: number | null;  // how many B one A buys
+  rateBtoA: number | null;  // how many A one B buys
+  base: number | null;      // amount of the A item run through the cycle
+};
+
+// The same walk with one more item: A → B → C → A.
+type TripleGroup = DuoGroup & { cName: string; rateBtoC: number | null; rateCtoA: number | null };
+
 type DB = {
   notes: Note[];
   links: Link[];
   colorHistory: ColorHistoryEntry[];  // most recent first, capped at 16
   tradeConfigs: TradeConfig[];
+  makerGroups: MakerGroup[];
+  exchangeCosts: ExchangeCost[];
+  duoGroups: DuoGroup[];
+  tripleGroups: TripleGroup[];
   poeLeague: string;   // league the POE trade searches run against
 };
 ```
+
+The two cycle types are the same row with a different number of items, and
+nothing in the code treats them separately: `CYCLE_SHAPES` in `lib/poe.js` names
+the fields each one carries, and the importer, the data layer and the cards all
+read that one table. Adding a four-item cycle would mean adding a shape there,
+not a third copy of everything.
 
 `payload` is kept exactly as pasted — nothing normalises it — so a config can
 be copied straight into or out of the console snippet (see `lib/poe.js`). It is
@@ -64,7 +94,23 @@ The rows are editable in place, the way the trade site's filter builder works:
 `removeStatFilter` drops a filter — all returning a new payload saved through
 `updateTradeConfig`. `parseStatBound` turns a min/max box's text into a number,
 treating `""` as "no bound" rather than 0 — which is why bounds are stored as
-`null` internally instead of being omitted.
+`null` internally instead of being omitted. It strips thousands separators
+first, the same as `parseNumberField`, since the Exchange tab's grouped boxes
+show "1,000" at rest and someone editing one may well type it back that way.
+
+## Numeric boxes
+
+Every editable number in the POE section goes through
+`components/poe/NumberField.jsx`, which commits on blur or Enter rather than on
+every keystroke — typing "100" should save once, not also "1" and "10" on the
+way there. A `null` value shows as empty, meaning "not set" rather than 0.
+
+Its `group` prop switches a box to thousands-grouped display. That needs a
+`type="text"` input, because a `type="number"` box cannot hold a comma: grouped
+boxes show the formatted figure at rest and the plain digits while they have
+focus, and are read back through `parseNumberField`. `groupNumber` does the
+grouping without touching the digits, unlike `formatRate`, whose significant
+figures would round a stored value's display away from what is actually stored.
 
 **`disabled` exists at both levels and they are independent.** On a group it
 switches the whole group off, on a filter just that stat; neither clears the
@@ -95,17 +141,21 @@ type PoeExport = {
   poeLeague: string;
   tradeConfigs: TradeConfig[];   // full payloads, ids and dates included
   makerGroups: MakerGroup[];     // since version 2
+  exchangeCosts: ExchangeCost[]; // since version 3
+  duoGroups: DuoGroup[];         // since version 3
+  tripleGroups: TripleGroup[];   // since version 4
 };
 
 type MakerGroup = { id: string; name: string; date: string; payload: object };
 ```
 
-Version 2 added `makerGroups`. A version 1 file still imports; `parsePoeImport`
-reports its groups as **null rather than `[]`** so `replacePoeData` can tell
-"this backup predates Maker groups" from "this backup has none", and leaves the
-stored ones alone in the first case. `MakerGroup` payloads are the same trade
-POST bodies as trade configs — see the Maker section below for what the group
-holds.
+Version 2 added `makerGroups`, version 3 the Exchange `exchangeCosts` and
+`duoGroups`, and version 4 `tripleGroups`. An older file still imports;
+`parsePoeImport` reports every collection added after the file was written as
+**null rather than `[]`** so `replacePoeData` can tell "this backup predates it"
+from "this backup has none", and leaves the stored collection alone in the first
+case. `MakerGroup` payloads are the same trade POST bodies as trade configs — see
+the Maker section below for what the group holds.
 
 `parsePoeImport` **throws** (one message for the caller to show) on anything
 that isn't a POE export, and validates each config has a name and a payload
@@ -186,6 +236,74 @@ the file it seeds from. Replacing `public/poe/poe2-payloads.json` with that
 download makes the list the default for a browser that has never seeded; a
 browser that has already seeded keeps its stored copy either way.
 
+## POE Tools → Exchange
+
+The Exchange sub-tab of the POE section has three tabs of its own: **Exchange
+Cost**, **Duo Exchange** and **Triple Exchange**. All three share the
+`exchangeCosts` collection — a price list the cycle tabs pick their items out of
+and price their holdings at.
+
+An `ExchangeCost` is a name and a cost. The cost is a price in one shared,
+unnamed unit, so only the ratios between entries carry meaning — `cost` may be
+`null` for an item that has been added but not priced, which just means its legs
+can't be valued. Nothing in the tab assumes a particular currency.
+
+`exchangeCosts` **is seeded** from the bundled `public/poe/poe2-exchange-cost.json`,
+the same one-time way trade configs are seeded from `poe2-payloads.json` but
+under its own flag (`teds-hub-poe-exchange-seeded`), so it also reaches a
+browser that had already seeded payloads. The file is a plain name → price map
+and is read by `parseExchangeCosts`, which returns `null` for a blank price and
+throws on anything else non-numeric. Unlike the payload file it is **not** kept
+in hook state: every row in the tab is editable and deletable, including the
+seeded ones, so there is no bundled/own split to draw and no reason to re-read
+the file after the seed. `Export .json` writes the list back out through
+`buildExchangeCostMap` as `poe2-exchange-cost.json`, the file it seeds from.
+
+A cycle group is one walk through the cost list back to where it started: a Duo
+group is A → B → A and a Triple group A → B → C → A. Each carries the items it
+visits, the rate between each pair, and nothing else. `rateAtoB` is how many B
+one A buys, and so on round, so a finished cycle leaves the product of all the
+rates of the A you started with.
+
+`base` is the card's remaining input beyond the rates — the amount of the first
+item to invest in the cycle, shown in the box under that item's select. The rest
+of the card is derived. `cycleRun({ base, legs })` walks it: `legs` is one entry
+per leg in order, each naming the rate out of the holding you arrive with and the
+price of the item that leg leaves you holding, so the last leg's price is the
+first item's again. It returns `amounts[i]` (what the investment has become after
+leg `i`), `golds[i]` (what that holding is worth at the listed prices),
+`totalGold` (what the run ties up altogether), the `profit` in the item it
+started from, and `goldPerProfit` — `totalGold` over that profit, i.e. the gold
+the run ties up for each one it makes, which is what makes two flips of different
+sizes comparable. "Gold" is whatever unit the cost list prices in; only the ratio
+matters.
+
+Every field is null until the inputs it needs are filled in — a leg that can't be
+worked out yet carries null and so does the leg after it, and `goldPerProfit` is
+null on a break-even run, where dividing by the zero profit would only produce an
+infinity — so a half-filled card leaves its cells quiet rather than printing
+figures it hasn't earned.
+
+Both tabs share one card. It draws the chain and the two derived rows on one CSS
+grid, so the figures sit in the same columns as the item boxes and rate boxes
+above them — each of those cells names its column outright, and the column widths
+are built from the number of legs (`cycleGrid`), since that is what decides how
+long the chain is and how narrow the grid can get before the card scrolls. The
+two rows are labelled **Amount** (what you hold at each step) and **Gold** (what
+each hold is worth), and both end in a ruled-off **Result** column holding the
+run's two totals: the profit beside Amount, and beside Gold the gold outlay with
+`goldPerProfit` following it in brackets — `20,500 (4,100)`. A break-even run
+prints the outlay on its own, having no ratio to show. The chain row leaves the
+label column empty and heads the Result column.
+
+**Cycle groups name their items rather than referencing their ids.** The chain is
+what the group means, so an export reads as the chain it describes and a group
+survives a cost list that is still being edited. The cost list calls
+`updateExchangeCost`, which rewrites the name in every cycle group that used it —
+both tabs, every item field of the shape; a group whose item is *deleted* keeps
+the stale name, and the card shows it as "… (not in cost list)" instead of
+silently switching to another item.
+
 Whatever a seed adds must be spread into the loaded `db` (`{ ...db, notes: … }`)
 rather than replacing it: `seedIfEmpty` writes straight to storage, so an
 object literal without a key would drop that whole collection.
@@ -209,21 +327,36 @@ these keys must be checked against the constants above.
   addLink({ name, url }),
   removeLink(id),
   addColorToHistory({ r, g, b }),   // dedupes by hex, newest first, keeps 16
-  tradeConfigs, makerGroups, poeLeague, bundledPayloads,   // as above
+  tradeConfigs, makerGroups, exchangeCosts, duoGroups, tripleGroups,
+  poeLeague, bundledPayloads,
   addTradeConfig({ name, payload }),
   updateTradeConfig(id, patch),
   removeTradeConfig(id),
   addMakerGroup({ name, payload }),
   removeMakerGroup(id),
+  addExchangeCost({ name, cost }),
+  updateExchangeCost(id, patch),   // a rename cascades to every cycle group
+  removeExchangeCost(id),
+  addDuoGroup({ aName, bName, rateAtoB, rateBtoA }),
+  updateDuoGroup(id, patch),
+  removeDuoGroup(id),
+  addTripleGroup({ aName, bName, cName, rateAtoB, rateBtoC, rateCtoA }),
+  updateTripleGroup(id, patch),
+  removeTripleGroup(id),
   setPoeLeague(league),
-  replacePoeData({ tradeConfigs, poeLeague, makerGroups }),  // makerGroups optional
+  replacePoeData({ tradeConfigs, poeLeague, makerGroups,   // the last four are
+                   exchangeCosts, duoGroups, tripleGroups }), // optional
 }
 ```
 
-`tradeConfigs`, `makerGroups` and `poeLeague` are read with `|| []` /
-`|| DEFAULT_LEAGUE` so data saved before they existed still loads.
-`replacePoeData` only rewrites `makerGroups` when the import carries them —
-passed as null by an older export, they are left as they are.
+Both cycle collections are built by one `cycleCrud` machine inside the hook,
+driven by the tab's `CYCLE_SHAPES` entry, and the hook just hands out the results
+under their own names.
+
+The POE collections are all read with `|| []` / `|| DEFAULT_LEAGUE` so data
+saved before they existed still loads. `replacePoeData` only rewrites
+`makerGroups`, `exchangeCosts`, `duoGroups` and `tripleGroups` when the import
+carries them — passed as null by an older export, they are left as they are.
 
 **Call the hook once per page.** Each instance holds its own `db`, and every
 write persists a whole-object read-modify-write of `teds-hub-data` — two

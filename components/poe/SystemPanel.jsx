@@ -38,7 +38,16 @@ async function copyText(text) {
   return ok;
 }
 
-export default function SystemPanel({ ready, tradeConfigs, makerGroups, poeLeague, onReplace }) {
+export default function SystemPanel({
+  ready,
+  tradeConfigs,
+  makerGroups,
+  exchangeCosts,
+  duoGroups,
+  tripleGroups,
+  poeLeague,
+  onReplace,
+}) {
   const [text, setText] = useState("");
   const [error, setError] = useState("");
   const [note, setNote] = useState("");
@@ -47,8 +56,8 @@ export default function SystemPanel({ ready, tradeConfigs, makerGroups, poeLeagu
 
   // Derived, so the export always mirrors what's stored right now.
   const exported = useMemo(
-    () => buildPoeExport({ tradeConfigs, makerGroups, poeLeague }),
-    [tradeConfigs, makerGroups, poeLeague]
+    () => buildPoeExport({ tradeConfigs, makerGroups, exchangeCosts, duoGroups, tripleGroups, poeLeague }),
+    [tradeConfigs, makerGroups, exchangeCosts, duoGroups, tripleGroups, poeLeague]
   );
   const exportedText = useMemo(() => JSON.stringify(exported, null, 2), [exported]);
 
@@ -93,20 +102,28 @@ export default function SystemPanel({ ready, tradeConfigs, makerGroups, poeLeagu
     const count = onReplace(preview);
     setError("");
     setText("");
-    // An export from before the Maker existed has no groups to report — and
-    // leaves the stored ones alone.
-    const groups =
-      preview.makerGroups === null
-        ? "saved groups kept"
-        : `${preview.makerGroups.length} Maker group${preview.makerGroups.length === 1 ? "" : "s"}`;
-    setNote(`Imported ${count} config${count === 1 ? "" : "s"} · ${groups} · ${preview.poeLeague}`);
+    // A collection the file predates arrives as null and is left as it is, so
+    // the note says "kept" rather than reporting a count of nothing.
+    const part = (list, kept, counted) =>
+      list === null ? kept : `${list.length} ${counted}`;
+
+    setNote(
+      [
+        `Imported ${count} config${count === 1 ? "" : "s"}`,
+        part(preview.makerGroups, "Maker groups kept", "Maker groups"),
+        part(preview.exchangeCosts, "exchange costs kept", "exchange items"),
+        part(preview.duoGroups, "Duo groups kept", "Duo groups"),
+        part(preview.tripleGroups, "Triple groups kept", "Triple groups"),
+        preview.poeLeague,
+      ].join(" · ")
+    );
   }
 
   return (
     <>
       <div className="text-[12.5px] text-muted mb-3">
         Back up or restore the POE Tools data —{" "}
-        {summarizePoeData({ tradeConfigs, makerGroups, poeLeague })}.
+        {summarizePoeData({ tradeConfigs, makerGroups, exchangeCosts, duoGroups, tripleGroups, poeLeague })}.
       </div>
 
       <div className="bg-bg border border-border rounded-lg px-2.5 pt-2 pb-2.5">
@@ -162,7 +179,7 @@ export default function SystemPanel({ ready, tradeConfigs, makerGroups, poeLeagu
             ) : preview ? (
               <>Replaces all POE data with {summarizePoeData(preview)}.</>
             ) : (
-              "Replaces every saved config and the selected league. Notes and links are untouched."
+              "Replaces every saved config, the Exchange lists and the selected league. Notes and links are untouched."
             )}
           </div>
           <button

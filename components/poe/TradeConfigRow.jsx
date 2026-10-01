@@ -1,41 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import NumberField from "./NumberField";
 import { parseStatBound, statGroupHasBounds, statGroupHelp, statGroupLabel } from "@/lib/poe";
 
-const fieldClass =
-  "w-[68px] flex-shrink-0 bg-bg border border-border text-text px-1.5 py-1 rounded-lg text-[12.5px] text-center font-mono placeholder:font-sans placeholder:text-muted/60";
-
-/**
- * One min/max box. The bound is committed on blur or Enter rather than on every
- * keystroke, so typing "100" writes once instead of also saving "1" and "10"
- * on the way there.
- */
-function BoundInput({ label, value, dimmed, onCommit }) {
-  const [text, setText] = useState(value == null ? "" : String(value));
-
-  // Re-sync when the payload changes underneath us (a JSON edit, or the value
-  // landing from storage after mount).
-  useEffect(() => {
-    setText(value == null ? "" : String(value));
-  }, [value]);
-
-  return (
-    <input
-      type="number"
-      step="any"
-      inputMode="decimal"
-      value={text}
-      placeholder={label}
-      onChange={(e) => setText(e.target.value)}
-      onBlur={() => onCommit(text)}
-      onKeyDown={(e) => {
-        if (e.key === "Enter") e.currentTarget.blur();
-      }}
-      className={`${fieldClass} ${dimmed ? "opacity-50" : ""}`}
-    />
-  );
-}
+const boundWidth = "w-[68px]";
 
 /**
  * One `query.stats` group, laid out like the trade site's filter panel: the
@@ -71,14 +40,16 @@ function StatGroup({ group, onGroupChange, onFilterChange, onFilterRemove }) {
         <span className="flex-1 min-w-0" />
         {statGroupHasBounds(group.type) ? (
           <>
-            <BoundInput
-              label="min"
+            <NumberField
+              className={boundWidth}
+              placeholder="min"
               value={group.min}
               dimmed={group.disabled}
               onCommit={(text) => onGroupChange(group, { min: parseStatBound(text) })}
             />
-            <BoundInput
-              label="max"
+            <NumberField
+              className={boundWidth}
+              placeholder="max"
               value={group.max}
               dimmed={group.disabled}
               onCommit={(text) => onGroupChange(group, { max: parseStatBound(text) })}
@@ -109,14 +80,16 @@ function StatGroup({ group, onGroupChange, onFilterChange, onFilterRemove }) {
             >
               {f.text}
             </span>
-            <BoundInput
-              label="min"
+            <NumberField
+              className={boundWidth}
+              placeholder="min"
               value={f.min}
               dimmed={f.disabled}
               onCommit={(text) => onFilterChange(f, { min: parseStatBound(text) })}
             />
-            <BoundInput
-              label="max"
+            <NumberField
+              className={boundWidth}
+              placeholder="max"
               value={f.max}
               dimmed={f.disabled}
               onCommit={(text) => onFilterChange(f, { max: parseStatBound(text) })}

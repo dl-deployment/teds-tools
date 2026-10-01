@@ -92,11 +92,24 @@ below that and the descriptions ellipsize.
   - Assets Tools: one `SubItem` per tool (Slicer, Packer, Viewer); the pane
     shows the selected tool's own sections (drop zone, settings, preview,
     result). Switching tools drops the loaded files with it.
-  - POE Tools: one `SubItem` per section (Trade, League, Regex, Note, System).
-    Regex and Note are still placeholders. Trade lists the saved trade configs
-    and the generated console snippet; League picks the league the searches run
-    against; System exports/imports the POE data. All render inline in the
-    content pane, same as the other tools.
+  - POE Tools: one `SubItem` per section (Trade, Maker, Exchange, League,
+    Regex, Note, System). Regex and Note are still placeholders. Trade lists the
+    saved trade configs and the generated console snippet; League picks the
+    league the searches run against; System exports/imports the POE data. All
+    render inline in the content pane, same as the other tools.
+    Exchange is the one section with a second level of navigation: a tab row
+    (Duo Exchange / Triple Exchange / Exchange Cost) sitting on a `border-b`
+    at the top of the pane, each tab a `rounded-lg` pill using the active
+    `SubItem` colours (`bg-accent/[0.14] border-accent/30`). Use the same pill
+    row for any other section that outgrows a single view rather than adding
+    more `SubItem`s to the sub-sidebar.
+    A cycle group (Duo and Triple alike) is the one place that breaks the
+    wrapping-flex rule for tool rows: it is a CSS grid whose columns are the
+    item boxes, the rate boxes and the dashes between them, because the amount
+    and gold figures have to land under the exact item they describe. Columns
+    do not reflow, so the grid carries a floor width — built from the number of
+    legs — and the card scrolls sideways rather than squashing when the pane is
+    narrower than that.
     A trade config nests two levels of surface: the config itself is a
     `bg-panel2` `rounded-xl` segment inside the page's `bg-panel` card, and each
     of its stat-filter groups is a `bg-bg` `rounded-lg` segment inside that,
