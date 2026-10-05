@@ -33,6 +33,7 @@ type TradeConfig = {
 type ExchangeCost = {
   id: string;
   name: string;        // e.g. "Divine Orb"
+  group: string;       // one of EXCHANGE_GROUPS; "Other" when missing/unrecognised
   cost: number | null; // price in one shared unit; null = not priced yet
 };
 
@@ -150,7 +151,9 @@ type MakerGroup = { id: string; name: string; date: string; payload: object };
 ```
 
 Version 2 added `makerGroups`, version 3 the Exchange `exchangeCosts` and
-`duoGroups`, and version 4 `tripleGroups`. An older file still imports;
+`duoGroups`, version 4 `tripleGroups`, and version 5 the `group` field on each
+Exchange cost (which an older file simply leaves off, defaulting to "Other"). An
+older file still imports;
 `parsePoeImport` reports every collection added after the file was written as
 **null rather than `[]`** so `replacePoeData` can tell "this backup predates it"
 from "this backup has none", and leaves the stored collection alone in the first
@@ -243,20 +246,28 @@ Cost**, **Duo Exchange** and **Triple Exchange**. All three share the
 `exchangeCosts` collection — a price list the cycle tabs pick their items out of
 and price their holdings at.
 
-An `ExchangeCost` is a name and a cost. The cost is a price in one shared,
-unnamed unit, so only the ratios between entries carry meaning — `cost` may be
-`null` for an item that has been added but not priced, which just means its legs
-can't be valued. Nothing in the tab assumes a particular currency.
+An `ExchangeCost` is a name, a group and a cost. The cost is a price in one
+shared, unnamed unit, so only the ratios between entries carry meaning — `cost`
+may be `null` for an item that has been added but not priced, which just means
+its legs can't be valued. Nothing in the tab assumes a particular currency.
+
+The **Exchange Cost tab** splits its list into the buckets in
+`EXCHANGE_GROUPS` — Currency, Fragment, Ritual, Abyss, Other — one sub-tab each.
+`group` is one of those; `normalizeExchangeGroup` folds anything missing or
+unrecognised (an older saved row, a hand-edited file) into "Other". The add form
+writes into the group whose sub-tab is active, and each row's group select moves
+it between buckets. Names stay unique across the whole list, since the cycle tabs
+look items up by name regardless of group.
 
 `exchangeCosts` **is seeded** from the bundled `public/poe/poe2-exchange-cost.json`,
 the same one-time way trade configs are seeded from `poe2-payloads.json` but
 under its own flag (`teds-hub-poe-exchange-seeded`), so it also reaches a
-browser that had already seeded payloads. The file is a plain name → price map
-and is read by `parseExchangeCosts`, which returns `null` for a blank price and
-throws on anything else non-numeric. Unlike the payload file it is **not** kept
-in hook state: every row in the tab is editable and deletable, including the
-seeded ones, so there is no bundled/own split to draw and no reason to re-read
-the file after the seed. `Export .json` writes the list back out through
+browser that had already seeded payloads. The file is a group → { name → price }
+map and is read by `parseExchangeCosts`, which returns `null` for a blank price
+and throws on anything else non-numeric. Unlike the payload file it is **not**
+kept in hook state: every row in the tab is editable and deletable, including
+the seeded ones, so there is no bundled/own split to draw and no reason to
+re-read the file after the seed. `Export .json` writes the list back out through
 `buildExchangeCostMap` as `poe2-exchange-cost.json`, the file it seeds from.
 
 A cycle group is one walk through the cost list back to where it started: a Duo
@@ -334,7 +345,7 @@ these keys must be checked against the constants above.
   removeTradeConfig(id),
   addMakerGroup({ name, payload }),
   removeMakerGroup(id),
-  addExchangeCost({ name, cost }),
+  addExchangeCost({ name, cost, group }),
   updateExchangeCost(id, patch),   // a rename cascades to every cycle group
   removeExchangeCost(id),
   addDuoGroup({ aName, bName, rateAtoB, rateBtoA }),

@@ -7,10 +7,13 @@ import { downloadBlob } from "@/lib/zip";
 import {
   CYCLE_SHAPES,
   EXCHANGE_COST_FILE,
+  EXCHANGE_GROUPS,
   buildExchangeCostMap,
   cycleRun,
   exchangeCost,
   formatRate,
+  groupNumber,
+  normalizeExchangeGroup,
   parseNumberField,
   summarizeExchangeCosts,
 } from "@/lib/poe";
@@ -29,6 +32,9 @@ const fieldClass =
 
 const removeBtn =
   "text-muted hover:text-red-400 hover:bg-red-400/10 cursor-pointer text-base leading-none px-1.5 py-0.5 rounded-md flex-shrink-0";
+
+const editBtn =
+  "flex-shrink-0 bg-transparent border border-border text-muted hover:text-text px-2 py-1 rounded-md text-[11.5px]";
 
 /** The label column a cycle card's Amount and Gold rows line up on. */
 const rowLabel = "min-w-0 truncate text-[11px] uppercase tracking-wide text-muted";
@@ -132,9 +138,15 @@ function ItemSelect({ value, names, onChange }) {
  * only runs once, so removing a seeded item sticks.
  */
 function ExchangeCostPanel({ costs, onAdd, onUpdate, onRemove }) {
+  const [tab, setTab] = useState(EXCHANGE_GROUPS[0]);
+  const [editingId, setEditingId] = useState(null);
   const [name, setName] = useState("");
   const [costText, setCostText] = useState("");
   const [error, setError] = useState("");
+
+  const activeGroup = EXCHANGE_GROUPS.includes(tab) ? tab : EXCHANGE_GROUPS[0];
+  const items = costs.filter((c) => normalizeExchangeGroup(c.group) === activeGroup);
+  const countIn = (group) => costs.filter((c) => normalizeExchangeGroup(c.group) === group).length;
 
   function add() {
     const value = parseNumberField(costText);
@@ -151,7 +163,7 @@ function ExchangeCostPanel({ costs, onAdd, onUpdate, onRemove }) {
       setError("That item is already in the list.");
       return;
     }
-    onAdd({ name: trimmed, cost: value });
+    onAdd({ name: trimmed, cost: value, group: activeGroup });
     setName("");
     setCostText("");
     setError("");
@@ -174,6 +186,30 @@ function ExchangeCostPanel({ costs, onAdd, onUpdate, onRemove }) {
 
   return (
     <>
+      <div className="flex items-center gap-1.5 flex-wrap pb-2.5 mb-3 border-b border-border">
+        {EXCHANGE_GROUPS.map((g) => {
+          const active = g === activeGroup;
+          return (
+            <button
+              key={g}
+              type="button"
+              onClick={() => {
+                setTab(g);
+                setEditingId(null);
+              }}
+              className={`px-3 py-1.5 rounded-lg text-[12.5px] border ${
+                active
+                  ? "bg-accent/[0.14] border-accent/30 text-text"
+                  : "border-transparent text-muted hover:text-text hover:bg-panel2"
+              }`}
+            >
+              {g}
+              <span className="text-muted ml-1">({countIn(g)})</span>
+            </button>
+          );
+        })}
+      </div>
+
       <div className="flex justify-between items-center gap-3 flex-wrap mb-2.5">
         <div className="text-[12.5px] text-muted">
           {summarizeExchangeCosts(costs)} — each priced in one shared unit, so only the ratios matter.
@@ -183,31 +219,56 @@ function ExchangeCostPanel({ costs, onAdd, onUpdate, onRemove }) {
         </button>
       </div>
 
-      {costs.length === 0 ? (
+      {items.length === 0 ? (
         <EmptyState
-          text={`No items yet — add one below, or drop entries into public/poe/${EXCHANGE_COST_FILE}.`}
+          text={
+            costs.length === 0
+              ? `No items yet — add one below, or drop entries into public/poe/${EXCHANGE_COST_FILE}.`
+              : `No ${activeGroup} items — add one below.`
+          }
         />
       ) : (
         <div className="flex flex-col gap-2">
-          {costs.map((entry) => (
-            <div
-              key={entry.id}
-              className="flex items-center gap-2 bg-panel2 border border-border rounded-xl px-3 py-2"
-            >
-              <NameInput value={entry.name} onCommit={(text) => rename(entry, text)} />
-              <NumberField
-                className="w-28"
-                align="right"
-                group
-                placeholder="cost"
-                value={entry.cost}
-                onCommit={(text) => onUpdate(entry.id, { cost: parseNumberField(text) })}
-              />
-              <div title="Remove this item" className={removeBtn} onClick={() => onRemove(entry.id)}>
-                ×
+          {items.map((entry) =>
+            editingId === entry.id ? (
+              <div
+                key={entry.id}
+                className="flex items-center gap-2 bg-panel2 border border-border rounded-xl px-3 py-2"
+              >
+                <NameInput value={entry.name} onCommit={(text) => rename(entry, text)} />
+                <NumberField
+                  className="w-28"
+                  align="right"
+                  group
+                  placeholder="cost"
+                  value={entry.cost}
+                  onCommit={(text) => onUpdate(entry.id, { cost: parseNumberField(text) })}
+                />
+                <button onClick={() => setEditingId(null)} className={editBtn}>
+                  Done
+                </button>
+                <div title="Remove this item" className={removeBtn} onClick={() => onRemove(entry.id)}>
+                  ×
+                </div>
               </div>
-            </div>
-          ))}
+            ) : (
+              <div
+                key={entry.id}
+                className="flex items-center gap-2 bg-panel2 border border-border rounded-xl px-3 py-2"
+              >
+                <span className="flex-1 min-w-0 truncate text-[13px] text-text">{entry.name}</span>
+                <span className="w-28 flex-shrink-0 text-right font-mono text-[12.5px] text-text">
+                  {groupNumber(entry.cost)}
+                </span>
+                <button onClick={() => setEditingId(entry.id)} className={editBtn}>
+                  Edit
+                </button>
+                <div title="Remove this item" className={removeBtn} onClick={() => onRemove(entry.id)}>
+                  ×
+                </div>
+              </div>
+            )
+          )}
         </div>
       )}
 
@@ -215,7 +276,7 @@ function ExchangeCostPanel({ costs, onAdd, onUpdate, onRemove }) {
         <input
           type="text"
           value={name}
-          placeholder="Item name"
+          placeholder={`Add to ${activeGroup}`}
           onChange={(e) => {
             setName(e.target.value);
             setError("");

@@ -1,5 +1,24 @@
 {
-  "Divine Orb": 100,
-  "Chaos Orb": 100,
-  "Exalted Orb": 100
+  "Currency": {
+    "Divine Orb": 800,
+    "Chaos Orb": 160,
+    "Exalted Orb": 120,
+    "Orb of Annulment": 1000
+  },
+  "Fragment": {
+    "Simulacrum": 1000,
+    "Raven's Reflection": 1500,
+    "Breachlord Sac": 1500
+  },
+  "Ritual": {
+    "Omen of Whittling": 800
+  },
+  "Abyss": {
+    "Omen of Light": 1000,
+    "Omen of Abyssal Echo": 1000,
+    "Preserved Cranium": 540
+  },
+  "Other": {
+    "Fracturing Orb": 1000
+  }
 }
