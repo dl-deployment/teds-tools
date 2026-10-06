@@ -5,6 +5,11 @@ import { useHubData } from "@/lib/useHubData";
 import { EmptyState } from "@/components/ItemRow";
 import Modal from "@/components/Modal";
 import { SubSidebar, SubItem, SubAction, ContentPane } from "@/components/SubSidebar";
+import { downloadBlob } from "@/lib/zip";
+import { NOTES_FILE, buildNotesFile } from "@/lib/hub";
+
+const ghostBtn =
+  "flex-shrink-0 bg-transparent border border-border text-muted hover:text-text px-2.5 py-1.5 rounded-lg text-[12.5px] disabled:opacity-40";
 
 export default function NotesPage() {
   const { notes, addNote, removeNote } = useHubData();
@@ -27,6 +32,18 @@ export default function NotesPage() {
     setBody("");
     setTag("");
     setOpen(false);
+  }
+
+  /**
+   * The notes in the bundled file's shape, so the download can replace
+   * `public/hub/notes.json` and become the default for a browser that has never
+   * seeded.
+   */
+  function exportFile() {
+    downloadBlob(
+      new Blob([JSON.stringify(buildNotesFile(notes), null, 2)], { type: "application/json" }),
+      NOTES_FILE
+    );
   }
 
   return (
@@ -52,6 +69,15 @@ export default function NotesPage() {
       </SubSidebar>
 
       <ContentPane>
+        <div className="flex justify-between items-center gap-3 mb-2.5">
+          <div className="text-[12.5px] text-muted">
+            {notes.length} note{notes.length === 1 ? "" : "s"}
+          </div>
+          <button onClick={exportFile} disabled={notes.length === 0} className={ghostBtn}>
+            Export .json
+          </button>
+        </div>
+
         {!active ? (
           <div className="bg-panel border border-border rounded-card px-4.5 pt-4.5 pb-4.5">
             <EmptyState text="No notes yet — add your first one." />

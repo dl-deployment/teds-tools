@@ -1,42 +1,19 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
+import Modal from "@/components/Modal";
 import { downloadBlob } from "@/lib/zip";
 import { buildPoeExport, parsePoeImport, summarizePoeData } from "@/lib/poe";
+import { copyText } from "./Snippet";
 
 const fieldClass =
-  "w-full bg-bg border border-border text-text px-2.5 py-2 rounded-lg text-[12px] font-mono min-h-[150px] resize-y";
+  "w-full bg-bg border border-border text-text px-2.5 py-2 rounded-lg text-[12px] font-mono min-h-[190px] resize-y";
 
 const ghostBtn =
   "flex-shrink-0 bg-transparent border border-border text-muted hover:text-text px-2.5 py-1.5 rounded-lg text-[12.5px]";
 
-/** Clipboard API needs a secure context; bare http falls back to execCommand. */
-async function copyText(text) {
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    try {
-      await navigator.clipboard.writeText(text);
-      return true;
-    } catch (e) {
-      /* fall through */
-    }
-  }
-  const ta = document.createElement("textarea");
-  ta.value = text;
-  ta.setAttribute("readonly", "");
-  ta.style.position = "fixed";
-  ta.style.top = "-1000px";
-  document.body.appendChild(ta);
-  ta.select();
-  ta.setSelectionRange(0, text.length);
-  let ok = false;
-  try {
-    ok = document.execCommand("copy");
-  } catch (e) {
-    ok = false;
-  }
-  document.body.removeChild(ta);
-  return ok;
-}
+const primaryBtn =
+  "flex-shrink-0 bg-accent text-white px-3.5 py-2 rounded-lg text-[13px] font-medium disabled:opacity-40";
 
 export default function SystemPanel({
   ready,
@@ -48,11 +25,18 @@ export default function SystemPanel({
   poeLeague,
   onReplace,
 }) {
+  // Which popup is open — null, "export" or "import".
+  const [open, setOpen] = useState(null);
   const [text, setText] = useState("");
   const [error, setError] = useState("");
   const [note, setNote] = useState("");
   const [copied, setCopied] = useState(false);
   const fileRef = useRef(null);
+
+  const summary = useMemo(
+    () => summarizePoeData({ tradeConfigs, makerGroups, exchangeCosts, duoGroups, tripleGroups, poeLeague }),
+    [tradeConfigs, makerGroups, exchangeCosts, duoGroups, tripleGroups, poeLeague]
+  );
 
   // Derived, so the export always mirrors what's stored right now.
   const exported = useMemo(
@@ -71,6 +55,12 @@ export default function SystemPanel({
       return { data: null, error: e.message };
     }
   }, [text]);
+
+  function close() {
+    setOpen(null);
+    setError("");
+    setCopied(false);
+  }
 
   function download() {
     const stamp = new Date().toISOString().slice(0, 10);
@@ -100,8 +90,8 @@ export default function SystemPanel({
   function apply() {
     if (!preview) return;
     const count = onReplace(preview);
-    setError("");
     setText("");
+    setError("");
     // A collection the file predates arrives as null and is left as it is, so
     // the note says "kept" rather than reporting a count of nothing.
     const part = (list, kept, counted) =>
@@ -117,19 +107,29 @@ export default function SystemPanel({
         preview.poeLeague,
       ].join(" · ")
     );
+    setOpen(null);
   }
 
   return (
     <>
       <div className="text-[12.5px] text-muted mb-3">
-        Back up or restore the POE Tools data —{" "}
-        {summarizePoeData({ tradeConfigs, makerGroups, exchangeCosts, duoGroups, tripleGroups, poeLeague })}.
+        Back up or restore the POE Tools data — {summary}.
       </div>
 
-      <div className="bg-bg border border-border rounded-lg px-2.5 pt-2 pb-2.5">
-        <div className="flex items-center gap-2 flex-wrap pb-2 mb-2.5 border-b border-border">
-          <span className="text-[11px] uppercase tracking-wide text-muted font-semibold">Export</span>
-          <span className="flex-1 min-w-0" />
+      <div className="bg-bg border border-border rounded-lg px-3 py-3">
+        <div className="flex items-center gap-2 flex-wrap">
+          <button onClick={() => setOpen("export")} disabled={!ready} className={primaryBtn}>
+            Export…
+          </button>
+          <button onClick={() => setOpen("import")} className={ghostBtn}>
+            Import…
+          </button>
+        </div>
+        {note && <div className="text-[11.5px] text-accent2 mt-2.5">{note}</div>}
+      </div>
+
+      <Modal open={open === "export"} title="Export POE data" onClose={close}>
+        <div className="flex items-center gap-2 flex-wrap mb-2.5">
           <button onClick={copyExport} className={ghostBtn}>
             {copied ? "Copied" : "Copy"}
           </button>
@@ -137,15 +137,16 @@ export default function SystemPanel({
             Download .json
           </button>
         </div>
-        <pre className="bg-panel2 border border-border rounded-lg p-2.5 text-[11.5px] font-mono text-muted whitespace-pre-wrap break-all max-h-[260px] overflow-y-auto">
+        <pre className="bg-bg border border-border rounded-lg p-2.5 text-[11.5px] font-mono text-muted whitespace-pre-wrap break-all max-h-[320px] overflow-y-auto">
           {ready ? exportedText : "Loading…"}
         </pre>
-      </div>
+        <div className="text-[11.5px] text-muted mt-2.5">
+          Copy this to back up every saved config, the Exchange lists and the selected league.
+        </div>
+      </Modal>
 
-      <div className="bg-bg border border-border rounded-lg px-2.5 pt-2 pb-2.5 mt-2.5">
-        <div className="flex items-center gap-2 flex-wrap pb-2 mb-2.5 border-b border-border">
-          <span className="text-[11px] uppercase tracking-wide text-muted font-semibold">Import</span>
-          <span className="flex-1 min-w-0" />
+      <Modal open={open === "import"} title="Import POE data" onClose={close}>
+        <div className="flex items-center gap-2 flex-wrap mb-2.5">
           <input
             ref={fileRef}
             type="file"
@@ -163,7 +164,6 @@ export default function SystemPanel({
           onChange={(e) => {
             setText(e.target.value);
             setError("");
-            setNote("");
           }}
           placeholder="Paste an exported JSON here, or load the file above."
           spellCheck={false}
@@ -174,23 +174,17 @@ export default function SystemPanel({
           <div className="text-[11.5px] text-muted">
             {error || parseError ? (
               <span className="text-red-400">{error || parseError}</span>
-            ) : note ? (
-              <span className="text-accent2">{note}</span>
             ) : preview ? (
               <>Replaces all POE data with {summarizePoeData(preview)}.</>
             ) : (
-              "Replaces every saved config, the Exchange lists and the selected league. Notes and links are untouched."
+              "Replaces every saved config, the Exchange lists and the selected league."
             )}
           </div>
-          <button
-            onClick={apply}
-            disabled={!preview}
-            className="flex-shrink-0 bg-accent text-white px-3.5 py-2 rounded-lg text-[13px] font-medium disabled:opacity-40"
-          >
+          <button onClick={apply} disabled={!preview} className={primaryBtn}>
             Replace POE data
           </button>
         </div>
-      </div>
+      </Modal>
     </>
   );
 }

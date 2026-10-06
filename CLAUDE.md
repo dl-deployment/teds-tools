@@ -38,7 +38,7 @@ app/
   texttools/page.js Text Tools view — group list in the sub-sidebar, one text buffer
   color/page.js      Color Tools view — panel list in the sub-sidebar, all color state starts here
   assets/page.js     Assets Tools view — slicer / packer / viewer in the sub-sidebar
-  poe/page.js       POE Tools view — Trade / Maker / Exchange / League / Regex / Note / System sections
+  poe/page.js       POE Tools view — Trade / Maker / Exchange / League / System sections
   poe/actions.js     server action: reads the poe2 league list + stat texts (see lib/poe.js)
   notes/page.js     Notes view
   links/page.js     Links view
@@ -56,6 +56,7 @@ lib/
   tools.js           pure functions for the Tools + Text Tools pages
   color.js           pure color math (conversions, palettes, WCAG contrast, shades/tints)
   poe.js             pure trade payload, snippet, Maker merge, Exchange rates and import/export helpers
+  hub.js             pure helpers for the bundled Notes/Links defaults (parse + build)
   spritesheet.js     pure Cocos atlas helpers (plist read/write, shelf packing)
   zip.js             store-only ZIP writer + downloadBlob — no zip dependency
   lunar.js           Vietnamese lunar calendar maths + date formatting
@@ -64,6 +65,8 @@ lib/
   staticPages.js     server-only scan of public/static_pages (uses node:fs)
 public/
   static_pages/      standalone HTML pages: a folder with index.html, or a loose .html
+  hub/               notes.json + links.json (Notes/Links seed defaults) — each tab's
+                     Export .json writes its own file back out (see lib/hub.js)
   poe/               poe2-payloads.json (Trade seed) + poe2-group-stats.json (Maker source)
                      + poe2-exchange-cost.json (Exchange Cost seed) — each tab's
                      Export .json writes its own file back out

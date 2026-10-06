@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { SubSidebar, SubItem, ContentPane } from "@/components/SubSidebar";
-import { EmptyState } from "@/components/ItemRow";
 import { useHubData } from "@/lib/useHubData";
 import { FALLBACK_LEAGUES, extractStatFilters } from "@/lib/poe";
 import TradePanel from "@/components/poe/TradePanel";
@@ -17,8 +16,6 @@ const SECTIONS = [
   { id: "maker", label: "Maker", desc: "Merge stat groups into a search", icon: "⊕" },
   { id: "exchange", label: "Exchange", desc: "Cost list, duo and triple cycles", icon: "⇅" },
   { id: "league", label: "League", desc: "Trade league", icon: "◍" },
-  { id: "regex", label: "Regex", desc: "Search pattern builder", icon: "⌕" },
-  { id: "note", label: "Note", desc: "League notes", icon: "✎" },
   { id: "system", label: "System", desc: "Export / import data", icon: "⛁" },
 ];
 
@@ -208,13 +205,6 @@ export default function PoePage() {
             />
           )}
 
-          {activeId !== "trade" &&
-            activeId !== "maker" &&
-            activeId !== "exchange" &&
-            activeId !== "league" &&
-            activeId !== "system" && (
-              <EmptyState text={`${active.label} — nothing here yet.`} />
-            )}
         </div>
       </ContentPane>
     </>

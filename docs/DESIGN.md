@@ -33,6 +33,12 @@ Where an accent also carries meaning in the UI, use it for the "do the
 thing" button (Assets Tools' Slice/Pack/Play are `bg-accent2 text-bg`) and
 keep destructive or secondary actions on the neutral ghost button.
 
+Figures that go up and down — the Exchange card's `profit` — read
+`text-accent2` when they gain and `text-red-400` when they lose, and stay
+`text-muted` at zero. `text-red-400` is also the error colour (a failed form
+row, a rejected import); it is the one red in the app, and the one place a
+Tailwind default colour is used instead of a token.
+
 ## Radius
 
 - `rounded-card` (14px) — panels/cards
@@ -48,6 +54,7 @@ System font stack (Tailwind default `font-sans`). Sizes used:
 - `text-[13.5px]` — form inputs/buttons
 - `text-[12.5px]` / `text-xs` — labels, secondary text
 - `text-[11px]` — timestamps, tag chips
+- `text-[10px]` — the Exchange card's cell captions, uppercase and tracked out
 
 ## Layout
 
@@ -93,23 +100,26 @@ below that and the descriptions ellipsize.
     shows the selected tool's own sections (drop zone, settings, preview,
     result). Switching tools drops the loaded files with it.
   - POE Tools: one `SubItem` per section (Trade, Maker, Exchange, League,
-    Regex, Note, System). Regex and Note are still placeholders. Trade lists the
-    saved trade configs and the generated console snippet; League picks the
-    league the searches run against; System exports/imports the POE data. All
-    render inline in the content pane, same as the other tools.
+    System). Trade lists the saved trade configs and the generated console
+    snippet; League picks the league the searches run against; System
+    exports/imports the POE data. All render inline in the content pane, same
+    as the other tools.
     Exchange is the one section with a second level of navigation: a tab row
-    (Duo Exchange / Triple Exchange / Exchange Cost) sitting on a `border-b`
-    at the top of the pane, each tab a `rounded-lg` pill using the active
-    `SubItem` colours (`bg-accent/[0.14] border-accent/30`). Use the same pill
-    row for any other section that outgrows a single view rather than adding
+    (Duo Exchange / Triple Exchange / Exchange Cost / Example Rate) sitting on a
+    `border-b` at the top of the pane, each tab a `rounded-lg` pill using the
+    active `SubItem` colours (`bg-accent/[0.14] border-accent/30`). Use the same
+    pill row for any other section that outgrows a single view rather than adding
     more `SubItem`s to the sub-sidebar.
-    A cycle group (Duo and Triple alike) is the one place that breaks the
+    A trade group (Duo and Triple alike) is the one place that breaks the
     wrapping-flex rule for tool rows: it is a CSS grid whose columns are the
-    item boxes, the rate boxes and the dashes between them, because the amount
-    and gold figures have to land under the exact item they describe. Columns
-    do not reflow, so the grid carries a floor width — built from the number of
-    legs — and the card scrolls sideways rather than squashing when the pane is
-    narrower than that.
+    items and the rate counts between them, because a round's figures have to
+    land under the exact item they describe. Columns do not reflow, so the grid
+    carries a floor width and the card scrolls sideways rather than squashing
+    when the pane is narrower than that. A round is a rate line over a figures
+    line, a `border-t` rule separates the rounds and the totals that close the
+    card, and anything read-only — a carried-over amount, an item already
+    picked — draws as a dashed outline rather than the filled box an input uses,
+    so the two are never confused.
     A trade config nests two levels of surface: the config itself is a
     `bg-panel2` `rounded-xl` segment inside the page's `bg-panel` card, and each
     of its stat-filter groups is a `bg-bg` `rounded-lg` segment inside that,

@@ -5,6 +5,11 @@ import { useHubData } from "@/lib/useHubData";
 import { EmptyState } from "@/components/ItemRow";
 import Modal from "@/components/Modal";
 import { SubSidebar, SubItem, SubAction, ContentPane } from "@/components/SubSidebar";
+import { downloadBlob } from "@/lib/zip";
+import { LINKS_FILE, buildLinksFile } from "@/lib/hub";
+
+const ghostBtn =
+  "flex-shrink-0 bg-transparent border border-border text-muted hover:text-text px-2.5 py-1.5 rounded-lg text-[12.5px] disabled:opacity-40";
 
 function hrefOf(url) {
   return /^https?:\/\//i.test(url) ? url : `https://${url}`;
@@ -37,6 +42,18 @@ export default function LinksPage() {
     setOpen(false);
   }
 
+  /**
+   * The links in the bundled file's shape, so the download can replace
+   * `public/hub/links.json` and become the default for a browser that has never
+   * seeded.
+   */
+  function exportFile() {
+    downloadBlob(
+      new Blob([JSON.stringify(buildLinksFile(links), null, 2)], { type: "application/json" }),
+      LINKS_FILE
+    );
+  }
+
   return (
     <>
       <SubSidebar
@@ -60,6 +77,15 @@ export default function LinksPage() {
       </SubSidebar>
 
       <ContentPane>
+        <div className="flex justify-between items-center gap-3 mb-2.5">
+          <div className="text-[12.5px] text-muted">
+            {links.length} link{links.length === 1 ? "" : "s"}
+          </div>
+          <button onClick={exportFile} disabled={links.length === 0} className={ghostBtn}>
+            Export .json
+          </button>
+        </div>
+
         {!active ? (
           <div className="bg-panel border border-border rounded-card px-4.5 pt-4.5 pb-4.5">
             <EmptyState text="No links yet — add your first one." />

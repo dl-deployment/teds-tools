@@ -37,19 +37,33 @@ type ExchangeCost = {
   cost: number | null; // price in one shared unit; null = not priced yet
 };
 
-// A cycle group through the costs: the items it visits, the rate between each
-// pair (one fewer rate than items), and the amount to invest.
+// A rate is a ratio of two numbers — see `normalizeRatePair`: `a` is what the
+// rate buys, `b` what it pays, and the rate itself is `a / b`.
+type RatePair = { a: number | null; b: number | null };
+
+// A Duo group: two trades chained through two items — A → B → A. Each round has
+// its own rate, and only the first round's amount is stored: the second spends
+// what the first bought.
 type DuoGroup = {
   id: string;
   aName: string;       // item names, held rather than ids (see the Exchange section)
   bName: string;
-  rateAtoB: number | null;  // how many B one A buys
-  rateBtoA: number | null;  // how many A one B buys
-  base: number | null;      // amount of the A item run through the cycle
+  rateAtoB: RatePair;  // round 1: how many B per how many A
+  rateBtoA: RatePair;  // round 2: how many A per how many B
+  totalA: number | null;  // what round 1 spends
 };
 
-// The same walk with one more item: A → B → C → A.
-type TripleGroup = DuoGroup & { cName: string; rateBtoC: number | null; rateCtoA: number | null };
+// The same chain with a third item and a third round: A → B → C → A.
+type TripleGroup = {
+  id: string;
+  aName: string;
+  bName: string;
+  cName: string;
+  rateAtoB: RatePair;
+  rateBtoC: RatePair;
+  rateCtoA: RatePair;
+  base: number | null;    // what round 1 spends
+};
 
 type DB = {
   notes: Note[];
@@ -64,11 +78,14 @@ type DB = {
 };
 ```
 
-The two cycle types are the same row with a different number of items, and
+The two group types are the same row with a different number of items, and
 nothing in the code treats them separately: `CYCLE_SHAPES` in `lib/poe.js` names
-the fields each one carries, and the importer, the data layer and the cards all
-read that one table. Adding a four-item cycle would mean adding a shape there,
-not a third copy of everything.
+the fields each one carries — `itemFields`, `rateFields`, `amountFields` — and
+the importer, the data layer and the card all read that one table. Adding a
+four-item chain would mean adding a shape there, not a second copy of
+everything. The two shapes' amount fields are named differently for historical
+reasons (`totalA` on Duo, `base` on Triple) and mean the same thing: what the
+first round spends.
 
 `payload` is kept exactly as pasted — nothing normalises it — so a config can
 be copied straight into or out of the console snippet (see `lib/poe.js`). It is
@@ -151,9 +168,15 @@ type MakerGroup = { id: string; name: string; date: string; payload: object };
 ```
 
 Version 2 added `makerGroups`, version 3 the Exchange `exchangeCosts` and
-`duoGroups`, version 4 `tripleGroups`, and version 5 the `group` field on each
-Exchange cost (which an older file simply leaves off, defaulting to "Other"). An
-older file still imports;
+`duoGroups`, version 4 `tripleGroups`, version 5 the `group` field on each
+Exchange cost (which an older file simply leaves off, defaulting to "Other"),
+version 6 the A/B split of each rate (a rate is a `{ a, b }` pair, and
+`normalizeRatePair` still reads a single number from an older file), version 7 a
+traded amount on each Duo group in place of the single `base` it used to invest,
+and version 8 the two tabs' chained rounds: a rate per round that is nobody
+else's reading, and one amount per group — what the first round spends. A file
+from before those imports with the amounts blank; a leftover `totalB` from
+version 7 is ignored. An older file still imports;
 `parsePoeImport` reports every collection added after the file was written as
 **null rather than `[]`** so `replacePoeData` can tell "this backup predates it"
 from "this backup has none", and leaves the stored collection alone in the first
@@ -170,8 +193,39 @@ than merging; the hook persists `{ ...db, tradeConfigs, poeLeague }` so the
 other collections survive.
 
 Everything is stored as one JSON blob under `localStorage["teds-hub-data"]`.
-A one-time seed (`teds-hub-seeded` flag) inserts a welcome note and two
-example links on first run, only if both lists are empty.
+
+**Notes and links are seeded** from the bundled `public/hub/notes.json` and
+`public/hub/links.json` on first run, under the `teds-hub-seeded` flag the old
+hardcoded welcome seed used. Each file is a plain list — a note is
+`{ title, body?, tag? }`, a link is `{ name, url }`:
+
+```json
+[{ "title": "Welcome to Ted's Hub", "body": "…", "tag": "welcome" }]
+```
+
+```json
+[{ "name": "MDN Web Docs", "url": "https://developer.mozilla.org" }]
+```
+
+`parseBundledNotes` / `parseBundledLinks` in `lib/hub.js` validate the files and
+**throw** on a malformed one (matching `parseBundledPayloads`), so the seed's
+flag stays unset and the next load retries; an empty list is allowed and simply
+seeds nothing, unlike the payload file where an empty file is a broken one.
+
+Ids and dates are deliberately **not** in the file: the data layer stamps
+`cryptoId()` and `todayStr()` on each seeded row, so the file can never carry two
+rows with a colliding id and no date is frozen into it. Each collection is filled
+only while it is still empty, so a starter list the user has already begun is
+left alone; once the flag is set the seed never runs again, which is what keeps a
+deleted note or link deleted. The flag is checked *before* the fetch, so a
+browser that has already seeded never reads the files again — nothing needs them
+after the seed (unlike `poe2-payloads.json`, which the Trade tab re-reads on
+every load to tell a bundled config from your own).
+
+`buildNotesFile` / `buildLinksFile` write the same shape back out, and each
+tab's **Export .json** downloads it as the file it seeds from — so a download can
+replace `public/hub/notes.json` as it stands, exactly as the POE tabs' exports
+replace their files.
 
 **Trade configs are seeded** from the bundled `public/poe/poe2-payloads.json`.
 That seed runs under its own flag (`teds-hub-poe-seeded`), not the welcome
@@ -241,22 +295,22 @@ browser that has already seeded keeps its stored copy either way.
 
 ## POE Tools → Exchange
 
-The Exchange sub-tab of the POE section has three tabs of its own: **Exchange
-Cost**, **Duo Exchange** and **Triple Exchange**. All three share the
-`exchangeCosts` collection — a price list the cycle tabs pick their items out of
-and price their holdings at.
+The Exchange sub-tab of the POE section has four tabs of its own: **Exchange
+Cost**, **Duo Exchange**, **Triple Exchange** and **Example Rate**. The first
+three share the `exchangeCosts` collection — a price list the trade tabs pick
+their items out of and price their rounds at.
 
 An `ExchangeCost` is a name, a group and a cost. The cost is a price in one
 shared, unnamed unit, so only the ratios between entries carry meaning — `cost`
-may be `null` for an item that has been added but not priced, which just means
-its legs can't be valued. Nothing in the tab assumes a particular currency.
+may be `null` for an item that has been added but not priced, which just means the
+rounds that touch it can't be valued. Nothing in the tab assumes a particular currency.
 
 The **Exchange Cost tab** splits its list into the buckets in
 `EXCHANGE_GROUPS` — Currency, Fragment, Ritual, Abyss, Other — one sub-tab each.
 `group` is one of those; `normalizeExchangeGroup` folds anything missing or
 unrecognised (an older saved row, a hand-edited file) into "Other". The add form
 writes into the group whose sub-tab is active, and each row's group select moves
-it between buckets. Names stay unique across the whole list, since the cycle tabs
+it between buckets. Names stay unique across the whole list, since the trade tabs
 look items up by name regardless of group.
 
 `exchangeCosts` **is seeded** from the bundled `public/poe/poe2-exchange-cost.json`,
@@ -270,47 +324,99 @@ the seeded ones, so there is no bundled/own split to draw and no reason to
 re-read the file after the seed. `Export .json` writes the list back out through
 `buildExchangeCostMap` as `poe2-exchange-cost.json`, the file it seeds from.
 
-A cycle group is one walk through the cost list back to where it started: a Duo
-group is A → B → A and a Triple group A → B → C → A. Each carries the items it
-visits, the rate between each pair, and nothing else. `rateAtoB` is how many B
-one A buys, and so on round, so a finished cycle leaves the product of all the
-rates of the A you started with.
+**A trade group is a chain of trades** through the cost list back to where it
+started — two trades for a Duo group (A → B → A), three for a Triple one
+(A → B → C → A). Each round spends one item and buys the next, and **each round
+carries its own rate**: the rounds are not readings of one another, which is
+exactly what lets a chain make or lose anything — a chain whose rates undid each
+other would land back where it started.
 
-`base` is the card's remaining input beyond the rates — the amount of the first
-item to invest in the cycle, shown in the box under that item's select. The rest
-of the card is derived. `cycleRun({ base, legs })` walks it: `legs` is one entry
-per leg in order, each naming the rate out of the holding you arrive with and the
-price of the item that leg leaves you holding, so the last leg's price is the
-first item's again. It returns `amounts[i]` (what the investment has become after
-leg `i`), `golds[i]` (what that holding is worth at the listed prices),
-`totalGold` (what the run ties up altogether), the `profit` in the item it
-started from, and `goldPerProfit` — `totalGold` over that profit, i.e. the gold
-the run ties up for each one it makes, which is what makes two flips of different
-sizes comparable. "Gold" is whatever unit the cost list prices in; only the ratio
-matters.
+A rate is stored as a `RatePair`, the way every rate in this section is: `a` is
+what the rate buys, `b` what it pays, and `rateFromPair` reads the quotient
+`a / b`. The card types them the way the market reads — "5 : 10", five of the
+row's left item for ten of the right — so `pairFromRateCell` is the one place
+that order is swapped.
 
-Every field is null until the inputs it needs are filled in — a leg that can't be
-worked out yet carries null and so does the leg after it, and `goldPerProfit` is
-null on a break-even run, where dividing by the zero profit would only produce an
-infinity — so a half-filled card leaves its cells quiet rather than printing
-figures it hasn't earned.
+The group stores the shape's fields and nothing more: `itemFields` name the
+items, `rateFields` one round each, and `amountFields[0]` is what the first round
+spends. Every later round spends what the one before it bought, so no other
+amount is stored.
 
-Both tabs share one card. It draws the chain and the two derived rows on one CSS
-grid, so the figures sit in the same columns as the item boxes and rate boxes
-above them — each of those cells names its column outright, and the column widths
-are built from the number of legs (`cycleGrid`), since that is what decides how
-long the chain is and how narrow the grid can get before the card scrolls. The
-two rows are labelled **Amount** (what you hold at each step) and **Gold** (what
-each hold is worth), and both end in a ruled-off **Result** column holding the
-run's two totals: the profit beside Amount, and beside Gold the gold outlay with
-`goldPerProfit` following it in brackets — `20,500 (4,100)`. A break-even run
-prints the outlay on its own, having no ratio to show. The chain row leaves the
-label column empty and heads the Result column.
+`chainRun({ spent, rounds })` walks the chain. `rounds` is one entry per round in
+order, each carrying the rate it goes at and the Exchange Cost list's price of
+the item it buys; `duoRound` is the one-round step — what was spent becomes
+`spent × rate`, priced at the list. It returns each round's own `spent` / `got` /
+`gold`, every round's goods added up (`totalGold`), the round trip's `profit` —
+what the last round ends holding, less what the first round spent, both being the
+first item — and `goldPerProfit`: `totalGold` over that profit, the gold tied up
+for each one made, which is what makes two flips of different sizes comparable.
+"Gold" is whatever unit the cost list prices in; only the ratio matters.
 
-**Cycle groups name their items rather than referencing their ids.** The chain is
+`roundAmounts({ got, spent })` answers a round's amounts at their roundest: the
+smallest whole numbers in the same ratio (9.5 for 1 is 19 for 2). It reads the
+ratio rather than the amounts, so the answer is the same whatever size the round
+is, and walks it as a continued fraction so it lands on the shortest fraction
+that matches instead of the long denominator scaling a decimal by tens gives. It
+is a suggestion the card shows beside the working — nothing stores it, and
+nothing is derived from it.
+
+Every figure is null until the inputs it needs are filled in — a round that can't
+be worked out carries null and so does every round after it, and `goldPerProfit`
+is null on a break-even chain, where dividing by the zero profit would only
+produce an infinity — so a half-filled card leaves its cells quiet rather than
+printing figures it hasn't earned.
+
+**Both tabs draw the same card** — `ChainCard`, driven by the group's shape —
+as one round per pair of lines, with a rule between the rounds and another before
+the totals:
+
+- the **rate line**: the item being bought (a picker the first time it comes up,
+  its name read-only after that) at the left edge, the count got beside it, the
+  count spent across the mid-line, and the item being spent — picked on this line
+  only in the first round.
+- the **figures line**: **cost**, what the round's goods are worth at the list
+  with the bought item's listed price after it in brackets (`9,600 (160)`);
+  **get**, how much the round buys; and **spent**, which is the first round's
+  typed amount and every later round's carried-over amount, read-only. Each
+  amount cell carries two boxes, captioned for what they are — **get** beside
+  **suggest get**, **spent** beside **suggest spent**: what the round works out
+  to, and `roundAmounts`' answer, the smallest whole numbers in the same ratio,
+  so a round buying 9.5 for 1 reads as one buying 19 for 2. It is one suggestion
+  for the round, so both cells show the same pair, each its own side.
+- the **totals**: `total cost`, `profit` (green or red) and `gold / profit`, with
+  the group's remove button.
+
+Which cells are pickers follows the shape rather than the tab: an item is picked
+in the round it first appears in — the bought side of rounds 1…n−1, and the spent
+side of round 1 — and named read-only everywhere else, so every item a group
+stores is reachable from the card and none is offered twice. Read-only cells draw
+as a dashed outline instead of the filled box the inputs use, so nothing that
+can't be typed into reads as a field.
+
+The card is one CSS grid (`chainGrid`) with four columns, so each round's figures
+land under the item they describe. The columns are `minmax(0,…)` so a long figure
+truncates rather than pushing the card wide, and the grid carries a floor width
+the wrapper scrolls against when the pane is narrower than that.
+
+**The Example Rate tab holds no data at all.** Its rows are `EXAMPLE_RATES` in
+`lib/poe.js` — a ladder of rates written into the code so the cards can be read
+against figures that don't depend on anything the user has entered, the way the
+Event Timeline's holidays are a static list rather than a collection.
+
+A row is a pair of counts — `b` on the left, `a` on the right, each shown in a
+read-only box — and the tab puts the rate between them divided through to a
+single right-hand one: `3 ── 0.60 : 1 ── 5`. That figure is written to a fixed two
+decimals (`formatRateFixed`, not `formatRate`'s significant figures), so every row
+is the same shape and lines up under the one above. The list is written in order
+of that rate, and every row is a fraction rather than a whole number, so a rate a
+card lands on can be placed between two of them. The tab renders the list in the
+order it is given; nothing is addable or editable, so reshaping the ladder is a
+code change to that list and a reordering of it.
+
+**Trade groups name their items rather than referencing their ids.** The chain is
 what the group means, so an export reads as the chain it describes and a group
 survives a cost list that is still being edited. The cost list calls
-`updateExchangeCost`, which rewrites the name in every cycle group that used it —
+`updateExchangeCost`, which rewrites the name in every trade group that used it —
 both tabs, every item field of the shape; a group whose item is *deleted* keeps
 the stale name, and the card shows it as "… (not in cost list)" instead of
 silently switching to another item.
@@ -346,12 +452,12 @@ these keys must be checked against the constants above.
   addMakerGroup({ name, payload }),
   removeMakerGroup(id),
   addExchangeCost({ name, cost, group }),
-  updateExchangeCost(id, patch),   // a rename cascades to every cycle group
+  updateExchangeCost(id, patch),   // a rename cascades to every trade group
   removeExchangeCost(id),
-  addDuoGroup({ aName, bName, rateAtoB, rateBtoA }),
+  addDuoGroup({ aName, bName }),        // amounts and rates start blank
   updateDuoGroup(id, patch),
   removeDuoGroup(id),
-  addTripleGroup({ aName, bName, cName, rateAtoB, rateBtoC, rateCtoA }),
+  addTripleGroup({ aName, bName, cName }),
   updateTripleGroup(id, patch),
   removeTripleGroup(id),
   setPoeLeague(league),
@@ -360,9 +466,10 @@ these keys must be checked against the constants above.
 }
 ```
 
-Both cycle collections are built by one `cycleCrud` machine inside the hook,
-driven by the tab's `CYCLE_SHAPES` entry, and the hook just hands out the results
-under their own names.
+Both trade-group collections are built by one `cycleCrud` machine inside the
+hook, driven by the tab's `CYCLE_SHAPES` entry, and the hook just hands out the
+results under their own names. An add takes the shape's item names and leaves its
+rates and amounts null, so a new group starts empty and the card fills it in.
 
 The POE collections are all read with `|| []` / `|| DEFAULT_LEAGUE` so data
 saved before they existed still loads. `replacePoeData` only rewrites

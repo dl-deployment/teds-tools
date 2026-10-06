@@ -6,15 +6,20 @@ import NumberField from "./NumberField";
 import { downloadBlob } from "@/lib/zip";
 import {
   CYCLE_SHAPES,
+  EXAMPLE_RATES,
   EXCHANGE_COST_FILE,
   EXCHANGE_GROUPS,
   buildExchangeCostMap,
-  cycleRun,
+  chainRun,
   exchangeCost,
   formatRate,
+  formatRateFixed,
   groupNumber,
   normalizeExchangeGroup,
+  pairFromRateCell,
   parseNumberField,
+  rateFromPair,
+  roundAmounts,
   summarizeExchangeCosts,
 } from "@/lib/poe";
 
@@ -22,6 +27,7 @@ const TABS = [
   { id: "duo", label: "Duo Exchange" },
   { id: "triple", label: "Triple Exchange" },
   { id: "cost", label: "Exchange Cost" },
+  { id: "example", label: "Example Rate" },
 ];
 
 const ghostBtn =
@@ -35,39 +41,6 @@ const removeBtn =
 
 const editBtn =
   "flex-shrink-0 bg-transparent border border-border text-muted hover:text-text px-2 py-1 rounded-md text-[11.5px]";
-
-/** The label column a cycle card's Amount and Gold rows line up on. */
-const rowLabel = "min-w-0 truncate text-[11px] uppercase tracking-wide text-muted";
-
-/**
- * A cycle card's columns: a label, then an item box with the dash-rate-dash run
- * out of it, repeated along the chain, and finally the Result column and the
- * remove button. They are written out here rather than as a Tailwind class
- * because how many legs the cycle has is what decides how long it is.
- *
- * The returned `floor` is the narrowest the grid can get — every fixed column,
- * every item box at its 72px minimum, and the gaps between them — which is what
- * the card uses as its scroll floor.
- */
-function cycleGrid(legs) {
-  const columns = ["68px"];
-  for (let i = 0; i <= legs; i += 1) {
-    columns.push("minmax(72px,1fr)");
-    if (i < legs) columns.push("16px", "68px", "16px");
-  }
-  columns.push("96px", "26px");
-
-  const floor = 190 + 100 * legs + 72 * (legs + 1) + 6 * (columns.length - 1);
-  return { template: columns.join(" "), floor: `${floor}px` };
-}
-
-/**
- * The column each item box sits in, and the column the Result column takes.
- * The chain's stride is four per item: the box itself, then a dash, the rate
- * leaving it and another dash.
- */
-const itemColumn = (index) => 2 + index * 4;
-const resultColumn = (legs) => 4 * legs + 3;
 
 /** Gain green, loss red, nothing to say in muted. */
 const profitColor = (value) =>
@@ -312,172 +285,301 @@ function ExchangeCostPanel({ costs, onAdd, onUpdate, onRemove }) {
 }
 
 /**
- * One cycle card — A → B → A on the Duo tab, A → B → C → A on the Triple one —
- * laid out as a grid so each figure sits under the part of the chain it belongs
- * to: what the run leaves you holding on one row, and what each holding is worth
- * at the Exchange Cost list's prices on the next.
- *
- * The chain is positional, so the card is driven by the tab's `shape` rather
- * than by named fields, which is all that differs between the two tabs.
+ * The card's grid, shared by both cycle tabs. Each round is two lines deep — a
+ * rate line whose items sit at the outer edges with one count either side of the
+ * mid-line, and a figures line under it — with a rule between the rounds.
+ * `minmax(0,…)` on every column so a long figure truncates instead of pushing
+ * the card wide; the `minWidth` is the floor the wrapper scrolls against on a
+ * narrow screen.
  */
-function CycleCard({ shape, group, costs, names, onUpdate, onRemove }) {
-  const { itemFields, rateFields } = shape;
-  const legs = rateFields.length;
+const chainColumns = [
+  "minmax(0,1fr)",
+  "minmax(0,1.1fr)",
+  "minmax(0,1.1fr)",
+  "minmax(0,1fr)",
+];
 
-  // The chain in order, with the first item repeated at the end: the cycle
-  // closes on the item it started from, so that last box is the first select
-  // read back rather than a field of its own.
-  const chain = [...itemFields.map((field) => group[field]), group[itemFields[0]]];
-  const prices = chain.map((name) => exchangeCost(costs, name));
+const chainGrid = {
+  gridTemplateColumns: chainColumns.join(" "),
+  minWidth: "690px",
+};
 
-  // Leg `i` leaves you holding `chain[i + 1]`, so its price is the one after.
-  const run = cycleRun({
-    base: group.base,
-    legs: rateFields.map((field, i) => ({ rate: group[field], cost: prices[i + 1] })),
+const chainRow = "grid items-center gap-x-2 gap-y-2";
+
+/** The rule the card's right-hand half hangs off. */
+const chainDivider =
+  "min-w-0 self-stretch border-l border-border pl-2.5 flex flex-col justify-center";
+
+/** A cell's small caption, the one line above a figure or a control. */
+const chainCaption = "truncate text-[10px] uppercase tracking-wide text-muted";
+
+/** One cell: a small caption over a figure, or over the control in its place. */
+function ChainCell({ label, title, value = "", tone = "text-text", children }) {
+  return (
+    <div className="min-w-0" title={title}>
+      <div className={chainCaption}>{label}</div>
+      {children ?? <div className={`truncate font-mono text-[12.5px] ${tone}`}>{value}</div>}
+    </div>
+  );
+}
+
+/**
+ * A round's amount cell: what the round works out to, and beside it the same
+ * trade at its roundest — the smallest whole numbers in that ratio, so a round
+ * buying 9.5 for 1 reads as one buying 19 for 2. Each box carries its own
+ * caption; the pair is one suggestion, so both cells of a round show the same
+ * two numbers, each its own side.
+ */
+function AmountCell({ label, title, current, suggested, hint }) {
+  return (
+    <div className="flex items-start gap-1" title={title}>
+      <div className="min-w-0 flex-1">
+        <div className={chainCaption}>{label}</div>
+        {current}
+      </div>
+      <div className="min-w-0 flex-1" title={hint}>
+        <div className={chainCaption}>{`suggest ${label}`}</div>
+        <div className={chainBox}>{suggested}</div>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * The frame a read-only cell draws: the editable boxes' shape, so the row still
+ * lines up, but outlined rather than filled and dashed rather than solid, so
+ * nothing that can't be typed into reads as a field.
+ */
+const chainReadOnly = "bg-transparent border border-dashed border-border rounded-lg";
+
+/** A cell's computed figure. */
+const chainBox = `min-w-0 truncate ${chainReadOnly} px-1.5 py-1 text-center font-mono text-[12.5px] text-muted`;
+
+/** An item's name where a picker would be: every sighting after it is picked. */
+const chainNameBox = `min-w-0 truncate ${chainReadOnly} px-2 py-1.5 text-[12.5px] text-muted`;
+
+/** A rule across the whole card, splitting it into its rounds and its totals. */
+const chainRule = { gridColumn: "1 / -1" };
+
+/**
+ * One half of a round's rate: how much of the item beside it. The two halves sit
+ * either side of the mid-line, so "5 : 10" reads five of the left item for ten
+ * of the right — the left count is the one got, the right count the one spent.
+ */
+function RateBox({ itemName, role, value, onCommit }) {
+  return (
+    <div className="min-w-0" title={`${role} of ${itemName || "this item"}`}>
+      <NumberField className="w-full" placeholder="qty" value={value} onCommit={onCommit} />
+    </div>
+  );
+}
+
+/**
+ * One Exchange group — a Duo card's two trades or a Triple card's three —
+ * drawn as a round each: the line stating the rate (the count got either side of
+ * the mid-line, the two items outside it) and the line working it out (what the
+ * spent amount buys, and what that is worth at the Exchange Cost list). A rule
+ * splits the rounds from each other and from the totals that close the card.
+ *
+ * The shape decides how many rounds there are and which items each touches. An
+ * item is picked in the round it first appears in and named read-only after
+ * that, and every round but the first spends what the one before it bought, so
+ * only the first round's amount is typed.
+ *
+ * The items are held by name so the card can mark one the cost list no longer
+ * has rather than dropping the group.
+ */
+function ChainCard({ shape, group, costs, names, onUpdate, onRemove }) {
+  const set = (patch) => onUpdate(group.id, patch);
+  const { itemFields, rateFields, amountFields, chain } = shape;
+
+  // A round is named for the item it spends and buys the next one round, so the
+  // price beside its `get` is that next item's.
+  const spentField = amountFields[0];
+  const gotField = (index) => itemFields[(index + 1) % itemFields.length];
+  const costOf = (field) => exchangeCost(costs, group[field]);
+
+  const run = chainRun({
+    spent: group[spentField],
+    rounds: rateFields.map((rateField, index) => ({
+      rate: rateFromPair(group[rateField]),
+      price: costOf(gotField(index)),
+    })),
   });
 
-  const grid = cycleGrid(legs);
-  const gridStyle = { gridTemplateColumns: grid.template, minWidth: grid.floor };
-  const rowClass = "grid items-center gap-x-1.5";
-  const figure = "min-w-0 truncate text-center text-[12px] text-muted";
+  /** Computed figures are shown to four significant figures. */
+  const figure = (value) => (value == null ? "—" : formatRate(value));
 
-  const set = (patch) => onUpdate(group.id, patch);
-
-  // The gold the run ties up, with the gold it costs per one made beside it.
-  // A break-even run has no ratio to show, so it prints the total on its own.
-  const goldResult =
-    run.totalGold == null
-      ? ""
-      : run.goldPerProfit == null
-        ? formatRate(run.totalGold)
-        : `${formatRate(run.totalGold)} (${formatRate(run.goldPerProfit)})`;
+  /** A figure with the item's listed price — the base gold — after it. */
+  const priced = (value, price) => (value == null ? "—" : `${figure(value)} (${figure(price)})`);
 
   return (
     <div className="bg-panel2 border border-border rounded-xl px-3 py-2.5 overflow-x-auto">
-      <div className={rowClass} style={gridStyle}>
-        <span />
-        {chain.map((name, index) => (
-          <Fragment key={index}>
-            {index > 0 ? (
-              <>
-                <span className="text-center text-muted">──</span>
-                <NumberField
-                  className="w-full"
-                  placeholder="rate"
-                  value={group[rateFields[index - 1]]}
-                  onCommit={(text) => set({ [rateFields[index - 1]]: parseNumberField(text) })}
+      <div className={chainRow} style={chainGrid}>
+        {rateFields.map((rateField, index) => {
+          const got = gotField(index);
+          const spentItem = itemFields[index];
+          const cell = pairFromRateCell(group[rateField]);
+          const result = run.rounds[index];
+          const previous = index === 0 ? null : run.rounds[index - 1];
+
+          // The round's amounts at their roundest, whole numbers, plus the note
+          // both amount cells carry.
+          const pair = roundAmounts({ got: result.got, spent: result.spent });
+          const whole = (value) => (value == null ? "—" : groupNumber(value));
+          const roundest = { get: whole(pair.got), spent: whole(pair.spent) };
+          const roundestHint =
+            pair.got == null
+              ? undefined
+              : `The roundest trade: ${roundest.get} for ${roundest.spent}`;
+
+          return (
+            <Fragment key={rateField}>
+              {index > 0 ? <div className="border-t border-border" style={chainRule} /> : null}
+
+              {/* The rate: how much of each item, either side of the mid-line.
+                  The items outside are picked the first time they come up. */}
+              {index < itemFields.length - 1 ? (
+                <ItemSelect
+                  value={group[got]}
+                  names={names}
+                  onChange={(next) => set({ [got]: next })}
                 />
-                <span className="text-center text-muted">──</span>
-              </>
-            ) : null}
-            {index < chain.length - 1 ? (
-              <ItemSelect
-                value={name}
-                names={names}
-                onChange={(next) => set({ [itemFields[index]]: next })}
+              ) : (
+                <span className={chainNameBox} title={group[got]}>
+                  {group[got]}
+                </span>
+              )}
+              <RateBox
+                itemName={group[got]}
+                role="Get quantity"
+                value={cell.bought}
+                onCommit={(text) =>
+                  set({ [rateField]: { a: parseNumberField(text), b: cell.paid } })
+                }
               />
-            ) : (
-              <span
-                title={`Same as ${chain[0]} — the cycle closes here`}
-                className="bg-bg border border-border text-muted rounded-lg px-2 py-1.5 text-[12.5px] truncate"
-              >
-                {name}
-              </span>
-            )}
-          </Fragment>
-        ))}
-        <span className={`${resultCell} text-[11px] uppercase tracking-wide text-muted`}>Result</span>
-        <div title="Remove this group" className={removeBtn} onClick={() => onRemove(group.id)}>
-          ×
-        </div>
-      </div>
+              <div className={chainDivider}>
+                <RateBox
+                  itemName={group[spentItem]}
+                  role="Spent quantity"
+                  value={cell.paid}
+                  onCommit={(text) =>
+                    set({ [rateField]: { a: cell.bought, b: parseNumberField(text) } })
+                  }
+                />
+              </div>
+              {index === 0 ? (
+                <ItemSelect
+                  value={group[spentItem]}
+                  names={names}
+                  onChange={(next) => set({ [spentItem]: next })}
+                />
+              ) : (
+                <span className={chainNameBox} title={group[spentItem]}>
+                  {group[spentItem]}
+                </span>
+              )}
 
-      <div className="mt-2 pt-2 border-t border-border">
-        {/* The amount to invest sits under the first item it is spent on; the
-            figures beside it are what the run leaves you holding of each item,
-            and the Result column is what it made or lost overall. */}
-        <div className={rowClass} style={gridStyle}>
-          <span className={rowLabel}>Amount</span>
-          <NumberField
-            className="w-full"
-            group
-            placeholder="Invest"
-            value={group.base}
-            onCommit={(text) => set({ base: parseNumberField(text) })}
+              {/* What this round buys and what it is worth — the listed price of
+                  the got item follows the figure in brackets. */}
+              <ChainCell
+                label="cost"
+                title={`What the ${group[got]} got is worth, with its listed price in brackets`}
+                value={priced(result.gold, costOf(got))}
+              />
+              <AmountCell
+                label="get"
+                title={`How much ${group[got]} the spent ${group[spentItem]} buys`}
+                current={<div className={chainBox}>{figure(result.got)}</div>}
+                suggested={roundest.get}
+                hint={roundestHint}
+              />
+              <div className={chainDivider}>
+                <AmountCell
+                  label="spent"
+                  title={
+                    index === 0
+                      ? `How much ${group[spentItem]} this round spends`
+                      : `The ${group[spentItem]} the round before got, spent here`
+                  }
+                  current={
+                    index === 0 ? (
+                      <NumberField
+                        className="w-full"
+                        group
+                        placeholder="amount"
+                        value={group[spentField]}
+                        onCommit={(text) => set({ [spentField]: parseNumberField(text) })}
+                      />
+                    ) : (
+                      <div className={chainBox}>{figure(previous.got)}</div>
+                    )
+                  }
+                  suggested={roundest.spent}
+                  hint={roundestHint}
+                />
+              </div>
+              <span />
+            </Fragment>
+          );
+        })}
+
+        <div className="border-t border-border" style={chainRule} />
+
+        {/* The rounds together, and what one round trip made. */}
+        <ChainCell
+          label="total cost"
+          title="Every round's goods, added up — what the chain ties up"
+          value={figure(run.totalGold)}
+        />
+        <ChainCell
+          label="profit"
+          tone={profitColor(run.profit)}
+          title={`What the ${chain} trip gained, counted in ${group[itemFields[0]]}`}
+          value={figure(run.profit)}
+        />
+        <div className={chainDivider}>
+          <ChainCell
+            label="gold / profit"
+            title="The gold tied up for each one made"
+            value={figure(run.goldPerProfit)}
           />
-          {run.amounts.map((amount, i) => (
-            <span
-              key={chain[i + 1]}
-              className={figure}
-              style={{ gridColumn: itemColumn(i + 1) }}
-              title={
-                i === 0
-                  ? `${chain[0]} invested × rate into ${chain[1]}`
-                  : `${chain[i]} × rate into ${chain[i + 1]}`
-              }
-            >
-              {amount == null ? "" : formatRate(amount)}
-            </span>
-          ))}
-          <span
-            className={`${resultCell} text-[12px] ${profitColor(run.profit)}`}
-            style={{ gridColumn: resultColumn(legs) }}
-            title="What the round trip made or lost, in the A item"
-          >
-            {run.profit == null ? "" : formatRate(run.profit)}
-          </span>
         </div>
-
-        {/* What each hold is worth at the listed prices, and the lot together.
-            Each leg carries the price of one unit beside it, so the figure can
-            be read back to the Exchange Cost list it came from. */}
-        <div className={`${rowClass} mt-1.5`} style={gridStyle}>
-          <span className={rowLabel}>Gold</span>
-          {run.golds.map((gold, i) => (
-            <span
-              key={chain[i + 1]}
-              className={figure}
-              style={{ gridColumn: itemColumn(i + 1) }}
-              title={`${chain[i + 1]} price × the ${chain[i + 1]} get`}
-            >
-              {gold == null ? "" : `${formatRate(gold)} (${formatRate(prices[i + 1])})`}
-            </span>
-          ))}
-          <span
-            className={`${resultCell} text-[12px] text-muted`}
-            style={{ gridColumn: resultColumn(legs) }}
-            title="The figures to the left added up, and that total over the profit — what the run ties up, and what it costs per one made"
-          >
-            {goldResult}
-          </span>
+        <div className="flex justify-end">
+          <div title="Remove this group" className={removeBtn} onClick={() => onRemove(group.id)}>
+            ×
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-/** One tab's worth of cycles: the list, and the button that starts a new one. */
-function CyclePanel({ shape, costs, groups, onAdd, onUpdate, onRemove }) {
+/**
+ * One tab's worth of chains: the list of cards, and the button that starts a new
+ * one. A group trades the items in its shape — two for Duo, three for Triple —
+ * so the cost list needs at least that many priced entries before one can be
+ * made.
+ */
+function ChainPanel({ shape, costs, groups, onAdd, onUpdate, onRemove }) {
   const names = costs.map((c) => c.name);
+  const rounds = shape.rateFields.length;
   const needed = shape.itemFields.length;
+  const ready = names.length >= needed;
 
-  function add() {
-    const picked = {};
-    shape.itemFields.forEach((field, i) => {
-      picked[field] = names[i];
-    });
-    onAdd(picked);
-  }
+  const add = () =>
+    onAdd(Object.fromEntries(shape.itemFields.map((field, index) => [field, names[index]])));
 
   return (
     <>
       <div className="flex justify-between items-center gap-3 flex-wrap mb-2.5">
         <div className="text-[12.5px] text-muted">
-          {groups.length} group{groups.length === 1 ? "" : "s"} — each runs {shape.chain}, priced
-          against the Exchange Cost list. Give one an amount to invest and it works out what the
-          run returns, what it ties up and what it makes per gold.
+          {groups.length} group{groups.length === 1 ? "" : "s"} — {rounds} trades chained through{" "}
+          {needed} items, each with its own rate, priced against the Exchange Cost list. Give the
+          first round the amount it spends and it works out what each round buys, what the run ties
+          up and what the round trip makes.
         </div>
-        <button onClick={add} disabled={names.length < needed} className={ghostBtn}>
+        <button onClick={add} disabled={!ready} className={ghostBtn}>
           + New group
         </button>
       </div>
@@ -485,15 +587,15 @@ function CyclePanel({ shape, costs, groups, onAdd, onUpdate, onRemove }) {
       {groups.length === 0 ? (
         <EmptyState
           text={
-            names.length < needed
-              ? `Add at least ${needed} priced items in Exchange Cost, then cycle them here.`
-              : "No groups yet — add one with + New group."
+            ready
+              ? "No groups yet — add one with + New group."
+              : `Add ${needed} priced items in Exchange Cost, then trade them here.`
           }
         />
       ) : (
         <div className="flex flex-col gap-2">
           {groups.map((group) => (
-            <CycleCard
+            <ChainCard
               key={group.id}
               shape={shape}
               group={group}
@@ -510,9 +612,48 @@ function CyclePanel({ shape, costs, groups, onAdd, onUpdate, onRemove }) {
 }
 
 /**
- * The Exchange section: one item of the POE sub-sidebar, with its own three
- * tabs. The cost list is the shared footing — both cycle tabs pick their items
- * out of it and price their holdings at it.
+ * The Example Rate tab: a fixed ladder of rates, each a pair of counts with the
+ * rate between them divided through to a single right-hand one — 3 ── 0.6 : 1 ──
+ * 5. Nothing here is stored or edited: the rows are what `EXAMPLE_RATES`
+ * carries, in the order it carries them, so the cards can be read against a
+ * ladder that depends on nothing the user has entered. The middle column is a
+ * fixed width so the numbers line up down the list.
+ */
+function ExampleRatePanel() {
+  return (
+    <>
+      <div className="text-[12.5px] text-muted mb-2.5">
+        {EXAMPLE_RATES.length} example rates — each a pair of numbers with the left one divided
+        through to a single right one between them. In order of that rate.
+      </div>
+
+      <div className="flex flex-col gap-2">
+        {EXAMPLE_RATES.map((row) => (
+          <div
+            key={`${row.b}-${row.a}`}
+            className="grid grid-cols-[minmax(0,1fr)_8rem_minmax(0,1fr)] items-center gap-3 bg-panel2 border border-border rounded-xl px-3 py-2"
+            title={`${row.b} on the left buys ${row.a} on the right`}
+          >
+            <div className="flex justify-end">
+              <div className={`${chainBox} w-16`}>{groupNumber(row.b)}</div>
+            </div>
+            <span className="flex items-center justify-center gap-2 whitespace-nowrap font-mono text-[12.5px]">
+              <span className="text-muted">──</span>
+              <span className="text-text">{formatRateFixed(row.b / row.a)} : 1</span>
+              <span className="text-muted">──</span>
+            </span>
+            <div className={`${chainBox} w-16`}>{groupNumber(row.a)}</div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
+/**
+ * The Exchange section: one item of the POE sub-sidebar, with its own tabs. The
+ * cost list is the shared footing — the cycle tabs pick their items out of it
+ * and price their rounds at it.
  */
 export default function ExchangePanel({
   ready,
@@ -579,8 +720,10 @@ export default function ExchangePanel({
           onUpdate={onUpdateCost}
           onRemove={onRemoveCost}
         />
+      ) : tab === "example" ? (
+        <ExampleRatePanel />
       ) : (
-        <CyclePanel key={tab} costs={costs} {...cycles[tab]} />
+        <ChainPanel key={tab} costs={costs} {...cycles[tab]} />
       )}
     </>
   );
