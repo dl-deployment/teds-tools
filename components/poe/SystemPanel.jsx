@@ -2,8 +2,15 @@
 
 import { useMemo, useRef, useState } from "react";
 import Modal from "@/components/Modal";
-import { downloadBlob } from "@/lib/zip";
-import { buildPoeExport, parsePoeImport, summarizePoeData } from "@/lib/poe";
+import { createZip, downloadBlob } from "@/lib/zip";
+import {
+  EXTENSION_DIR,
+  EXTENSION_FILES,
+  EXTENSION_FOLDER,
+  buildPoeExport,
+  parsePoeImport,
+  summarizePoeData,
+} from "@/lib/poe";
 import { copyText } from "./Snippet";
 
 const fieldClass =
@@ -31,6 +38,9 @@ export default function SystemPanel({
   const [error, setError] = useState("");
   const [note, setNote] = useState("");
   const [copied, setCopied] = useState(false);
+  const [zipping, setZipping] = useState(false);
+  const [zipNote, setZipNote] = useState("");
+  const [zipError, setZipError] = useState("");
   const fileRef = useRef(null);
 
   const summary = useMemo(
@@ -74,6 +84,29 @@ export default function SystemPanel({
     }
   }
 
+  // Read from `public/` rather than bundled, so the zip carries exactly the
+  // files on disk, and Chrome loads that same folder unpacked.
+  async function downloadExtension() {
+    setZipping(true);
+    setZipNote("");
+    setZipError("");
+    try {
+      const entries = await Promise.all(
+        EXTENSION_FILES.map(async (name) => {
+          const res = await fetch(`${EXTENSION_DIR}/${name}`);
+          if (!res.ok) throw new Error(`${name} — HTTP ${res.status}`);
+          return { name: `${EXTENSION_FOLDER}/${name}`, data: await res.text() };
+        })
+      );
+      downloadBlob(await createZip(entries), `${EXTENSION_FOLDER}.zip`);
+      setZipNote(`Saved ${EXTENSION_FOLDER}.zip`);
+    } catch (e) {
+      setZipError(`Could not build the extension zip — ${e.message}`);
+    } finally {
+      setZipping(false);
+    }
+  }
+
   async function loadFile(e) {
     const file = e.target.files?.[0];
     e.target.value = "";
@@ -112,11 +145,14 @@ export default function SystemPanel({
 
   return (
     <>
-      <div className="text-[12.5px] text-muted mb-3">
-        Back up or restore the POE Tools data — {summary}.
-      </div>
-
       <div className="bg-bg border border-border rounded-lg px-3 py-3">
+        <div className="text-[11px] uppercase tracking-wide text-muted font-semibold mb-1.5">
+          Export / import
+        </div>
+        <div className="text-[12.5px] text-muted mb-2.5">
+          Back up or restore the POE Tools data — {summary}.
+        </div>
+
         <div className="flex items-center gap-2 flex-wrap">
           <button onClick={() => setOpen("export")} disabled={!ready} className={primaryBtn}>
             Export…
@@ -126,6 +162,45 @@ export default function SystemPanel({
           </button>
         </div>
         {note && <div className="text-[11.5px] text-accent2 mt-2.5">{note}</div>}
+      </div>
+
+      <div className="mt-3 bg-bg border border-border rounded-lg px-3 py-3">
+        <div className="text-[11px] uppercase tracking-wide text-muted font-semibold mb-1.5">
+          Runner extension
+        </div>
+        <div className="text-[12.5px] text-muted mb-2.5">
+          Runs a snippet straight from the Snippet dialog instead of a DevTools paste. Chrome or
+          Edge only.
+        </div>
+
+        <button onClick={downloadExtension} disabled={zipping} className={primaryBtn}>
+          {zipping ? "Preparing…" : "Download extension (.zip)"}
+        </button>
+        {zipError ? (
+          <div className="text-[11.5px] text-red-400 mt-2.5">{zipError}</div>
+        ) : zipNote ? (
+          <div className="text-[11.5px] text-accent2 mt-2.5">{zipNote}</div>
+        ) : null}
+
+        <ol className="list-decimal ml-4 mt-3 text-[11.5px] text-muted space-y-1">
+          <li>
+            Unzip it somewhere permanent — Chrome loads the folder in place, so moving or deleting
+            it later switches the extension off.
+          </li>
+          <li>
+            Open <code className="text-text">chrome://extensions</code> and turn on{" "}
+            <span className="text-text">Developer mode</span> (top right).
+          </li>
+          <li>
+            Press <span className="text-text">Load unpacked</span> and pick the unzipped{" "}
+            <code className="text-text">{EXTENSION_FOLDER}</code> folder — the one holding{" "}
+            <code className="text-text">manifest.json</code>.
+          </li>
+          <li>
+            Reload this tab, then press <span className="text-text">Open With Extensions</span> in a
+            Snippet — the search runs and its results open in a new tab.
+          </li>
+        </ol>
       </div>
 
       <Modal open={open === "export"} title="Export POE data" onClose={close}>

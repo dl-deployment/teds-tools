@@ -70,6 +70,9 @@ public/
   poe/               poe2-payloads.json (Trade seed) + poe2-group-stats.json (Maker source)
                      + poe2-exchange-cost.json (Exchange Cost seed) — each tab's
                      Export .json writes its own file back out
+  poe/extension/     MV3 extension that runs a Snippet against the trade API with
+                     host permissions (a page fetch would be CORS-blocked). System
+                     tab zips it for download; the file list is EXTENSION_FILES in lib/poe.js
 docs/
   DESIGN.md          design tokens (colors, spacing, type) — read before touching styles
   DATA-MODEL.md       shape of notes/links + how to add a new entity type

@@ -32,6 +32,17 @@ export async function copyText(text) {
 }
 
 /**
+ * Hands the snippet to a browser extension listening on the page, which runs it
+ * in the trade site's own tab instead of the user pasting it into DevTools.
+ */
+function openWithExtensions(snippet) {
+  window.postMessage(
+    { source: "TEDSHUB", type: "EXECUTE_SCRIPT", script: snippet },
+    "*"
+  );
+}
+
+/**
  * The console snippet plus a link to the trade site. Shared by the Trade tab
  * (one saved config) and the Maker tab (a merged selection), so both explain
  * the same paste-into-DevTools step.
@@ -39,12 +50,18 @@ export async function copyText(text) {
 export default function SnippetModal({ open, title, snippet, league, onClose }) {
   return (
     <Modal open={open} title={title} onClose={onClose}>
-      <div className="flex items-center gap-2 mb-2.5">
+      <div className="flex items-center gap-2 mb-2.5 flex-wrap">
         <button
           onClick={() => copyText(snippet)}
           className="bg-transparent border border-border text-muted hover:text-text px-2.5 py-1.5 rounded-lg text-[12.5px]"
         >
           Copy
+        </button>
+        <button
+          onClick={() => openWithExtensions(snippet)}
+          className="bg-transparent border border-border text-muted hover:text-text px-2.5 py-1.5 rounded-lg text-[12.5px]"
+        >
+          Open With Extensions
         </button>
         <a
           href={tradeSearchUrl(league)}
