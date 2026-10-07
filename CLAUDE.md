@@ -43,6 +43,8 @@ app/
   notes/page.js     Notes view
   links/page.js     Links view
   statics/page.js   Static Pages view — server component, scans public/static_pages
+  livelog/page.js    Live Log view — realtime log console + channel list; the
+                     viewer half of the pair described under "Live Log" below
 components/
   Sidebar.js        left nav, collapsible
   Modal.js           shared modal wrapper — reuse this for any new dialog
@@ -51,6 +53,9 @@ components/
   assets/            Assets Tools (slicer, packer, viewer) + Shared.jsx (DropZone, FrameOverlay, Section, toast)
   poe/               POE Tools panels (trade config list + snippet + Maker merge, league picker,
                      Exchange tabs) + NumberField.jsx (commit-on-blur numeric input)
+  livelog/           Live Log console (LogConsole), one row (LogRow) and the setup
+                     modal (DocsModal). The level colour classes must stay in
+                     LogRow.jsx — see rule 4
 lib/
   useHubData.js      ALL data reads/writes go through this hook
   tools.js           pure functions for the Tools + Text Tools pages
@@ -63,6 +68,8 @@ lib/
   events.js          static event list for the timeline + processEvents()
   md5.js             vendored pure-JS MD5 (Web Crypto has none)
   staticPages.js     server-only scan of public/static_pages (uses node:fs)
+  livelog.js         pure Live Log helpers (level/format/filter/row-offset maths)
+  useLiveLog.js      Live Log socket hook — reconnect, rAF batching, pause, dedupe
 public/
   static_pages/      standalone HTML pages: a folder with index.html, or a loose .html
   hub/               notes.json + links.json (Notes/Links seed defaults) — each tab's
@@ -73,10 +80,20 @@ public/
   poe/extension/     MV3 extension that runs a Snippet against the trade API with
                      host permissions (a page fetch would be CORS-blocked). System
                      tab zips it for download; the file list is EXTENSION_FILES in lib/poe.js
+  livelog.js         standalone Live Log SDK — zero deps, defines window.LiveLog,
+                     and deliberately has no import/export statements
+  livelog.esm.js     module entry point: side-effect imports the above and
+                     re-exports LiveLog (so both <script> and `import` work)
+  livelog-server/    the Live Log realtime server — its own package and deployment
+                     (Fly.io/Render/Railway/VPS), separate from Vercel's runtime and
+                     never imported by this app. It is served from public/ on purpose
+                     so /livelog can download a zip of it, so treat the folder as
+                     world-readable (see rule 8)
 docs/
   DESIGN.md          design tokens (colors, spacing, type) — read before touching styles
   DATA-MODEL.md       shape of notes/links + how to add a new entity type
   PROMPTS.md           ready-to-use prompts for common follow-up tasks on this repo
+  LIVE-LOG.md         Live Log SDK, architecture, env vars and deployment
 ```
 
 ## Rules for changes in this repo
@@ -102,7 +119,10 @@ docs/
 4. **Follow existing Tailwind token usage** (`bg-panel`, `bg-panel2`,
    `border-border`, `text-muted`, `text-accent`/`accent2`/`accent3`/`accent4`,
    `rounded-card`) instead of raw hex values or ad hoc radii. These are
-   defined in `tailwind.config.js`.
+   defined in `tailwind.config.js`. Note that its `content` globs only cover
+   `app/` and `components/`, so a class name written anywhere else is never
+   generated — the Live Log level palette lives in
+   `components/livelog/LogRow.jsx` for exactly that reason, not in `lib/`.
 5. **Every page/component that touches `localStorage` or `window` needs
    `"use client"`** at the top (App Router server components can't use
    browser APIs).
@@ -113,6 +133,25 @@ docs/
    `/statics` lists it. The list is built when the page renders, so a running
    dev server picks new files up on refresh; a deployed build needs a
    redeploy.
+8. **Live Log spans two deployables, and none of it is persisted.** `/livelog`
+   and the SDK are Vercel-side static/browser code; the socket, the token
+   check, the rate limiting and the log buffers live in
+   `public/livelog-server/`, which is deployed on its own because Vercel's
+   functions can neither hold a WebSocket open nor share memory between
+   invocations. So: don't add an `app/api/**` route for it, don't introduce a
+   database, Redis or any disk storage, and don't make logs survive a restart —
+   they exist only in that one process's memory and in the open page.
+   That folder sits under `public/` deliberately: the page serves it so anyone
+   can download and run the server (`SERVER_FILES` in `lib/livelog.js` is the
+   allowlist the zip is built from), which means **anything put there is
+   world-readable** — keep real tokens in `tokens.json`, which is gitignored and
+   in `.vercelignore`, and never drop a secret in that folder.
+   What `/livelog` remembers — the channels you watch, the server each one lives
+   on (a channel can carry its own address, which is how one page watches
+   channels on different machines) and the default address, so the endpoint can
+   change without a rebuild — goes through `useHubData` like everything else;
+   `NEXT_PUBLIC_LIVELOG_*` are only build-time defaults. `docs/LIVE-LOG.md` has the SDK and the deployment story;
+   `public/livelog-server/README.md` has the ops side.
 
 ## Common follow-up tasks
 

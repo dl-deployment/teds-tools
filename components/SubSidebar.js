@@ -50,7 +50,24 @@ export function SubAction({ onClick, title, children }) {
   );
 }
 
-/** Scrollable, padded column that holds a page's main content. */
-export function ContentPane({ children }) {
-  return <div className="flex-1 min-w-0 overflow-y-auto px-6 py-7 pb-16">{children}</div>;
+/**
+ * Scrollable, padded column that holds a page's main content.
+ *
+ * A page that manages its own scrolling (the Live Log console, which needs the
+ * full height and no padding) turns both off. These are booleans rather than an
+ * extra `className`, because a class appended afterwards can't reliably override
+ * the base ones: Tailwind emits both rules at the same specificity, so which of
+ * them wins comes down to stylesheet order rather than the order in the
+ * attribute.
+ */
+export function ContentPane({ children, padded = true, scroll = true }) {
+  return (
+    <div
+      className={`flex-1 min-w-0 ${scroll ? "overflow-y-auto" : "overflow-hidden"} ${
+        padded ? "px-6 py-7 pb-16" : ""
+      }`}
+    >
+      {children}
+    </div>
+  );
 }

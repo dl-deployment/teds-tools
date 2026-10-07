@@ -1,6 +1,6 @@
 # Ted's Hub
 
-Personal dashboard for tools, notes and links — built with Next.js (App Router) and Tailwind CSS. Sections: Tools, Text Tools, Color Tools, Assets Tools, Notes, Links and Static Pages.
+Personal dashboard for tools, notes and links — built with Next.js (App Router) and Tailwind CSS. Sections: Tools, Text Tools, Color Tools, Assets Tools, Notes, Links, Static Pages and Live Log.
 
 ## Run locally
 
@@ -24,6 +24,27 @@ npm i -g vercel
 vercel
 ```
 
+## Live Log
+
+`/livelog` shows a realtime log stream from other projects: they load the
+standalone SDK (`/livelog.js`) and call `LiveLog.info(...)`, and the line appears
+on the page within a frame.
+
+Nothing is stored — no database, no Redis, no disk. Logs exist only in the
+realtime server's memory and in the open page, so a restart or a refresh loses
+them.
+
+That realtime half is a **separate deployable**: Vercel cannot host it, because
+its serverless functions can neither hold a WebSocket open nor share memory
+between invocations. `public/livelog-server/` is one long-lived Node process that
+takes logs over HTTP and broadcasts them over WebSocket, deployed on its own
+(Fly.io by default). It lives in `public/` so the page can hand out a zip of it —
+the **Server** button on `/livelog` downloads it, and the same dialog takes a
+server address at runtime, so pointing the page somewhere new needs no rebuild
+and no environment variables. See [docs/LIVE-LOG.md](docs/LIVE-LOG.md) for the
+SDK, the architecture and the variables, and
+[public/livelog-server/README.md](public/livelog-server/README.md) for hosting it.
+
 ## Project structure
 
 ```
@@ -37,12 +58,14 @@ app/
   notes/page.js     Notes view
   links/page.js     Links view
   statics/page.js   Static Pages view (lists public/static_pages)
+  livelog/page.js   Live Log view (realtime log console + channel list)
 components/
   Sidebar.js        left nav with collapsible toggle
   Modal.js           shared modal wrapper
   ItemRow.js         note/link row + empty state
   color/             Color Tools panels
   assets/            Assets Tools + shared drop zone / frame overlay / toast
+  livelog/           Live Log console, log row and setup/docs modal
 lib/
   useHubData.js      data layer (notes, links, color history) — currently localStorage
   tools.js           pure functions powering the Tools + Text Tools pages
@@ -52,12 +75,20 @@ lib/
   lunar.js           Vietnamese lunar calendar conversion
   events.js          static holiday list + next-occurrence/countdown logic
   staticPages.js     scans public/static_pages (server-only)
+  livelog.js         pure Live Log helpers (formatting, filtering, row offsets)
+  useLiveLog.js      Live Log socket hook — reconnect, batching, pause
 public/
   static_pages/      standalone HTML pages, one folder or .html file each
+  livelog.js         standalone Live Log SDK (window.LiveLog, no dependencies)
+  livelog.esm.js     module entry point that re-exports it
+  livelog-server/    the Live Log realtime server — deployed on its own, and
+                     served from here so /livelog can download it as a zip
+                     (see public/livelog-server/README.md)
 docs/
   DESIGN.md          design tokens (colors, spacing, type)
   DATA-MODEL.md       data shapes + how to extend/migrate them
   PROMPTS.md           ready-to-paste prompts for common AI-assisted tasks
+  LIVE-LOG.md         Live Log SDK, architecture, env vars and deployment
 ```
 
 ## Working with AI on this repo

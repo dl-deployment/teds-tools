@@ -1,0 +1,11 @@
+# public/livelog-server is intentionally part of the deployment: the hub serves
+# it so it can be downloaded with the "Server" button on /livelog.
+#
+# Keep only the machine-local files out of the upload — an installed dependency
+# tree, and a real token file if one is ever left in place locally.
+#
+# (There is deliberately no lockfile in that folder, so Vercel's dependency
+# detection still finds exactly one lockfile: the app's, at the repo root.)
+public/livelog-server/node_modules
+public/livelog-server/tokens.json
+public/livelog-server/.env

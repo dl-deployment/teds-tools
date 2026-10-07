@@ -1,0 +1,18 @@
+{
+  "name": "teds-hub-livelog-server",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Realtime broadcast server for Ted's Hub Live Log. In-memory only — no database, no persistence.",
+  "type": "module",
+  "main": "server.js",
+  "engines": {
+    "node": ">=18.11"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}

@@ -13,6 +13,7 @@ const navItems = [
   { href: "/links", label: "Links", icon: "⛓" },
   { href: "/statics", label: "Static Pages", icon: "▦" },
   { href: "/poe", label: "POE Tools", icon: "⬡" },
+  { href: "/livelog", label: "Live Log", icon: "⌗" },
 ];
 
 export default function Sidebar() {

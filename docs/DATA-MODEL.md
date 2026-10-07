@@ -75,6 +75,15 @@ type DB = {
   duoGroups: DuoGroup[];
   tripleGroups: TripleGroup[];
   poeLeague: string;   // league the POE trade searches run against
+  livelogChannel: string;     // last Live Log channel watched on /livelog
+  livelogChannelUrl: string;  // the server it was watched on ("" = the default)
+  livelogChannels: SavedChannel[];  // channels added by hand
+};
+
+type SavedChannel = {
+  name: string;
+  url: string;    // the server that channel lives on ("" = the default)
+  wsUrl: string;  // its socket, when it needs one that isn't derived
 };
 ```
 
@@ -446,6 +455,7 @@ these keys must be checked against the constants above.
   addColorToHistory({ r, g, b }),   // dedupes by hex, newest first, keeps 16
   tradeConfigs, makerGroups, exchangeCosts, duoGroups, tripleGroups,
   poeLeague, bundledPayloads,
+  livelogChannel, livelogChannelUrl, livelogChannels,
   addTradeConfig({ name, payload }),
   updateTradeConfig(id, patch),
   removeTradeConfig(id),
@@ -461,6 +471,9 @@ these keys must be checked against the constants above.
   updateTripleGroup(id, patch),
   removeTripleGroup(id),
   setPoeLeague(league),
+  setLivelogChannel(name, url),        // which channel, and on which server
+  addLivelogChannel(name, { url }),    // saves it (optionally with its own server) and selects it
+  removeLivelogChannel(key),           // forgets a saved channel; the key is `name@url`
   replacePoeData({ tradeConfigs, poeLeague, makerGroups,   // the last four are
                    exchangeCosts, duoGroups, tripleGroups }), // optional
 }
@@ -475,6 +488,15 @@ The POE collections are all read with `|| []` / `|| DEFAULT_LEAGUE` so data
 saved before they existed still loads. `replacePoeData` only rewrites
 `makerGroups`, `exchangeCosts`, `duoGroups` and `tripleGroups` when the import
 carries them — passed as null by an older export, they are left as they are.
+
+The Live Log fields are read the same way, and they are the only thing that
+section stores: channel **names** and the **addresses** they live on — never the
+logs themselves, which exist in the realtime server's memory and in the open page
+and are gone when either restarts. See `docs/LIVE-LOG.md`. An address is stored
+per saved channel because a channel can live on another machine; data saved before
+channels carried one held bare names, so `normalizeChannelList` in
+`lib/livelog.js` reads a string as a name with no server of its own. None of these
+fields is part of the POE export, which is scoped to `scope: "poe"`.
 
 **Call the hook once per page.** Each instance holds its own `db`, and every
 write persists a whole-object read-modify-write of `teds-hub-data` — two

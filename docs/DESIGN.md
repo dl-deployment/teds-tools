@@ -15,7 +15,7 @@ introducing new values.
 | `text`      | `#e8eaf3` | primary text                            |
 | `muted`     | `#8891ab` | secondary text, labels, timestamps      |
 | `accent`    | `#6c8bff` | primary actions, active nav, Tools + Text Tools |
-| `accent2`   | `#3ecf8e` | Notes + Assets Tools accent             |
+| `accent2`   | `#3ecf8e` | Notes + Assets Tools + Live Log accent  |
 | `accent3`   | `#b17cff` | Links + Static Pages accent             |
 | `accent4`   | `#ff9f5a` | Color Tools accent (and the Timestamp tool) |
 
@@ -27,7 +27,10 @@ shares `accent3` with Links rather than claiming an accent of its own; Text
 Tools is one more tool surface and shares `accent` with Tools; Color Tools
 uses `accent4` for its chrome so the accent never competes with the colors
 the user is actually picking; Assets Tools shares `accent2` with Notes;
-POE Tools is one more tool surface and shares `accent` with Tools.
+POE Tools is one more tool surface and shares `accent` with Tools. Live Log
+shares `accent2` too: green is the register a console reads as, and `accent2`
+already carries the app's "up / good" meaning — which is exactly what a live
+connection's status dot is saying.
 
 Where an accent also carries meaning in the UI, use it for the "do the
 thing" button (Assets Tools' Slice/Pack/Play are `bg-accent2 text-bg`) and
@@ -38,6 +41,12 @@ Figures that go up and down — the Exchange card's `profit` — read
 `text-muted` at zero. `text-red-400` is also the error colour (a failed form
 row, a rejected import); it is the one red in the app, and the one place a
 Tailwind default colour is used instead of a token.
+
+The Live Log console is the one place where all four accents meet, as the log
+level palette — the only other meaning any of them carries: DEBUG `text-muted`,
+INFO `text-accent`, WARN `text-accent4`, ERROR `text-red-400`, each on a `/15`
+badge tint. Keep that mapping in `components/livelog/LogRow.jsx` (see
+CLAUDE.md rule 4 — Tailwind doesn't scan `lib/`).
 
 ## Radius
 
@@ -55,6 +64,9 @@ System font stack (Tailwind default `font-sans`). Sizes used:
 - `text-[12.5px]` / `text-xs` — labels, secondary text
 - `text-[11px]` — timestamps, tag chips
 - `text-[10px]` — the Exchange card's cell captions, uppercase and tracked out
+- `font-mono` (Tailwind's default mono stack) — the Live Log console's rows.
+  `.tool-output` in `globals.css` is a separate, greener block for the Tools
+  page's own output, not a general console style.
 
 ## Layout
 
@@ -125,6 +137,12 @@ below that and the descriptions ellipsize.
     of its stat-filter groups is a `bg-bg` `rounded-lg` segment inside that,
     with a `border-b` separating the group's title row from its stat rows. Use
     the same nesting for any new repeated block rather than stacking flat rows.
+- **Live Log** also uses the sub-sidebar, as the channel list: one `SubItem` per
+  channel with a connection dot, the channel's viewer/log counts on the second
+  line, and two `SubAction`s in the header (setup docs, add channel). The console
+  fills the pane rather than sitting in a card, so this is the one page that
+  turns `ContentPane`'s padding and scrolling off — via its `padded`/`scroll`
+  props, not by appending classes.
 - **Content** (`ContentPane`): `flex-1 min-w-0 overflow-y-auto` with generous
   padding (`px-6 py-7 pb-16`). No max-width cap — the dashboard should fill the
   window at any desktop size.

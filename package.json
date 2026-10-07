@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "livelog:install": "npm --prefix public/livelog-server install",
+    "livelog:dev": "npm --prefix public/livelog-server run dev"
   },
   "dependencies": {
     "next": "14.2.5",

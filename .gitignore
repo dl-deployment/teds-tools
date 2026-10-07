@@ -5,3 +5,8 @@ out
 .vercel
 .DS_Store
 npm-debug.log*
+
+# Live Log: the server folder lives in public/ so it can be downloaded from the
+# deployed hub, but a real token file or local env must never ship with it.
+public/livelog-server/tokens.json
+public/livelog-server/.env

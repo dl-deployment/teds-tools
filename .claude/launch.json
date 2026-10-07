@@ -7,6 +7,12 @@
       "runtimeArgs": ["run", "dev"],
       "port": 3000,
       "autoPort": true
+    },
+    {
+      "name": "livelog-server",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["public/livelog-server/server.js"],
+      "port": 8787
     }
   ]
 }
