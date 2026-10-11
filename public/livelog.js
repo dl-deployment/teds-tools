@@ -1,5 +1,5 @@
 /**
- * Live Log SDK v1.0.0 — send log lines to a Ted's Hub Live Log server.
+ * Live Log SDK v1.0.0 — send log lines to a Ted's Tools Live Log server.
  *
  *   <script src="https://YOUR-DOMAIN/livelog.js"></script>
  *   <script>

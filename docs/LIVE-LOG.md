@@ -273,7 +273,7 @@ tokens, and the folder it lives in is served publicly by the hub.
 
 `public/livelog-server/` is part of the deployment on purpose: the **Server**
 dialog (and the setup card on a page with no server yet) zips it in the browser
-and saves `teds-hub-livelog-server.zip`, so running your own server needs no
+and saves `teds-tools-livelog-server.zip`, so running your own server needs no
 clone — unzip, `npm install`, `npm start`.
 
 `SERVER_FILES` in `lib/livelog.js` is the allowlist that zip is built from. It is

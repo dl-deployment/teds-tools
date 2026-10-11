@@ -18,7 +18,7 @@ const STATS_ENDPOINT = "https://www.pathofexile.com/api/trade2/data/stats";
 // Cloudflare in front of pathofexile.com challenges requests from datacenter
 // IPs that arrive without a User-Agent.
 function poeHeaders() {
-  return { Accept: "application/json", "User-Agent": "teds-hub (personal dashboard)" };
+  return { Accept: "application/json", "User-Agent": "teds-tools (personal dashboard)" };
 }
 
 export async function fetchPoe2Leagues() {

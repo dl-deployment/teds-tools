@@ -1,8 +1,8 @@
 {
-  "name": "teds-hub-livelog-server",
+  "name": "teds-tools-livelog-server",
   "version": "1.0.0",
   "private": true,
-  "description": "Realtime broadcast server for Ted's Hub Live Log. In-memory only — no database, no persistence.",
+  "description": "Realtime broadcast server for Ted's Tools Live Log. In-memory only — no database, no persistence.",
   "type": "module",
   "main": "server.js",
   "engines": {

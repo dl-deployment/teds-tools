@@ -4,7 +4,7 @@ Guidance for Claude (or any AI assistant) working in this repository.
 
 ## What this project is
 
-Ted's Hub — a personal dashboard for a developer: quick-access dev tools
+Ted's Tools — a personal dashboard for a developer: quick-access dev tools
 (Tools, Text Tools, Color Tools), notes, and bookmark links, plus Static
 Pages for standalone HTML dropped into `public/`. Next.js 14 (App Router),
 React, Tailwind CSS. No backend yet — data lives in the browser's

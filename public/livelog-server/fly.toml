@@ -6,7 +6,7 @@
 # auto_stop_machines = false and min_machines_running = 1 are both load-bearing:
 # a suspended machine drops every viewer socket AND loses every in-memory log,
 # and for this server that is the entire state.
-app = "teds-hub-livelog"
+app = "teds-tools-livelog"
 primary_region = "sin"
 
 [build]

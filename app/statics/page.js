@@ -4,7 +4,7 @@ import { EmptyState } from "@/components/ItemRow";
 import { formatPageName, scanStaticPages } from "@/lib/staticPages";
 
 export const metadata = {
-  title: "Static Pages · Ted's Hub",
+  title: "Static Pages · Ted's Tools",
 };
 
 function staticPagesDir() {

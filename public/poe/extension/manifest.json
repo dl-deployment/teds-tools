@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Ted's Hub — POE Trade Runner",
+  "name": "Ted's Tools — POE Trade Runner",
   "version": "1.0.0",
-  "description": "Runs the trade search Ted's Hub posts from its Snippet dialog and opens the results in a new tab.",
+  "description": "Runs the trade search Ted's Tools posts from its Snippet dialog and opens the results in a new tab.",
   "host_permissions": ["https://www.pathofexile.com/*"],
   "background": { "service_worker": "background.js" },
   "content_scripts": [

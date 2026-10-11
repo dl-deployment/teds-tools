@@ -1,6 +1,6 @@
 # Live Log realtime server
 
-The persistent half of Ted's Hub's Live Log. It accepts logs over HTTP, holds
+The persistent half of Ted's Tools' Live Log. It accepts logs over HTTP, holds
 the last few hundred per channel **in memory**, and fans them out to everyone
 watching that channel over WebSocket.
 
@@ -28,7 +28,7 @@ server it lives on). Nothing merges the two streams: one server per channel.
 
 You don't have to clone the repo to get the server: open the hub's **Live Log**
 page, click **Server**, and press **Download** to save
-`teds-hub-livelog-server.zip`. Or copy this folder as it is.
+`teds-tools-livelog-server.zip`. Or copy this folder as it is.
 
 Because of that download, **this folder is served publicly by the hub** — treat
 anything placed here as world-readable. A real `tokens.json` must never be

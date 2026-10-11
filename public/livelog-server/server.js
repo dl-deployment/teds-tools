@@ -1,5 +1,5 @@
 /**
- * Ted's Hub — Live Log realtime server.
+ * Ted's Tools — Live Log realtime server.
  *
  * One long-lived Node process that accepts logs over HTTP and fans them out to
  * viewers over WebSocket. It exists because Vercel's serverless functions can

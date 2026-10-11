@@ -161,7 +161,7 @@ validates it, and the data layer applies it through `replacePoeData`.
 
 ```ts
 type PoeExport = {
-  app: "teds-hub";
+  app: "teds-tools";
   scope: "poe";        // guards against importing some other JSON
   version: number;      // POE_EXPORT_VERSION; a newer one is refused
   exportedAt: string;   // ISO
@@ -201,15 +201,15 @@ data layer rather than in `lib/poe.js`. Import **replaces** the POE data rather
 than merging; the hook persists `{ ...db, tradeConfigs, poeLeague }` so the
 other collections survive.
 
-Everything is stored as one JSON blob under `localStorage["teds-hub-data"]`.
+Everything is stored as one JSON blob under `localStorage["teds-tools-data"]`.
 
 **Notes and links are seeded** from the bundled `public/hub/notes.json` and
-`public/hub/links.json` on first run, under the `teds-hub-seeded` flag the old
+`public/hub/links.json` on first run, under the `teds-tools-seeded` flag the old
 hardcoded welcome seed used. Each file is a plain list — a note is
 `{ title, body?, tag? }`, a link is `{ name, url }`:
 
 ```json
-[{ "title": "Welcome to Ted's Hub", "body": "…", "tag": "welcome" }]
+[{ "title": "Welcome to Ted's Tools", "body": "…", "tag": "welcome" }]
 ```
 
 ```json
@@ -237,7 +237,7 @@ replace `public/hub/notes.json` as it stands, exactly as the POE tabs' exports
 replace their files.
 
 **Trade configs are seeded** from the bundled `public/poe/poe2-payloads.json`.
-That seed runs under its own flag (`teds-hub-poe-seeded`), not the welcome
+That seed runs under its own flag (`teds-tools-poe-seeded`), not the welcome
 seed's guard, so it also reaches anyone who already had notes or links — the
 welcome seed's guard (`notes.length === 0 && links.length === 0`) is already
 false for them. Once seeded, the stored copy is authoritative: the flag means
@@ -324,7 +324,7 @@ look items up by name regardless of group.
 
 `exchangeCosts` **is seeded** from the bundled `public/poe/poe2-exchange-cost.json`,
 the same one-time way trade configs are seeded from `poe2-payloads.json` but
-under its own flag (`teds-hub-poe-exchange-seeded`), so it also reaches a
+under its own flag (`teds-tools-poe-exchange-seeded`), so it also reaches a
 browser that had already seeded payloads. The file is a group → { name → price }
 map and is read by `parseExchangeCosts`, which returns `null` for a blank price
 and throws on anything else non-numeric. Unlike the payload file it is **not**
@@ -499,7 +499,7 @@ channels carried one held bare names, so `normalizeChannelList` in
 fields is part of the POE export, which is scoped to `scope: "poe"`.
 
 **Call the hook once per page.** Each instance holds its own `db`, and every
-write persists a whole-object read-modify-write of `teds-hub-data` — two
+write persists a whole-object read-modify-write of `teds-tools-data` — two
 instances on one page would clobber each other's collections. `app/poe/page.js`
 therefore calls it once and passes the collections and callbacks into
 `components/poe/*` as props.

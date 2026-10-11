@@ -37,7 +37,7 @@ export async function copyText(text) {
  */
 function openWithExtensions(snippet) {
   window.postMessage(
-    { source: "TEDSHUB", type: "EXECUTE_SCRIPT", script: snippet },
+    { source: "TEDSTOOLS", type: "EXECUTE_SCRIPT", script: snippet },
     "*"
   );
 }

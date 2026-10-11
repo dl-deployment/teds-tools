@@ -2,7 +2,7 @@ import "./globals.css";
 import Sidebar from "@/components/Sidebar";
 
 export const metadata = {
-  title: "Ted's Hub",
+  title: "Ted's Tools",
   description: "Personal dashboard for tools, notes and links.",
 };
 

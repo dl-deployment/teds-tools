@@ -29,7 +29,7 @@ export default function Sidebar() {
       <div className={`flex items-center gap-2 pb-5 px-2 ${collapsed ? "justify-center" : ""}`}>
         <div className="w-7 h-7 rounded-[9px] bg-gradient-to-br from-accent to-accent3 flex-shrink-0" />
         {!collapsed && (
-          <div className="min-w-0 truncate font-semibold text-sm leading-tight">Ted&apos;s Hub</div>
+          <div className="min-w-0 truncate font-semibold text-sm leading-tight">Ted&apos;s Tools</div>
         )}
       </div>
 
