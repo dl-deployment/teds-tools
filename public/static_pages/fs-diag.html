@@ -1,0 +1,205 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Fullscreen diagnostic</title>
+  <style>
+    body { margin: 0; padding: 10px; font: 15px/1.45 monospace; background: #111; color: #eee; }
+    h2 { font-size: 16px; margin: 14px 0 4px; color: #6cf; }
+    table { border-collapse: collapse; width: 100%; }
+    td { padding: 2px 6px; border-bottom: 1px solid #333; vertical-align: top; word-break: break-all; }
+    td:first-child { color: #9c9; white-space: nowrap; }
+    .ok { color: #6f6; }
+    .bad { color: #f66; }
+    button { width: 100%; margin-top: 10px; padding: 16px; font-size: 17px; font-weight: 700; }
+    #zone { margin-top: 10px; padding: 22px 10px; text-align: center; background: #234; border: 2px dashed #6cf; }
+    pre { white-space: pre-wrap; background: #000; padding: 8px; border: 1px solid #444; }
+  </style>
+</head>
+
+<body>
+  <h2>Environment</h2>
+  <table id="env"></table>
+
+  <h2>Fullscreen support</h2>
+  <table id="fs"></table>
+
+  <h2>Test 1 — request from a click</h2>
+  <button id="btnClick">TAP: requestFullscreen() from click</button>
+  <pre id="outClick">not run</pre>
+
+  <h2>Test 2 — request from a touchstart listener</h2>
+  <div id="zone">TAP here</div>
+  <pre id="outTouch">not run</pre>
+
+  <h2>State</h2>
+  <table id="state"></table>
+  <pre id="summary">not run</pre>
+
+  <script>
+    var doc = document;
+    var docEl = doc.documentElement;
+
+    function get(target) {
+      var e = docEl;
+      return target.requestFullscreen
+        || target.webkitRequestFullscreen
+        || target.webkitRequestFullScreen
+        || target.msRequestFullscreen
+        || null;
+    }
+
+    function row(table, k, v, cls) {
+      var tr = doc.createElement("tr");
+      var td1 = doc.createElement("td");
+      var td2 = doc.createElement("td");
+      td1.textContent = k;
+      td2.textContent = String(v);
+      if (cls) td2.className = cls;
+      tr.appendChild(td1);
+      tr.appendChild(td2);
+      table.appendChild(tr);
+    }
+
+    var featurePolicy;
+    try {
+      featurePolicy = doc.featurePolicy && typeof doc.featurePolicy.allowsFeature === "function"
+        ? String(doc.featurePolicy.allowsFeature("fullscreen"))
+        : "(no document.featurePolicy)";
+    } catch (e) {
+      featurePolicy = "threw: " + e.name + ": " + e.message;
+    }
+
+    var allowedFeatures = "(n/a)";
+    try {
+      if (doc.featurePolicy && doc.featurePolicy.allowedFeatures) {
+        allowedFeatures = doc.featurePolicy.allowedFeatures().join(", ");
+      }
+    } catch (e) {
+      allowedFeatures = "threw: " + e.name + ": " + e.message;
+    }
+
+    var requestFn = get(docEl);
+
+    var env = doc.getElementById("env");
+    row(env, "href", location.href);
+    row(env, "origin", location.origin);
+    row(env, "protocol", location.protocol);
+    row(env, "isSecureContext", window.isSecureContext);
+    row(env, "top===window", window.top === window);
+    row(env, "frameElement", doc.frameElement ? "inside a frame" : "top-level document");
+    row(env, "UA", navigator.userAgent);
+    row(env, "platform", navigator.platform);
+    row(env, "maxTouchPoints", navigator.maxTouchPoints);
+    row(env, "standalone", window.matchMedia("(display-mode: standalone)").matches);
+    row(env, "screen", screen.width + "x" + screen.height);
+    row(env, "inner", window.innerWidth + "x" + window.innerHeight);
+    row(env, "visualViewport", window.visualViewport
+      ? Math.round(window.visualViewport.width) + "x" + Math.round(window.visualViewport.height)
+        + " offsetTop=" + Math.round(window.visualViewport.offsetTop)
+      : "(none)");
+
+    var fs = doc.getElementById("fs");
+    row(fs, "fullscreenEnabled", doc.fullscreenEnabled, doc.fullscreenEnabled === false ? "bad" : "ok");
+    row(fs, "documentElement.requestFullscreen", typeof (docEl.requestFullscreen || docEl.webkitRequestFullscreen));
+    row(fs, "resolved request fn", requestFn ? "found" : "MISSING", requestFn ? "ok" : "bad");
+    row(fs, "featurePolicy fullscreen", featurePolicy, featurePolicy === "false" ? "bad" : "");
+    row(fs, "allowedFeatures", allowedFeatures);
+
+    var state = doc.getElementById("state");
+    function refreshState() {
+      state.innerHTML = "";
+      row(state, "fullscreenElement", doc.fullscreenElement || doc.webkitFullscreenElement || "(none)");
+      row(state, "webkitCurrentFullScreenElement", doc.webkitCurrentFullScreenElement || "(none)");
+      doc.getElementById("summary").textContent = "SUMMARY\n"
+        + "href=" + location.href + "\n"
+        + "isSecureContext=" + window.isSecureContext + "\n"
+        + "top===window=" + (window.top === window) + "\n"
+        + "fullscreenEnabled=" + doc.fullscreenEnabled + "\n"
+        + "requestFullscreen=" + (requestFn ? "present" : "MISSING") + "\n"
+        + "featurePolicy=" + featurePolicy + "\n"
+        + "click: " + doc.getElementById("outClick").textContent.replace(/\n/g, " | ") + "\n"
+        + "touchstart: " + doc.getElementById("outTouch").textContent.replace(/\n/g, " | ") + "\n"
+        + "UA=" + navigator.userAgent;
+    }
+
+    function attempt(outId, via) {
+      var out = doc.getElementById(outId);
+      var t0 = Date.now();
+      out.textContent = "calling via " + via + " ...";
+
+      if (!requestFn) {
+        out.textContent = via + ": requestFullscreen is MISSING on documentElement";
+        refreshState();
+        return;
+      }
+
+      if (doc.fullscreenEnabled === false) {
+        out.textContent = via + ": fullscreenEnabled is false -> the browser has disabled the Fullscreen API "
+          + "for this document (permissions policy / CSP sandbox / iframe without allow)";
+        refreshState();
+        return;
+      }
+
+      var result;
+      try {
+        result = requestFn.call(docEl);
+      } catch (e) {
+        out.textContent = via + ": THREW " + e.name + ": " + e.message;
+        refreshState();
+        return;
+      }
+
+      if (!result || typeof result.then !== "function") {
+        out.textContent = via + ": called, no promise returned (legacy API)";
+        refreshState();
+        return;
+      }
+
+      result.then(function () {
+        out.textContent = via + ": GRANTED after " + (Date.now() - t0) + "ms\n"
+          + "fullscreenElement=" + (doc.fullscreenElement ? doc.fullscreenElement.tagName : "null");
+        refreshState();
+      }, function (e) {
+        out.textContent = via + ": REJECTED " + e.name + ": " + e.message;
+        refreshState();
+      });
+    }
+
+    doc.getElementById("btnClick").addEventListener("click", function () {
+      attempt("outClick", "click");
+    });
+
+    // Same binding OrientationGuard uses for Android: a passive capture touchstart listener.
+    var zone = doc.getElementById("zone");
+    zone.addEventListener("touchstart", function () {
+      attempt("outTouch", "touchstart");
+    }, { passive: true, capture: true });
+    zone.addEventListener("click", function () {
+      // desktop fallback so the same test can be run on a PC
+      if (navigator.maxTouchPoints === 0) attempt("outTouch", "click-desktop");
+    });
+
+    ["fullscreenchange", "webkitfullscreenchange"].forEach(function (type) {
+      doc.addEventListener(type, function () {
+        var out = doc.getElementById("outClick");
+        out.textContent += "\n[" + type + "] fullscreenElement="
+          + (doc.fullscreenElement ? doc.fullscreenElement.tagName : "null");
+        refreshState();
+      });
+    });
+
+    ["fullscreenerror", "webkitfullscreenerror"].forEach(function (type) {
+      doc.addEventListener(type, function () {
+        doc.getElementById("outClick").textContent += "\n[" + type + "] error event fired";
+        refreshState();
+      });
+    });
+
+    refreshState();
+  </script>
+</body>
+
+</html>
