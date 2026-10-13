@@ -2,6 +2,7 @@
 
 import { useCallback, useMemo, useRef, useState } from "react";
 import { SubSidebar, SubItem, ContentPane } from "@/components/SubSidebar";
+import { MarkdownPanel } from "@/components/texttools/MarkdownPanel";
 import { textToolList } from "@/lib/tools";
 
 const ghostBtnClass =
@@ -71,32 +72,46 @@ export default function TextToolsPage() {
               <div className="text-[12.5px] text-muted mt-0.5">{active.desc}</div>
             </div>
             <div className="flex flex-shrink-0 gap-2">
-              <button onClick={handleCopy} className={ghostBtnClass}>Copy</button>
+              {/* MarkDown shows the rendered result, so there is no source in
+                  the buffer worth copying — only the clear/drop-again cycle. */}
+              {active.key !== "md" && (
+                <button onClick={handleCopy} className={ghostBtnClass}>Copy</button>
+              )}
               <button onClick={() => setText("")} className={ghostBtnClass}>Clear</button>
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-2 mb-3">
-            {actions.map((opt) => (
-              <button key={opt.label} onClick={() => applyTool(opt.action)} className={runBtnClass}>
-                {opt.label}
-              </button>
-            ))}
-          </div>
+          {actions.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-3">
+              {actions.map((opt) => (
+                <button key={opt.label} onClick={() => applyTool(opt.action)} className={runBtnClass}>
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          )}
 
-          <textarea
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            placeholder="Paste or type text here, then run a tool — results replace the text in place."
-            spellCheck={false}
-            className="w-full min-h-[420px] resize-y bg-bg border border-border text-text px-2.5 py-2 rounded-lg text-[13px] font-mono"
-          />
+          {active.key === "md" ? (
+            <MarkdownPanel text={text} setText={setText} showToast={showToast} />
+          ) : (
+            <textarea
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              placeholder="Paste or type text here, then run a tool — results replace the text in place."
+              spellCheck={false}
+              className="w-full min-h-[420px] resize-y bg-bg border border-border text-text px-2.5 py-2 rounded-lg text-[13px] font-mono"
+            />
+          )}
 
-          <div className="flex gap-4 mt-2.5 text-[11px] text-muted">
-            <span>{stats.chars} chars</span>
-            <span>{stats.words} words</span>
-            <span>{stats.lines} lines</span>
-          </div>
+          {/* MarkDown shows the rendered result, not the buffer, so buffer
+              stats would describe text that isn't on screen. */}
+          {active.key !== "md" && (
+            <div className="flex gap-4 mt-2.5 text-[11px] text-muted">
+              <span>{stats.chars} chars</span>
+              <span>{stats.words} words</span>
+              <span>{stats.lines} lines</span>
+            </div>
+          )}
         </div>
 
         {toast && (

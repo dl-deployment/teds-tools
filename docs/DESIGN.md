@@ -105,6 +105,13 @@ below that and the descriptions ellipsize.
   - Text Tools: one `SubItem` per tool group (JSON, Case, Trim, ...); the
     selected group's actions render as buttons in the content pane above a
     single shared textarea, since every transform applies to the same buffer.
+    MarkDown is the one group that isn't a transform: it has no action buttons,
+    no Copy, no buffer stats, and its pane holds either the drop zone (nothing
+    loaded) or the rendered file — never the source, so it reads as a viewer
+    rather than an editor (`components/texttools/MarkdownPanel.jsx`). Clear
+    empties the buffer and the drop zone comes back. The preview is HTML
+    rendered by `lib/markdown.js`, so it is styled from the component with
+    child selectors on the wrapper rather than by class names in `lib/`.
   - Color Tools: one `SubItem` per panel (Picker, Palette, Contrast, Shades,
     Gradient); the pane shows the current color name, recent-color strip and
     the selected panel.
